@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>imagens/mouse.png</file>
+        <file>imagens/linha.png</file>
+        <file>imagens/reduzir.png</file>
+        <file>imagens/ampliar.png</file>
+        <file>imagens/entidade.png</file>
+        <file>imagens/relacionamento.png</file>
+        <file>imagens/gen_especializacao.png</file>
+        <file>imagens/ent_associativa.png</file>
+        <file>imagens/atributo_identif.png</file>
+        <file>imagens/atributo.png</file>
+        <file>imagens/deletar.png</file>
+    </qresource>
+</RCC>
