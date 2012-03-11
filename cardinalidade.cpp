@@ -13,7 +13,7 @@ Cardinalidade::Cardinalidade(Poligono *item1, Poligono *item2, Ligacao *linha, Q
     connect(item2, SIGNAL(posicaoAlterada()), this, SLOT(atualizaPos()) );
 }
 
-void Cardinalidade::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Cardinalidade::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     QString temp = chamarTelaCardinalidade.mostrarCardinalidade();
     if ( temp != NULL )
@@ -21,6 +21,7 @@ void Cardinalidade::mousePressEvent(QGraphicsSceneMouseEvent *event)
         setAtualCardinalidade(temp);
         atualizaPos();
     }
+    event->accept();
 }
 
 void Cardinalidade::atualizaPos()

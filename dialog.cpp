@@ -19,3 +19,18 @@ QString Dialog::mostrarCardinalidade()
     else
         return NULL;
 }
+
+QString Dialog::mostrarTipoGenEsp()
+{
+    QStringList tipos;
+    tipos << tr("xt") << tr("ct") << tr("xp") << tr("cp");
+
+    bool ok;
+    QString tipo = QInputDialog::getItem(this, tr("Tipo Generalização/Especialização"),
+                                         tr("Tipos:"), tipos, 0, false, &ok);
+
+    if (ok && !tipo.isEmpty())
+        return tipo;
+    else
+        return NULL;
+}

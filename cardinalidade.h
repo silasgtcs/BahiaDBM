@@ -1,3 +1,5 @@
+/*Classe utilizada para criar cardinalidade. O objeto é chamado no momento em que a ligação é feita entre os poligonos.*/
+
 #ifndef CARDINALIDADE_H
 #define CARDINALIDADE_H
 
@@ -30,7 +32,7 @@ public:
     void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.erase(this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end()); }
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
     Poligono *itemA;

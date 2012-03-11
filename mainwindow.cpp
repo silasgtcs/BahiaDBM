@@ -154,6 +154,528 @@ void MainWindow::refazer()
     pilhaDeAcoes->refazer();
 }
 
+void MainWindow::novaJanela()
+{
+    MainWindow *novaJanela = new MainWindow;
+    novaJanela->show();
+}
+
+void MainWindow::salvarArquivo(const QString nomeArquivo)
+{
+    /*MAPA:
+      QString |_entidade_| OU |_relacionamento_| OU |_generalizacao_especializacao_|  = inicio de um poligono;
+        - Posição x do poligono (float);
+        - Posição y do poligono (float);
+        - Escala do poligono (float);
+        - Nome do poligono (QString);
+        - Posição x do nome do poligono (float);
+        - Posição y do nome do poligono (float);
+        - Escala do nome do poligono (float);
+      QString |_entidade_associativa_|
+        - Posição x da entidade (float)
+        - Posição y da entidade (float)
+        - Escala da entidade (float)
+        - Posição x do relacionamento (float)
+        - Posição y do relacionamento (float)
+        - Escala do relacionamento (float)
+        - Nome do poligono (QString)
+        - Posição x do nome do poligono (float)
+        - Posição y do nome do poligono (float)
+        - Escala do nome do poligono (float)
+      QString |_atributo_| = inicio de um atributo;
+      QString |_cardinalidade_| = inicio de uma cardinalidade;
+      QString |_ligacao_| = inicio de uma ligacao;
+
+      PS:. Cada QString serializada marca o início de um objeto para ser realocado no diagrama.*/
+
+    QFile file(nomeArquivo);
+
+    if ( !file.open(QIODevice::WriteOnly) )
+    {
+        QMessageBox::warning(this, tr("Erro"),
+                             tr("Erro ao salvar arquivo"));
+        return;
+    }
+
+    QDataStream out(&file);
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
+    //Retorna todos os objetos do diagrama para serializá-los.
+    QList<QGraphicsItem *> obj = scene->items();
+    for ( int i=0; i<obj.size(); i++ )
+    {
+        if(obj.at(i)->type() == Poligono::Type)
+        {
+            castPoligono = qgraphicsitem_cast<Poligono *>(obj[i]);
+
+            if ( castPoligono->getTipo() == Poligono::Tipo(0) )
+            {
+                QString nome = "|_entidade_|";
+                out << nome << (float)castPoligono->x() << (float)castPoligono->y() << (float)castPoligono->scale();
+                QList<QGraphicsItem *> txt = castPoligono->childItems();
+                Texto *t = NULL;
+                for ( int j=0; j<txt.size(); j++ )
+                    if ( txt[j]->type() == Texto::Type )
+                    {
+                        t = qgraphicsitem_cast<Texto *>(txt[j]);
+                        break;
+                    }
+                if(t)
+                    out << t->toPlainText() << (float)t->x() << (float)t->y() << (float)t->scale();
+            }
+
+            else if ( castPoligono->getTipo() == Poligono::Tipo(1) )
+            {
+                QString nome = "|_relacionamento_|";
+                out << nome << (float)castPoligono->x() << (float)castPoligono->y() << (float)castPoligono->scale();
+                QList<QGraphicsItem *> txt = castPoligono->childItems();
+                QList<Texto *> t;
+                for ( int j=0; j<txt.size(); j++ )
+                    if ( txt[j]->type() == Texto::Type )
+                        t.push_back(qgraphicsitem_cast<Texto *>(txt[j]));
+                out << t[0]->toPlainText() << (float)t[0]->x() << (float)t[0]->y() << (float)t[0]->scale();
+
+                if ( t.size() > 1 )
+                {
+                    nome = "|_com_auto_relacionamento_|";
+                    out << nome;
+                    out << t[1]->toPlainText() << (float)t[1]->x() << (float)t[1]->y() << (float)t[1]->scale();
+                    out << t[2]->toPlainText() << (float)t[2]->x() << (float)t[2]->y() << (float)t[2]->scale();
+                }
+                else
+                {
+                    nome = "|_sem_auto_relacionamento_|";
+                    out << nome;
+                }
+            }
+
+            else if ( castPoligono->getTipo() == Poligono::Tipo(2) )
+            {
+                QString nome = "|_generalizacao_especializacao_|";
+                out << nome << (float)castPoligono->x() << (float)castPoligono->y() << (float)castPoligono->scale();
+                QList<QGraphicsItem *> txt = castPoligono->childItems();
+                Texto *t = NULL;
+                for ( int j=0; j<txt.size(); j++ )
+                    if ( txt[j]->type() == Texto::Type )
+                    {
+                        t = qgraphicsitem_cast<Texto *>(txt[j]);
+                        break;
+                    }
+                if(t)
+                    out << t->toPlainText() << (float)t->x() << (float)t->y() << (float)t->scale();
+            }
+
+            else if ( castPoligono->getTipo() == Poligono::Tipo(3) )
+            {
+                if ( castPoligono->getPoligonoAssociado() > 0 )
+                {
+                    QString nome = "|_entidade_associativa_|";
+                    out << nome << castPoligono->getPoligonoAssociado()->x() << castPoligono->getPoligonoAssociado()->y() << castPoligono->getPoligonoAssociado()->scale();
+                    QList<QGraphicsItem *> txt = castPoligono->childItems();
+                    Texto *t = NULL;
+                    for ( int j=0; j<txt.size(); j++ )
+                        if ( txt[j]->type() == Texto::Type )
+                        {
+                            t = qgraphicsitem_cast<Texto *>(txt[j]);
+                            break;
+                        }
+                    if(t)
+                        out << t->toPlainText();
+                }
+            }
+        }
+
+        else if (obj.at(i)->type() == Atributo::Type)
+        {
+            castAtributo2 = qgraphicsitem_cast<Atributo *>(obj[i]);
+
+            if ( castAtributo2->getTipo() == Atributo::Tipo(0) )
+            {
+                QString nome = "|_atributo_|";
+                out << nome << (float)castAtributo2->scenePos().x() << (float)castAtributo2->scenePos().y() << (float)castAtributo2->scale();
+                QList<QGraphicsItem *> txt = castAtributo2->childItems();
+                Texto *t = NULL;
+                for ( int j=0; j<txt.size(); j++ )
+                    if ( txt[j]->type() == Texto::Type )
+                    {
+                        t = qgraphicsitem_cast<Texto *>(txt[j]);
+                        break;
+                    }
+                if(t)
+                    out << t->toPlainText() << (float)t->x() << (float)t->y() << (float)t->scale();
+            }
+
+            else if ( castAtributo2->getTipo() == Atributo::Tipo(1) )
+            {
+                QString nome = "|_atributo_identificador_|";
+                out << nome << (float)castAtributo2->scenePos().x() << (float)castAtributo2->scenePos().y() << (float)castAtributo2->scale();
+                QList<QGraphicsItem *> txt = castAtributo2->childItems();
+                Texto *t = NULL;
+                for ( int j=0; j<txt.size(); j++ )
+                    if ( txt[j]->type() == Texto::Type )
+                    {
+                        t = qgraphicsitem_cast<Texto *>(txt[j]);
+                        break;
+                    }
+                if(t)
+                    out << t->toPlainText() << (float)t->x() << (float)t->y() << (float)t->scale();
+            }
+        }
+    }
+
+    for ( int i=0; i<obj.size(); i++ )
+    {
+        if(obj.at(i)->type() == Ligacao::Type)
+        {
+            castLigacao = qgraphicsitem_cast<Ligacao *>(obj[i]);
+
+            if ( castLigacao->getCardinalidades_Associadas().size() > 0 )
+            {
+                QString nome = "|_linha_com_cardinalidade_|";
+                out << nome;
+
+                if ( castLigacao->getEntidades_Associadas().size() > 0 )
+                    out << (float)castLigacao->getEntidades_Associadas().at(0)->x() << (float)castLigacao->getEntidades_Associadas().at(0)->y();
+                if ( castLigacao->getRelacionamentos_Associados().size() > 0 )
+                    out << (float)castLigacao->getRelacionamentos_Associados().at(0)->x() << (float)castLigacao->getRelacionamentos_Associados().at(0)->y();
+                if ( castLigacao->getEntidades_Associativas_Associadas().size() > 0 )
+                    out << (float)castLigacao->getEntidades_Associativas_Associadas().at(0)->x() << (float)castLigacao->getEntidades_Associativas_Associadas().at(0)->y();
+
+
+                out << castLigacao->getEntidadeFracaAtiva() << castLigacao->getCardinalidades_Associadas().at(0)->getAtualCardinalidade();
+            }
+
+            else if ( castLigacao->getCardinalidades_Associadas().size() == 0 )
+            {
+                QString nome = "|_linha_sem_cardinalidade_|";
+                out << nome;
+
+                if ( castLigacao->getAtributoAssociado().size() > 0 )
+                {
+                    nome = "|_com_atributo_|";
+                    out << nome;
+                    out << (float)castLigacao->getAtributoAssociado().at(0)->scenePos().x() << (float)castLigacao->getAtributoAssociado().at(0)->scenePos().y();
+                    if ( castLigacao->getEntidades_Associadas().size() > 0 )
+                        out << (float)castLigacao->getEntidades_Associadas().at(0)->x() << (float)castLigacao->getEntidades_Associadas().at(0)->y();
+                    if ( castLigacao->getRelacionamentos_Associados().size() > 0 )
+                        out << (float)castLigacao->getRelacionamentos_Associados().at(0)->x() << (float)castLigacao->getRelacionamentos_Associados().at(0)->y();
+                    if ( castLigacao->getEntidades_Associativas_Associadas().size() > 0 )
+                        out << (float)castLigacao->getEntidades_Associativas_Associadas().at(0)->x() << (float)castLigacao->getEntidades_Associativas_Associadas().at(0)->y();
+                }
+                else
+                {
+                    nome = "|_sem_atributo_|";
+                    out << nome;
+                    out << (float)castLigacao->getGeneralizacao_Especializacao_Associada().at(0)->x() << (float)castLigacao->getGeneralizacao_Especializacao_Associada().at(0)->y();
+                    if ( castLigacao->getEntidades_Associadas().size() > 0 )
+                        out << (float)castLigacao->getEntidades_Associadas().at(0)->x() << (float)castLigacao->getEntidades_Associadas().at(0)->y();
+                }
+
+                out << castLigacao->getEntidadeFracaAtiva();
+            }
+        }
+    }
+
+    QApplication::restoreOverrideCursor();
+
+    statusBar()->showMessage(tr("Arquivo salvo com sucesso!"), 2000);
+}
+
+void MainWindow::abrirArquivo(const QString nomeArquivo)
+{
+    QFile file(nomeArquivo);
+
+    if ( !file.open( QIODevice::ReadOnly) )
+    {
+        QMessageBox::warning(this, tr("Erro"),
+                             tr("Erro ao salvar arquivo"));
+        return;
+    }
+
+    scene->clear();
+    QDataStream in(&file);
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
+    while(!in.atEnd())
+    {
+        QString head;
+        in >> head;
+        if ( head == "|_entidade_|" )
+        {
+            abrirPoligono = new Poligono(Poligono::entidade,true,0,scene);
+            abrirTexto = new Texto();
+            abrirTexto->setTextInteractionFlags(Qt::TextEditorInteraction);
+            scene->addItem(abrirTexto);
+            abrirTexto->setFocus();
+            abrirTexto->setParentItem(abrirPoligono);
+            float x, y, s;
+            in >> x >> y >> s;
+            abrirPoligono->setPos(x,y);
+            abrirPoligono->setScale(s);
+            QString t;
+            in >> t >> x >> y >> s;
+            abrirTexto->setPlainText(t);
+            abrirTexto->setPos(x,y);
+            abrirTexto->setScale(s);
+        }
+
+        else if ( head == "|_relacionamento_|" )
+        {
+            abrirPoligono = new Poligono(Poligono::relacionamento,true,0,scene);
+            abrirTexto = new Texto();
+            abrirTexto->setTextInteractionFlags(Qt::TextEditorInteraction);
+            scene->addItem(abrirTexto);
+            abrirTexto->setFocus();
+            abrirTexto->setParentItem(abrirPoligono);
+            float x, y, s;
+            in >> x >> y >> s;
+            abrirPoligono->setPos(x,y);
+            abrirPoligono->setScale(s);
+            QString t;
+            in >> t >> x >> y >> s;
+            abrirTexto->setPlainText(t);
+            abrirTexto->setPos(x,y);
+            abrirTexto->setScale(s);
+            in >> t;
+            if ( t == "|_com_auto_relacionamento_|" )
+            {
+                QString nome1, nome2;
+                float x1, y1, s1, x2, y2, s2;
+                in >> nome1 >> x1 >> y1 >> s1;
+                in >> nome2 >> x2 >> y2 >> s2;
+                abrirAutoRelacionamento1 = new Texto();
+                abrirAutoRelacionamento2 = new Texto();
+                abrirAutoRelacionamento1->setTextInteractionFlags(Qt::TextEditorInteraction);
+                abrirAutoRelacionamento2->setTextInteractionFlags(Qt::TextEditorInteraction);
+                scene->addItem(abrirAutoRelacionamento1);
+                scene->addItem(abrirAutoRelacionamento2);
+                abrirAutoRelacionamento1->setParentItem(abrirPoligono);
+                abrirAutoRelacionamento2->setParentItem(abrirPoligono);
+                abrirAutoRelacionamento1->setPos(x1, y1);
+                abrirAutoRelacionamento1->setScale(s1);
+                abrirAutoRelacionamento1->setPlainText(nome1);
+                abrirAutoRelacionamento2->setPos(x2, y2);
+                abrirAutoRelacionamento2->setScale(s2);
+                abrirAutoRelacionamento2->setPlainText(nome2);
+            }
+        }
+
+        else if ( head == "|_generalizacao_especializacao_|" )
+        {
+            abrirPoligono = new Poligono(Poligono::gen_esp,true,0,scene);
+            abrirTexto = new Texto();
+            abrirTexto->setFlag(QGraphicsItem::ItemIsMovable, false);
+            abrirTexto->setFlag(QGraphicsItem::ItemIsSelectable, false);
+            abrirTexto->setCursor(Qt::PointingHandCursor);
+            scene->addItem(abrirTexto);
+            abrirTexto->setFocus();
+            abrirTexto->setParentItem(abrirPoligono);
+            abrirTexto->setGenEspAtiva(true);
+            float x, y, s;
+            in >> x >> y >> s;
+            abrirPoligono->setPos(x,y);
+            abrirPoligono->setScale(s);
+            QString t;
+            in >> t >> x >> y >> s;
+            abrirTexto->setPos(x,y);
+            abrirTexto->setScale(s);
+            abrirTexto->setTipoGenEsp(t);
+            abrirTexto->setPlainText(abrirTexto->getTipoGenEsp());
+        }
+
+        else if ( head == "|_entidade_associativa_|" )
+        {
+            float x,y,s;
+            QString txt;
+            in >> x >> y >> s >> txt;
+
+            QPointF posicao;
+            posicao.setX(x);
+            posicao.setY(y);
+            AcaoCriarPoligono *acao = new AcaoCriarPoligono(scene, Poligono::ent_associativa, txt, posicao);
+            acao->fazerAcao();
+            acao->getPoligono()->setScale(s);
+        }
+
+        else if ( head == "|_atributo_|" )
+        {
+            abrirAtributo = new Atributo(Atributo::atributo,0,scene);
+            abrirTexto = new Texto();
+            scene->addItem(abrirTexto);
+            abrirTexto->setFocus();
+            abrirTexto->setParentItem(abrirAtributo);
+            float x, y, s;
+            in >> x >> y >> s;
+            abrirAtributo->setPos(x,y);
+            abrirAtributo->setScale(s);
+            QString t;
+            in >> t >> x >> y >> s;
+            abrirTexto->setPlainText(t);
+            abrirTexto->setPos(x,y);
+            abrirTexto->setScale(s);
+        }
+
+        else if ( head == "|_atributo_identificador_|" )
+        {
+            abrirAtributo = new Atributo(Atributo::atributo_identif,0,scene);
+            abrirTexto = new Texto();
+            scene->addItem(abrirTexto);
+            abrirTexto->setFocus();
+            abrirTexto->setParentItem(abrirAtributo);
+            float x, y, s;
+            in >> x >> y >> s;
+            abrirAtributo->setPos(x,y);
+            abrirAtributo->setScale(s);
+            QString t;
+            in >> t >> x >> y >> s;
+            abrirTexto->setPlainText(t);
+            abrirTexto->setPos(x,y);
+            abrirTexto->setScale(s);
+        }
+
+        else if ( head == "|_linha_com_cardinalidade_|" )
+        {
+            float x1, y1, x2, y2;
+            in >> x1 >> y1 >> x2 >> y2;
+            QGraphicsItem *item[2];
+            int count = 0;
+
+            QList<QGraphicsItem *> obj = scene->items();
+            for ( int i=0; i<obj.size(); i++ )
+            {
+                if(obj.at(i)->type() == Poligono::Type)
+                {
+                    if (( (float)obj[i]->x() == x1 ) && ( (float)obj[i]->y() == y1 ))
+                        item[count++] = obj[i];
+                    if (( (float)obj[i]->x() == x2 ) && ( (float)obj[i]->y() == y2 ))
+                        item[count++] = obj[i];
+                }
+            }
+
+            Ligacao *ligacao = new Ligacao( item[0], item[1] );
+            ligacao->setZValue(-1000.0);
+            scene->addItem(ligacao);
+
+            bool entidadeFraca;
+            QString card;
+            in >> entidadeFraca >> card;
+
+            castPoligono = qgraphicsitem_cast<Poligono *>(item[0]);
+            castPoligono2 = qgraphicsitem_cast<Poligono *>(item[1]);
+
+            if (( castPoligono->getTipo() == Poligono::ent_associativa ) || ( castPoligono2->getTipo() == Poligono::ent_associativa ))
+                if(( castPoligono->getTipo() == Poligono::entidade ) || ( castPoligono2->getTipo() == Poligono::entidade ))
+                    ligacao->setZValue(-250);
+
+            abrirCardinalidade = new Cardinalidade(castPoligono, castPoligono2, ligacao);
+            abrirCardinalidade->setCursor(Qt::PointingHandCursor);
+            abrirCardinalidade->setAtualCardinalidade(card);
+
+            castPoligono->setCardinalidades_Associadas(abrirCardinalidade);
+            castPoligono2->setCardinalidades_Associadas(abrirCardinalidade);
+            ligacao->setCardinalidades_Associadas(abrirCardinalidade);
+            ligacao->setEntidadeFracaAtiva(entidadeFraca);
+
+            if (( castPoligono->getTipo() == Poligono::Tipo(0) ) && ( castPoligono2->getTipo() == Poligono::Tipo(1) ))
+            {
+                abrirCardinalidade->setEntidades_Associadas(castPoligono);
+                abrirCardinalidade->setRelacionamento_Associados(castPoligono2);
+            }
+            else if (( castPoligono->getTipo() == Poligono::Tipo(1) ) && ( castPoligono2->getTipo() == Poligono::Tipo(0) ))
+            {
+                abrirCardinalidade->setEntidades_Associadas(castPoligono2);
+                abrirCardinalidade->setRelacionamento_Associados(castPoligono);
+            }
+            else if (( castPoligono->getTipo() == Poligono::Tipo(0) ) && ( castPoligono2->getTipo() == Poligono::Tipo(3) ))
+            {
+                abrirCardinalidade->setEntidades_Associativas_Associadas(castPoligono2);
+                abrirCardinalidade->setEntidades_Associadas(castPoligono);
+            }
+            else
+            {
+                abrirCardinalidade->setEntidades_Associativas_Associadas(castPoligono);
+                abrirCardinalidade->setEntidades_Associadas(castPoligono2);
+            }
+
+            scene->addItem(abrirCardinalidade);
+
+            item[0]->setPos(item[0]->x()+0.1, item[0]->y()+0.1);
+            item[0]->setPos(item[0]->x()-0.1, item[0]->y()-0.1);
+        }
+
+        else if ( head == "|_linha_sem_cardinalidade_|" )
+        {
+            QString nome;
+            in >> nome;
+            float x1, y1, x2, y2;
+            in >> x1 >> y1 >> x2 >> y2;
+            QGraphicsItem *item[2];
+            int count = 0;
+
+            if ( nome == "|_com_atributo_|" )
+            {
+                QList<QGraphicsItem *> obj = scene->items();
+                for ( int i=0; i<obj.size(); i++ )
+                {
+                    if((obj.at(i)->type() == Poligono::Type) || (obj.at(i)->type() == Atributo::Type))
+                    {
+                        if (( (float)obj[i]->scenePos().x() == x1 ) && ( (float)obj[i]->scenePos().y() == y1 ))
+                            item[count++] = obj[i];
+                        if (( (float)obj[i]->scenePos().x() == x2 ) && ( (float)obj[i]->scenePos().y() == y2 ))
+                            item[count++] = obj[i];
+                    }
+                }
+            }
+            else
+            {
+                QList<QGraphicsItem *> obj = scene->items();
+                for ( int i=0; i<obj.size(); i++ )
+                {
+                    if(obj.at(i)->type() == Poligono::Type)
+                    {
+                        if (( (float)obj[i]->x() == x1 ) && ( (float)obj[i]->y() == y1 ))
+                            item[count++] = obj[i];
+                        if (( (float)obj[i]->x() == x2 ) && ( (float)obj[i]->y() == y2 ))
+                            item[count++] = obj[i];
+                    }
+                }
+            }
+
+            Ligacao *ligacao = new Ligacao( item[0], item[1] );
+            ligacao->setZValue(-1000.0);
+            scene->addItem(ligacao);
+
+            bool entidadeFraca;
+            in >> entidadeFraca;
+            ligacao->setEntidadeFracaAtiva(entidadeFraca);
+
+            item[0]->setPos(item[0]->x()+0.1, item[0]->y()+0.1);
+            item[0]->setPos(item[0]->x()-0.1, item[0]->y()-0.1);
+        }
+    }
+
+    QApplication::restoreOverrideCursor();
+
+    statusBar()->showMessage(tr("Arquivo aberto com sucesso!"), 2000);
+}
+
+void MainWindow::abrir()
+{
+    QString nomeArquivo = QFileDialog::getOpenFileName(this, tr("Abrir..."), "",
+                                                       tr("BahiaDBM (*.bdm)"));
+    if (!nomeArquivo.isEmpty())
+        abrirArquivo(nomeArquivo);
+}
+
+void MainWindow::salvarComo()
+{
+    QString nomeArquivo = QFileDialog::getSaveFileName(this);
+    if (nomeArquivo.isEmpty())
+        return;
+
+    salvarArquivo(nomeArquivo);
+}
+
 void MainWindow::botoesMLClicked(int id)
 {
     QList<QAbstractButton *> botoes = botoesML->buttons();
@@ -167,264 +689,390 @@ void MainWindow::botoesMLClicked(int id)
         scene->setTipoER(Diagrama::TipoER(6));
     else //Remover
     {
-        QList<QGraphicsItem *> selecionados = scene->selectedItems();
-        for ( int i=0; i<selecionados.length(); i++)
+        //        QList<QGraphicsItem *> s = scene->items();
+        //        for ( int i=0; i<s.size(); i++ )
+        //        {
+        //            if ( s[i]->type() == Poligono::Type )
+        //            {
+        //                cast_poligono = qgraphicsitem_cast<Poligono *>(s[i]);
+        //                printf("[%d]\n", cast_poligono->getLinhas_Associadas().size());
+        //            }
+        //        }
+
+    }
+}
+
+void MainWindow::deletarSelecionado() {
+    /*
+    QList<QGraphicsItem *> selecionados = scene->selectedItems();
+    for ( int i=0; i<selecionados.length(); i++)
+    {
+        if ( selecionados[i] != NULL )
         {
-            if ( selecionados[i] != NULL )
+            if ( selecionados[i]->type() == Poligono::Type )
             {
-                if ( selecionados[i]->type() == Poligono::Type )
+                //apaga linhas associadas
+                cast_poligono = qgraphicsitem_cast<Poligono *>(selecionados[i]);
+
+                for ( int j=0; j<cast_poligono->getLinhas_Associadas().size(); j++ )
                 {
-                    //apaga linhas associadas
-                    cast_poligono = qgraphicsitem_cast<Poligono *>(selecionados[i]);
-                    for ( int j=0; j<cast_poligono->getLinhas_Associadas().size(); j++ )
+                    if ( cast_poligono->getLinhas_Associadas().at(j)->isSelected() )
                     {
-                        if ( cast_poligono->getLinhas_Associadas().at(j)->isSelected() )
+                        int temp = selecionados.indexOf(cast_poligono->getLinhas_Associadas().at(j));
+                        if ( temp != -1 )
                         {
-                            int temp = selecionados.indexOf(cast_poligono->getLinhas_Associadas().at(j));
-                            if ( temp != -1 )
-                            {
-                                selecionados[temp] = NULL;
-                            }
+                            selecionados[temp] = NULL;
                         }
-
-                        scene->removeItem(cast_poligono->getLinhas_Associadas().at(j));
                     }
-                    cast_poligono->RemoveTodasLinhasAssociadas();
 
-                    //apaga cardinalidades associadas
-                    for ( int j=0; j<cast_poligono->getCardinalidades_Associadas().size(); j++ )
+                    scene->removeItem(cast_poligono->getLinhas_Associadas().at(j));
+                }
+                cast_poligono->removeTodasLinhasAssociadas();
+
+                //apaga cardinalidades associadas
+                for ( int j=0; j<cast_poligono->getCardinalidades_Associadas().size(); j++ )
+                {
+                    if ( cast_poligono->getCardinalidades_Associadas().at(j)->isSelected() )
                     {
-                        if ( cast_poligono->getCardinalidades_Associadas().at(j)->isSelected() )
+                        int temp = selecionados.indexOf(cast_poligono->getCardinalidades_Associadas().at(j));
+                        if ( temp != -1 )
                         {
-                            int temp = selecionados.indexOf(cast_poligono->getCardinalidades_Associadas().at(j));
-                            if ( temp != -1 )
-                            {
-                                selecionados[temp] = NULL;
-                            }
+                            selecionados[temp] = NULL;
                         }
-                        scene->removeItem(cast_poligono->getCardinalidades_Associadas().at(j));
                     }
-                    cast_poligono->RemoveTodasCardinalidadesAssociadas();
+                    scene->removeItem(cast_poligono->getCardinalidades_Associadas().at(j));
+                }
+                cast_poligono->removeTodasCardinalidadesAssociadas();
 
-                    //Retira associações dos objetos que não foram removidos mas estavam associados aos que foram removidos.
-                    //Inicia percorrendo as entidades.
-                    for ( int j=0; j<cast_poligono->getEntidades_Associadas().size(); j++ )
+                //Retira associações dos objetos que não foram removidos mas estavam associados aos que foram removidos.
+                //Inicia percorrendo as entidades.
+                for ( int j=0; j<cast_poligono->getEntidades_Associadas().size(); j++ )
+                {
+                    for ( int w = 0; w<cast_poligono->getEntidades_Associadas().at(j)->getRelacionamentos_Associados().size(); w++ )
                     {
-                        for ( int w = 0; w<cast_poligono->getEntidades_Associadas().at(j)->getRelacionamentos_Associados().size(); w++ )
+                        if ( cast_poligono->getEntidades_Associadas().at(j)->getRelacionamentos_Associados().at(w) == selecionados[i] )
                         {
-                            if ( cast_poligono->getEntidades_Associadas().at(j)->getRelacionamentos_Associados().at(w) == selecionados[i] )
-                            {
-                                cast_poligono->getEntidades_Associadas().at(j)->Remove_Relacionamento_Associado(w);
-                            }
+                            cast_poligono->getEntidades_Associadas().at(j)->Remove_Relacionamento_Associado(w);
                         }
+                    }
 
-                        for ( int w = 0; w<cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().size(); w++ )
-                        {
-                            bool control = false;
-                            if ((cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w)->getRelacionamentos_Associados().size() > 0)
-                               && ( cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w)->getRelacionamentos_Associados().at(0)
+                    for ( int w = 0; w<cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().size(); w++ )
+                    {
+                        bool control = false;
+                        if ((cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w)->getRelacionamentos_Associados().size() > 0)
+                                && ( cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w)->getRelacionamentos_Associados().at(0)
                                     == selecionados[i] ))
-                            {
-                                cast_poligono->getEntidades_Associadas().at(j)->Remove_Linha_Associada(w);
-                                control = true;
-                            }
-
-                            if ((!control) && ((cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w)->getEntidades_Associativas_Associadas().size() > 0)
-                               && ( cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w)->getEntidades_Associativas_Associadas().at(0)
-                                    == selecionados[i] )))
-                            {
-                                cast_poligono->getEntidades_Associadas().at(j)->Remove_Linha_Associada(w);
-                            }
-                        }
-
-                        for ( int w= 0; w<cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().size(); w++ )
                         {
-                            bool control = false;
-                            if (( cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getRelacionamentos_Associados().size() > 0 )
-                               && ( cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getRelacionamentos_Associados().at(0)
-                                    == selecionados[i] ))
-                            {
-                                cast_poligono->getEntidades_Associadas().at(j)->Remove_Cardinalidade_Associada(w);
-                                control = true;
-                            }
-
-                            if ((!control) && (( cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getEntidades_Associativas_Associadas().size() > 0 )
-                               && ( cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getEntidades_Associativas_Associadas().at(0)
-                                    == selecionados[i] )))
-                            {
-                                cast_poligono->getEntidades_Associadas().at(j)->Remove_Cardinalidade_Associada(w);
-                            }
+                            cast_poligono->getEntidades_Associadas().at(j)->remove_Linha_Associada(w);
+                            control = true;
                         }
 
-                        for ( int w=0; w<cast_poligono->getEntidades_Associadas().at(j)->getEntidades_Associativas_Associadas().size(); w++ )
+                        if ((!control) && ((cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w)->getEntidades_Associativas_Associadas().size() > 0)
+                                           && ( cast_poligono->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w)->getEntidades_Associativas_Associadas().at(0)
+                                               == selecionados[i] )))
                         {
-                            if ( cast_poligono->getEntidades_Associadas().at(j)->getEntidades_Associativas_Associadas().at(w)
-                                    == selecionados[i] )
-                            {
-                                cast_poligono->getEntidades_Associadas().at(j)->Remove_Entidade_Associativa_Associada(w);
-                            }
+                            cast_poligono->getEntidades_Associadas().at(j)->remove_Linha_Associada(w);
                         }
-
-                        if ( cast_poligono->getEntidades_Associadas().at(j)->getRelacionamentos_Associados().size() == 0 )
-                            cast_poligono->getEntidades_Associadas().at(j)->setConectado(false);
                     }
 
-                    //Percorre agora os relacionamentos verificando se existe alguma associação que foi removida.
-                    for ( int j=0; j<cast_poligono->getRelacionamentos_Associados().size(); j++ )
+                    for ( int w= 0; w<cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().size(); w++ )
                     {
-                        for ( int w = 0; w<cast_poligono->getRelacionamentos_Associados().at(j)->getEntidades_Associadas().size(); w++ )
+                        bool control = false;
+                        if (( cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getRelacionamentos_Associados().size() > 0 )
+                                && ( cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getRelacionamentos_Associados().at(0)
+                                    == selecionados[i] ))
                         {
-                            if ( cast_poligono->getRelacionamentos_Associados().at(j)->getEntidades_Associadas().at(w) == selecionados[i] )
-                            {
-                                cast_poligono->getRelacionamentos_Associados().at(j)->Remove_Entidade_Associada(w);
-                            }
+                            cast_poligono->getEntidades_Associadas().at(j)->remove_Cardinalidade_Associada(w);
+                            control = true;
                         }
 
-                        for ( int w = 0; w<cast_poligono->getRelacionamentos_Associados().at(j)->getLinhas_Associadas().size(); w++ )
+                        if ((!control) && (( cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getEntidades_Associativas_Associadas().size() > 0 )
+                                           && ( cast_poligono->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getEntidades_Associativas_Associadas().at(0)
+                                               == selecionados[i] )))
+                        {
+                            cast_poligono->getEntidades_Associadas().at(j)->remove_Cardinalidade_Associada(w);
+                        }
+                    }
+
+                    for ( int w=0; w<cast_poligono->getEntidades_Associadas().at(j)->getEntidades_Associativas_Associadas().size(); w++ )
+                    {
+                        if ( cast_poligono->getEntidades_Associadas().at(j)->getEntidades_Associativas_Associadas().at(w)
+                                == selecionados[i] )
+                        {
+                            cast_poligono->getEntidades_Associadas().at(j)->Remove_Entidade_Associativa_Associada(w);
+                        }
+                    }
+
+                    if ( cast_poligono->getEntidades_Associadas().at(j)->getRelacionamentos_Associados().size() == 0 )
+                        cast_poligono->getEntidades_Associadas().at(j)->setConectado(false);
+                }
+
+                //Percorre agora os relacionamentos verificando se existe alguma associação que foi removida.
+                for ( int j=0; j<cast_poligono->getRelacionamentos_Associados().size(); j++ )
+                {
+                    for ( int w = 0; w<cast_poligono->getRelacionamentos_Associados().at(j)->getEntidades_Associadas().size(); w++ )
+                    {
+                        if ( cast_poligono->getRelacionamentos_Associados().at(j)->getEntidades_Associadas().at(w) == selecionados[i] )
+                        {
+                            cast_poligono->getRelacionamentos_Associados().at(j)->Remove_Entidade_Associada(w);
+                        }
+                    }
+
+                    for ( int w = 0; w<cast_poligono->getRelacionamentos_Associados().at(j)->getLinhas_Associadas().size(); w++ )
+                    {
+                        if ( cast_poligono->getRelacionamentos_Associados().at(j)->getLinhas_Associadas().at(w)->getEntidades_Associadas().size() > 0 )
                         {
                             if ( cast_poligono->getRelacionamentos_Associados().at(j)->getLinhas_Associadas().at(w)->getEntidades_Associadas().at(0)
                                     == selecionados[i] )
                             {
-                                cast_poligono->getRelacionamentos_Associados().at(j)->Remove_Linha_Associada(w);
+                                cast_poligono->getRelacionamentos_Associados().at(j)->remove_Linha_Associada(w);
                             }
                         }
-
-                        for ( int w= 0; w<cast_poligono->getRelacionamentos_Associados().at(j)->getCardinalidades_Associadas().size(); w++ )
-                        {
-                            if ( cast_poligono->getRelacionamentos_Associados().at(j)->getCardinalidades_Associadas().at(w)->getEntidades_Associadas().at(0)
-                                    == selecionados[i] )
-                            {
-                                cast_poligono->getRelacionamentos_Associados().at(j)->Remove_Cardinalidade_Associada(w);
-                            }
-                        }
-
-                        if ( cast_poligono->getRelacionamentos_Associados().at(j)->getEntidades_Associadas().size() == 0 )
-                            cast_poligono->getRelacionamentos_Associados().at(j)->setConectado(false);
                     }
 
-                    //Percorre agora as entidades associativas verificando se existe alguma associação que foi removida.
-                    for ( int j=0; j<cast_poligono->getEntidades_Associativas_Associadas().size(); j++ )
+                    for ( int w= 0; w<cast_poligono->getRelacionamentos_Associados().at(j)->getCardinalidades_Associadas().size(); w++ )
                     {
-                        for ( int w = 0; w<cast_poligono->getEntidades_Associativas_Associadas().at(j)->getEntidades_Associadas().size(); w++ )
+                        if ( cast_poligono->getRelacionamentos_Associados().at(j)->getCardinalidades_Associadas().at(w)->getEntidades_Associadas().at(0)
+                                == selecionados[i] )
                         {
-                            if ( cast_poligono->getEntidades_Associativas_Associadas().at(j)->getEntidades_Associadas().at(w) == selecionados[i] )
-                            {
-                                cast_poligono->getEntidades_Associativas_Associadas().at(j)->Remove_Entidade_Associada(w);
-                            }
+                            cast_poligono->getRelacionamentos_Associados().at(j)->remove_Cardinalidade_Associada(w);
                         }
+                    }
 
-                        for ( int w = 0; w<cast_poligono->getEntidades_Associativas_Associadas().at(j)->getLinhas_Associadas().size(); w++ )
+                    if ( cast_poligono->getRelacionamentos_Associados().at(j)->getEntidades_Associadas().size() == 0 )
+                        cast_poligono->getRelacionamentos_Associados().at(j)->setConectado(false);
+                }
+
+                //Percorre agora as entidades associativas verificando se existe alguma associação que foi removida.
+                for ( int j=0; j<cast_poligono->getEntidades_Associativas_Associadas().size(); j++ )
+                {
+                    for ( int w = 0; w<cast_poligono->getEntidades_Associativas_Associadas().at(j)->getEntidades_Associadas().size(); w++ )
+                    {
+                        if ( cast_poligono->getEntidades_Associativas_Associadas().at(j)->getEntidades_Associadas().at(w) == selecionados[i] )
+                        {
+                            cast_poligono->getEntidades_Associativas_Associadas().at(j)->Remove_Entidade_Associada(w);
+                        }
+                    }
+
+                    for ( int w = 0; w<cast_poligono->getEntidades_Associativas_Associadas().at(j)->getLinhas_Associadas().size(); w++ )
+                    {
+                        if ( cast_poligono->getEntidades_Associativas_Associadas().at(j)->getLinhas_Associadas().at(w)->getEntidades_Associadas().size() > 0 )
                         {
                             if ( cast_poligono->getEntidades_Associativas_Associadas().at(j)->getLinhas_Associadas().at(w)->getEntidades_Associadas().at(0)
                                     == selecionados[i] )
                             {
-                                cast_poligono->getEntidades_Associativas_Associadas().at(j)->Remove_Linha_Associada(w);
+                                cast_poligono->getEntidades_Associativas_Associadas().at(j)->remove_Linha_Associada(w);
                             }
                         }
+                    }
 
-                        for ( int w= 0; w<cast_poligono->getEntidades_Associativas_Associadas().at(j)->getCardinalidades_Associadas().size(); w++ )
+                    for ( int w = 0; w<cast_poligono->getEntidades_Associativas_Associadas().at(j)->getLinhas_Associadas().size(); w++ )
+                    {
+                        if ( cast_poligono->getEntidades_Associativas_Associadas().at(j)->getLinhas_Associadas().at(w)->getRelacionamentos_Associados().size() > 0 )
                         {
-                            if ( cast_poligono->getEntidades_Associativas_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getEntidades_Associadas().at(0)
+                            if ( cast_poligono->getEntidades_Associativas_Associadas().at(j)->getLinhas_Associadas().at(w)->getRelacionamentos_Associados().at(0)
                                     == selecionados[i] )
                             {
-                                cast_poligono->getEntidades_Associativas_Associadas().at(j)->Remove_Cardinalidade_Associada(w);
+                                cast_poligono->getEntidades_Associativas_Associadas().at(j)->remove_Linha_Associada(w);
                             }
                         }
                     }
 
-                    scene->removeItem(selecionados[i]);
-                    selecionados[i] = NULL;
-                    lixo.push_back(selecionados[i]);
-                    cast_poligono->itemRemovido();
+                    for ( int w= 0; w<cast_poligono->getEntidades_Associativas_Associadas().at(j)->getCardinalidades_Associadas().size(); w++ )
+                    {
+                        if ( cast_poligono->getEntidades_Associativas_Associadas().at(j)->getCardinalidades_Associadas().at(w)->getEntidades_Associadas().at(0)
+                                == selecionados[i] )
+                        {
+                            cast_poligono->getEntidades_Associativas_Associadas().at(j)->remove_Cardinalidade_Associada(w);
+                        }
+                    }
+                }
+                scene->removeItem(selecionados[i]);
+                selecionados[i] = NULL;
+                lixo.push_back(selecionados[i]);
+                cast_poligono->itemRemovido();
+            }
+
+            else if ( selecionados[i]->type() == Atributo::Type )
+            {   
+                castAtributo = qgraphicsitem_cast<Atributo *>(selecionados[i]);
+
+                //Remove registro da entidade que informa que existe uma linha associada
+                for ( int j=0; j<castAtributo->getEntidades_Associadas().size(); j++ )
+                {
+                    for ( int w=0; w<castAtributo->getEntidades_Associadas().at(j)->getLinhas_Associadas().size(); w++ )
+                    {
+                        if (( castAtributo->getLinhaAssociada().size() > 0 )
+                                && ( castAtributo->getLinhaAssociada().at(0) == castAtributo->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w) ))
+                        {
+                            castAtributo->getEntidades_Associadas().at(j)->remove_Linha_Associada(w);
+                        }
+                    }
                 }
 
-                else if ( selecionados[i]->type() == Atributo::Type )
+                //Remove registro do relacionamento que informa que existe uma linha associada
+                for ( int j=0; j<castAtributo->getRelacionamentos_Associados().size(); j++ )
                 {
-                    //apaga linhas associadas
-                    castAtributo = qgraphicsitem_cast<Atributo *>(selecionados[i]);
-                    for ( int j=0; j<castAtributo->getLinhaAssociada().size(); j++ )
+                    for ( int w=0; w<castAtributo->getRelacionamentos_Associados().at(j)->getLinhas_Associadas().size(); w++ )
                     {
-                        scene->removeItem(castAtributo->getLinhaAssociada().at(j));
+                        if (( castAtributo->getLinhaAssociada().size() > 0 )
+                                && ( castAtributo->getLinhaAssociada().at(0) == castAtributo->getRelacionamentos_Associados().at(j)->getLinhas_Associadas().at(w) ))
+                        {
+                            castAtributo->getRelacionamentos_Associados().at(j)->remove_Linha_Associada(w);
+                        }
                     }
-                    castAtributo->RemoveTodasLinhasAssociadas();
-
-                    scene->removeItem(selecionados[i]);
-                    selecionados[i] = NULL;
-                    lixo.push_back(selecionados[i]);
                 }
 
-                else if ( selecionados[i]->type() == Ligacao::Type )
+                //Remove registro da entidade associativa que informa que existe uma linha associada
+                for ( int j=0; j<castAtributo->getEntidades_Associativas_Associadas().size(); j++ )
                 {
-                    castLinha = qgraphicsitem_cast<Ligacao *>(selecionados[i]);
-                    //apaga cardinalidades associadas
-                    for ( int j=0; j<castLinha->getCardinalidades_Associadas().size(); j++ )
+                    for ( int w=0; w<castAtributo->getEntidades_Associativas_Associadas().at(j)->getLinhas_Associadas().size(); w++ )
                     {
-                        if ( castLinha->getCardinalidades_Associadas().at(j)->isSelected() )
+                        if (( castAtributo->getLinhaAssociada().size() > 0 )
+                                && ( castAtributo->getLinhaAssociada().at(0) == castAtributo->getEntidades_Associativas_Associadas().at(j)->getLinhas_Associadas().at(w) ))
                         {
-                            int temp = selecionados.indexOf(castLinha->getCardinalidades_Associadas().at(j));
-                            if ( temp != -1 )
-                            {
-                                selecionados[temp] = NULL;
-                            }
+                            castAtributo->getEntidades_Associativas_Associadas().at(j)->remove_Linha_Associada(w);
                         }
+                    }
+                }
 
-                        scene->removeItem(castLinha->getCardinalidades_Associadas().at(j));
+                //apaga linhas associadas
+                for ( int j=0; j<castAtributo->getLinhaAssociada().size(); j++ )
+                {
+                    scene->removeItem(castAtributo->getLinhaAssociada().at(j));
+                }
+                castAtributo->RemoveTodasLinhasAssociadas();
+
+                scene->removeItem(selecionados[i]);
+                selecionados[i] = NULL;
+                lixo.push_back(selecionados[i]);
+            }
+
+            else if ( selecionados[i]->type() == Ligacao::Type )
+            {
+                castLinha = qgraphicsitem_cast<Ligacao *>(selecionados[i]);
+                //apaga cardinalidades associadas
+                for ( int j=0; j<castLinha->getCardinalidades_Associadas().size(); j++ )
+                {
+                    if ( castLinha->getCardinalidades_Associadas().at(j)->isSelected() )
+                    {
+                        int temp = selecionados.indexOf(castLinha->getCardinalidades_Associadas().at(j));
+                        if ( temp != -1 )
+                        {
+                            selecionados[temp] = NULL;
+                        }
                     }
 
-                    for ( int j=0; j<castLinha->getEntidades_Associadas().size(); j++ )
+                    scene->removeItem(castLinha->getCardinalidades_Associadas().at(j));
+                }
+                for ( int j=0; j<castLinha->getEntidades_Associadas().size(); j++ )
+                {
+                    for ( int w=0; w<castLinha->getEntidades_Associadas().at(j)->getLinhas_Associadas().size(); w++ )
                     {
-                        for ( int w=0; w<castLinha->getEntidades_Associadas().at(j)->getLinhas_Associadas().size(); w++ )
+                        if ( castLinha->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w) == selecionados[i] )
                         {
-                            if ( castLinha->getEntidades_Associadas().at(j)->getLinhas_Associadas().at(w) == selecionados[i] )
-                            {
-                                castLinha->getEntidades_Associadas().at(j)->Remove_Linha_Associada(w);
-                            }
+                            castLinha->getEntidades_Associadas().at(j)->remove_Linha_Associada(w);
                         }
+                    }
 
+                    if ( castLinha->getRelacionamentos_Associados().size() > 0 )
+                    {
                         for ( int w=0; w<castLinha->getRelacionamentos_Associados().at(j)->getLinhas_Associadas().size(); w++ )
                         {
                             if ( castLinha->getRelacionamentos_Associados().at(j)->getLinhas_Associadas().at(w) == selecionados[i] )
                             {
-                                castLinha->getRelacionamentos_Associados().at(j)->Remove_Linha_Associada(w);
+                                castLinha->getRelacionamentos_Associados().at(j)->remove_Linha_Associada(w);
                             }
                         }
+                    }
 
-                        for ( int w=0; w<castLinha->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().size(); w++ )
+                    for ( int w=0; w<castLinha->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().size(); w++ )
+                    {
+                        if ( castLinha->getCardinalidades_Associadas().size() > 0 )
                         {
                             if ( castLinha->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w)
                                     == castLinha->getCardinalidades_Associadas().at(0) )
                             {
-                                castLinha->getEntidades_Associadas().at(j)->Remove_Cardinalidade_Associada(w);
+                                castLinha->getEntidades_Associadas().at(j)->remove_Cardinalidade_Associada(w);
                             }
                         }
+                    }
 
+                    if ( castLinha->getRelacionamentos_Associados().size() > 0 )
+                    {
                         for ( int w=0; w<castLinha->getRelacionamentos_Associados().at(j)->getCardinalidades_Associadas().size(); w++ )
                         {
                             if ( castLinha->getRelacionamentos_Associados().at(j)->getCardinalidades_Associadas().at(w)
                                     == castLinha->getCardinalidades_Associadas().at(0) )
                             {
-                                castLinha->getRelacionamentos_Associados().at(j)->Remove_Cardinalidade_Associada(w);
+                                castLinha->getRelacionamentos_Associados().at(j)->remove_Cardinalidade_Associada(w);
                             }
                         }
-
-                        if ( castLinha->getEntidades_Associadas().size() == 0 )
-                            castLinha->getEntidades_Associadas().at(j)->setConectado(false);
-
-                        if ( castLinha->getRelacionamentos_Associados().size() == 0 )
-                            castLinha->getRelacionamentos_Associados().at(j)->setConectado(false);
                     }
 
-                    castLinha->RemoveTodasCardinalidadesAssociadas();
+                    //                        if ( castLinha->getEntidades_Associadas().size() == 0 )
+                    //                            castLinha->getEntidades_Associadas().at(j)->setConectado(false);
 
-                    scene->removeItem(selecionados[i]);
-                    selecionados[i] = NULL;
-                    lixo.push_back(selecionados[i]);
+                    //                        if ( castLinha->getRelacionamentos_Associados().size() == 0 )
+                    //                            castLinha->getRelacionamentos_Associados().at(j)->setConectado(false);
                 }
+                castLinha->RemoveTodasCardinalidadesAssociadas();
+
+                scene->removeItem(selecionados[i]);
+                selecionados[i] = NULL;
+                lixo.push_back(selecionados[i]);
+            }
+
+            else if ( selecionados[i]->type() == Cardinalidade::Type )
+            {
+                castCardinalidade = qgraphicsitem_cast<Cardinalidade *>(selecionados[i]);
+
+                //Remove registro da entidade que informa que existe uma cardinalidade associada
+                for ( int j=0; j<castCardinalidade->getEntidades_Associadas().size(); j++ )
+                {
+                    for ( int w=0; w<castCardinalidade->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().size(); w++ )
+                    {
+                        if ( castCardinalidade->getEntidades_Associadas().at(j)->getCardinalidades_Associadas().at(w) == selecionados[i] )
+                        {
+                            castCardinalidade->getEntidades_Associadas().at(j)->remove_Cardinalidade_Associada(w);
+                        }
+                    }
+                }
+
+                //Remove registro do relacionamento que informa que existe uma cardinalidade associada
+                for ( int j=0; j<castCardinalidade->getRelacionamentos_Associados().size(); j++ )
+                {
+                    for ( int w=0; w<castCardinalidade->getRelacionamentos_Associados().at(j)->getCardinalidades_Associadas().size(); w++ )
+                    {
+                        if ( castCardinalidade->getRelacionamentos_Associados().at(j)->getCardinalidades_Associadas().at(w) == selecionados[i] )
+                        {
+                            castCardinalidade->getRelacionamentos_Associados().at(j)->remove_Cardinalidade_Associada(w);
+                        }
+                    }
+                }
+
+                //Remove registro da entidade associativa que informa que existe uma cardinalidade associada
+                for ( int j=0; j<castCardinalidade->getEntidades_Associativas_Associadas().size(); j++ )
+                {
+                    for ( int w=0; w<castCardinalidade->getEntidades_Associativas_Associadas().at(j)->getCardinalidades_Associadas().size(); w++ )
+                    {
+                        if ( castCardinalidade->getEntidades_Associativas_Associadas().at(j)->getCardinalidades_Associadas().at(w) == selecionados[i] )
+                        {
+                            castCardinalidade->getEntidades_Associativas_Associadas().at(j)->remove_Cardinalidade_Associada(w);
+                        }
+                    }
+                }
+
+                scene->removeItem(selecionados[i]);
+                selecionados[i] = NULL;
+                lixo.push_back(selecionados[i]);
             }
         }
-
-        lixo.erase(lixo.begin(), lixo.end());
     }
+
+    lixo.erase(lixo.begin(), lixo.end());
+*/
+
 }
 
 void MainWindow::sobre()
@@ -434,6 +1082,21 @@ void MainWindow::sobre()
 
 void MainWindow::createActions()
 {
+    novaAction = new QAction(tr("&Novo"), this);
+    novaAction->setShortcuts(QKeySequence::New);
+    novaAction->setStatusTip(tr("Abrir uma nova janela"));
+    connect(novaAction, SIGNAL(triggered()), this, SLOT(novaJanela()));
+
+    abrirAction = new QAction(tr("&Abrir..."), this);
+    abrirAction->setShortcut(QKeySequence::Open);
+    abrirAction->setStatusTip("Abrir um arquivo .bdm");
+    connect(abrirAction, SIGNAL(triggered()), this, SLOT(abrir()));
+
+    salvarAction = new QAction(tr("&Salvar como..."), this);
+    salvarAction->setShortcut(QKeySequence::SaveAs);
+    salvarAction->setStatusTip("Salvar projeto atual");
+    connect(salvarAction, SIGNAL(triggered()), this, SLOT(salvarComo()));
+
     sairAction = new QAction(tr("&Sair"), this);
     sairAction->setShortcut(QKeySequence::Quit);
     sairAction->setStatusTip(tr("Sair do BahiaDBM"));
@@ -458,6 +1121,10 @@ void MainWindow::createActions()
 void MainWindow::createMenu()
 {
     arquivoMenu = menuBar()->addMenu(tr("&Arquivo"));
+    arquivoMenu->addAction(novaAction);
+    arquivoMenu->addAction(abrirAction);
+    arquivoMenu->addAction(salvarAction);
+    arquivoMenu->addSeparator();
     arquivoMenu->addAction(sairAction);
 
     editarMenu = menuBar()->addMenu(tr("&Editar"));
@@ -532,32 +1199,32 @@ void MainWindow::createToolBar()
     reduzir->setStatusTip(tr("Reduzir"));
     reduzir->setIcon(QIcon(":/imagens/reduzir.png"));
 
-//    organizarHor = new QToolButton();
-//    organizarHor->setCheckable(true);
-//    organizarHor->setStatusTip(tr("Organizar Horizontalmente"));
-//    organizarHor->setText(tr("Org. Horiz."));
-//    //organizarHor->setIcon(QIcon(":/imagens/reduzir.png"));
+    //    organizarHor = new QToolButton();
+    //    organizarHor->setCheckable(true);
+    //    organizarHor->setStatusTip(tr("Organizar Horizontalmente"));
+    //    organizarHor->setText(tr("Org. Horiz."));
+    //    //organizarHor->setIcon(QIcon(":/imagens/reduzir.png"));
 
-//    organizarVer = new QToolButton();
-//    organizarVer->setCheckable(true);
-//    organizarVer->setStatusTip(tr("Organizar Verticalmente"));
-//    organizarVer->setText(tr("Org. Vert."));
-//    //organizarVer->setIcon(QIcon(":/imagens/reduzir.png"));
+    //    organizarVer = new QToolButton();
+    //    organizarVer->setCheckable(true);
+    //    organizarVer->setStatusTip(tr("Organizar Verticalmente"));
+    //    organizarVer->setText(tr("Org. Vert."));
+    //    //organizarVer->setIcon(QIcon(":/imagens/reduzir.png"));
 
     botoesManip = new QButtonGroup(this);
     botoesManip->setExclusive(false);
     botoesManip->addButton(ampliar,0);
     botoesManip->addButton(reduzir,1);
-//    botoesManip->addButton(organizarHor,3);
-//    botoesManip->addButton(organizarVer,2);
+    //    botoesManip->addButton(organizarHor,3);
+    //    botoesManip->addButton(organizarVer,2);
     connect(botoesManip, SIGNAL(buttonClicked(int)),
             this, SLOT(botoesManipClicked(int)));
 
     manipulacoes = addToolBar(tr("&Manipulacoes"));
     manipulacoes->addWidget(ampliar);
     manipulacoes->addWidget(reduzir);
-//    manipulacoes->addWidget(organizarHor);
-//    manipulacoes->addWidget(organizarVer);
+    //    manipulacoes->addWidget(organizarHor);
+    //    manipulacoes->addWidget(organizarVer);
 
     //Cria botões(linha ou mouse) que permite escolher entre ligar ou manipular figuras
     mouse = new QToolButton();

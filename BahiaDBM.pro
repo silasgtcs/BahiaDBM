@@ -21,7 +21,10 @@ SOURCES += main.cpp\
     diagramaview.cpp \
     dialog.cpp \
     acoespilha.cpp \
-    acoes/acao_mover.cpp
+    acoes/acao_mover.cpp \
+    acoes/acao_criar_poligono.cpp \
+    acoes/acao_criar_atributo.cpp \
+    acoes/acao_criar_ligacao.cpp
 
 HEADERS  += mainwindow.h \
     diagrama.h \
@@ -34,7 +37,10 @@ HEADERS  += mainwindow.h \
     dialog.h \
     acoespilha.h \
     acao.h \
-    acoes/acao_mover.h
+    acoes/acao_mover.h \
+    acoes/acao_criar_poligono.h \
+    acoes/acao_criar_atributo.h \
+    acoes/acao_criar_ligacao.h
 
 FORMS    += mainwindow.ui
 
@@ -52,6 +58,16 @@ OTHER_FILES += \
 
 RESOURCES += \
     resources.qrc
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,3 +1,5 @@
+/*Tanto o arquivo acoes.h quando acoespilha.h são utilizados para controlar a opção desfazer/refazer da ferramenta.*/
+
 #ifndef ACOES_H
 #define ACOES_H
 

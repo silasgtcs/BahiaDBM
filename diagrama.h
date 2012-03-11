@@ -1,3 +1,6 @@
+/*Tanto diagrama.h quanto diagramaview.h são utilizados para fornecer uma interface para que as figuras geometricas
+utilizadas nessa ferramenta sejam criadas.*/
+
 #ifndef DSCENE_H
 #define DSCENE_H
 
@@ -72,6 +75,7 @@ private:
     Texto *nomeLigacao1;
     Texto *nomeLigacao2;
     Texto *card;
+    Texto *tipoGenEsp;
 
     bool ativaSelecao;
     bool ativaMover;

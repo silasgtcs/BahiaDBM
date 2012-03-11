@@ -1,3 +1,6 @@
+/*Tanto diagrama.h quanto diagramaview.h são utilizados para fornecer uma interface para que as figuras geometricas
+utilizadas nessa ferramenta sejam criadas.*/
+
 #ifndef DIAGRAMAVIEW_H
 #define DIAGRAMAVIEW_H
 

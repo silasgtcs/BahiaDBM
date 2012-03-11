@@ -2,16 +2,15 @@
 
 Texto::Texto(QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsTextItem(parent, scene)
 {
-    setFlag(QGraphicsItem::ItemIsMovable);
-    setFlag(QGraphicsItem::ItemIsSelectable);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+
+    setTipoGenEsp("xt");
+    setGenEspAtiva(false);
 }
 
-//<<<<<<< .mine
-//void texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-//=======
 void Texto::focusOutEvent(QFocusEvent *event)
-//>>>>>>> .r14
 {
     QTextCursor cursor = textCursor();
     cursor.clearSelection();
@@ -19,7 +18,6 @@ void Texto::focusOutEvent(QFocusEvent *event)
     setTextInteractionFlags(Qt::NoTextInteraction);
     QGraphicsTextItem::focusOutEvent(event);
 }
-
 
 void Texto::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
@@ -34,7 +32,24 @@ void Texto::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
 void Texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    setTextInteractionFlags(Qt::TextEditorInteraction);
+    if ( !getGenEspAtiva() )
+    {
+        setTextInteractionFlags(Qt::TextEditorInteraction);
+    }
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
+void Texto::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if ( getGenEspAtiva() )
+    {
+        QString temp = chamarTelaTipoGenEsp.mostrarTipoGenEsp();
+        if ( temp != NULL )
+        {
+            setTipoGenEsp(temp);
+            this->setPlainText(getTipoGenEsp());
+        }
+    }
+
+    QGraphicsTextItem::mousePressEvent(event);
+}

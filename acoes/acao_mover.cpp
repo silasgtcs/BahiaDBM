@@ -4,6 +4,21 @@
 AcaoMover::AcaoMover(QList<QGraphicsItem *> selecionados, QPointF deslocamento)
 {
     _items = selecionados;
+    foreach(QGraphicsItem * item, _items)
+    {
+        QGraphicsItem * parent = item->parentItem();
+        while(parent)
+        {
+            if(_items.contains(parent))
+            {
+                _items.removeOne(item);
+                break;
+            }
+
+            parent = parent->parentItem();
+        }
+    }
+
     _deslocamento = deslocamento;
 }
 

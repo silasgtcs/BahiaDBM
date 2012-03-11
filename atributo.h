@@ -1,3 +1,5 @@
+/*Classe genérica utilizada para criar atributos e atributos identificadores.*/
+
 #ifndef VERTICES_H
 #define VERTICES_H
 
@@ -11,6 +13,8 @@ class Atributo : public QObject, public QGraphicsEllipseItem
 public:
     enum Tipo { atributo, atributo_identif };
     Atributo(Tipo tipo, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+    void setTipo(Tipo tipo) { this->tipo = tipo; }
+    Tipo getTipo() { return tipo; }
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     bool getConectado() { return conectado; }
     void setConectado( bool c ) { this->conectado = c; }
