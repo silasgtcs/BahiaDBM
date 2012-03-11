@@ -345,7 +345,7 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
                         << (float)castLigacao->getPoligonosAssociadoOfType<Poligono::ent_associativa>().at(0)->y();
 
 
-                out << castLigacao->getEntidadeFracaAtiva() << castLigacao->getCardinalidades_Associadas().at(0)->getAtualCardinalidade();
+                out << castLigacao->getEntidadeFracaAtiva() << castLigacao->getCardinalidades_Associadas().at(0)->getCardinalidadeAtual();
             }
 
             else if ( castLigacao->getCardinalidades_Associadas().size() == 0 )
@@ -586,11 +586,11 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
             abrirCardinalidade = new Cardinalidade(castPoligono, castPoligono2, ligacao);
             abrirCardinalidade->setCursor(Qt::PointingHandCursor);
-            abrirCardinalidade->setAtualCardinalidade(card);
+            abrirCardinalidade->setCardinalidadeAtual(card);
 
             castPoligono->setCardinalidades_Associadas(abrirCardinalidade);
             castPoligono2->setCardinalidades_Associadas(abrirCardinalidade);
-            ligacao->setCardinalidades_Associadas(abrirCardinalidade);
+            ligacao->addCardinalidadeAssociada(abrirCardinalidade);
             ligacao->setEntidadeFracaAtiva(entidadeFraca);
 
             abrirCardinalidade->addPoligonoAssociado(castPoligono);

@@ -4,8 +4,6 @@
 
 Diagrama::Diagrama( QObject *parent ) : QGraphicsScene(parent)
 {
-    Rselecionar = NULL;
-    Lselecionar = NULL;
     novaLinha = NULL;
     ativaSelecao = false;
     ativaMover = false;
@@ -15,11 +13,6 @@ Diagrama::Diagrama( QObject *parent ) : QGraphicsScene(parent)
     countAtributoIdentificador = 1;
     countEntidadeAssociativa = 1;
     pilhaDeAcoes = AcoesPilha::instanciaUnica();
-}
-
-void Diagrama::setDesfazer(QGraphicsItem *item)
-{
-    desfazerItem.push(item);
 }
 
 void Diagrama::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -60,9 +53,9 @@ void Diagrama::mousePressEvent(QGraphicsSceneMouseEvent *event)
     case(mouse):
         if ( (itemAt(event->scenePos())) == 0 )
         {
-            Rselecionar = new QGraphicsRectItem(NULL, this);
-            Rselecionar->setRect( QRectF( event->scenePos(), event->scenePos() + QPointF(1,1) ) );
-            Rselecionar->setPen(QPen(Qt::black, 1, Qt::DashDotLine));
+            selecionarBox = new QGraphicsRectItem(NULL, this);
+            selecionarBox->setRect( QRectF( event->scenePos(), event->scenePos() + QPointF(1,1) ) );
+            selecionarBox->setPen(QPen(Qt::black, 1, Qt::DashDotLine));
             pontoInicial = event->scenePos();
             ativaSelecao = true;
         }
@@ -75,8 +68,7 @@ void Diagrama::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     if(acao) //Se alguma acao foi executada
     {
-        acao->fazerAcao();
-        pilhaDeAcoes->addAcao(acao);
+        pilhaDeAcoes->addAcao(acao, true);
         emit itemInserido();
     }
     QGraphicsScene::mousePressEvent(event);
@@ -86,8 +78,8 @@ void Diagrama::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (( tipoER == mouse ) && ( ativaSelecao ))
     {
-        Rselecionar->setRect( QRectF(pontoInicial , event->scenePos()).normalized() );
-        setSelectionArea(Rselecionar->shape());
+        selecionarBox->setRect( QRectF(pontoInicial , event->scenePos()).normalized() );
+        setSelectionArea(selecionarBox->shape());
     }
 
     if (( tipoER == linha ) && ( novaLinha != NULL ))
@@ -103,11 +95,11 @@ void Diagrama::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if (( tipoER == mouse ))
     {
-        if( Rselecionar != NULL && ativaSelecao)
+        if( selecionarBox != NULL && ativaSelecao)
         {
-            removeItem(Rselecionar);
-            delete Rselecionar;
-            Rselecionar = NULL;
+            removeItem(selecionarBox);
+            delete selecionarBox;
+            selecionarBox = NULL;
             ativaSelecao = false;
         }
         if(ativaMover && event->scenePos() != pontoInicial)
@@ -122,9 +114,8 @@ void Diagrama::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         QList < QGraphicsItem *> inicioLinha = items(novaLinha->line().p1());
         QList < QGraphicsItem *> fimLinha = items(novaLinha->line().p2());
 
+        QGraphicsItem * item1, * item2;
         item1 = item2 = NULL;
-        cast1P = cast2P = NULL;
-        castA = NULL;
 
         for ( int i=0; i<inicioLinha.size(); i++ )
             if ( inicioLinha[i] != novaLinha )
@@ -145,8 +136,8 @@ void Diagrama::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             AcaoCriarLigacao * acao = new AcaoCriarLigacao(this, item1, item2);
             if ( acao->getLigacao() )
             {
-                acao->fazerAcao();
                 pilhaDeAcoes->addAcao(acao);
+                acao->fazerAcao();
             }
         }
 

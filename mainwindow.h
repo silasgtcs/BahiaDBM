@@ -51,7 +51,7 @@ private:
     void organizarEntidades(int direcao);
     void salvarArquivo(const QString nomeArquivo);
     void abrirArquivo(const QString nomeArquivo);
-    void deletarSelecionado();
+    void deletarSelecionados();
 
     AcoesPilha * pilhaDeAcoes;
 
@@ -98,26 +98,6 @@ private:
 
     QToolBar * exibicaoToolBar;
     QSpinBox * scroolZoom;
-
-    Ligacao *lig;
-    Ligacao *castLinha;
-    Poligono *castEntidade;
-    Atributo *castAtributo;
-    Cardinalidade *castCardinalidade;
-
-    QList<QGraphicsItem *> lixo;
-
-    Poligono *castPoligono;
-    Poligono *castPoligono2;
-    Poligono *abrirPoligono;
-    Poligono *abrirPoligono2;
-    Atributo *castAtributo2;
-    Atributo *abrirAtributo;
-    Ligacao *castLigacao;
-    Texto *abrirTexto;
-    Texto *abrirAutoRelacionamento1;
-    Texto *abrirAutoRelacionamento2;
-    Cardinalidade *abrirCardinalidade;
 };
 
 #endif // MAINWINDOW_H

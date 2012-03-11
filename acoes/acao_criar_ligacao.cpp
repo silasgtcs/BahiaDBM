@@ -1,4 +1,5 @@
 #include "acao_criar_ligacao.h"
+#include <exception>
 
 AcaoCriarLigacao::AcaoCriarLigacao(QGraphicsScene * scene, QGraphicsItem * item1, QGraphicsItem * item2)
 {
@@ -21,17 +22,14 @@ AcaoCriarLigacao::AcaoCriarLigacao(QGraphicsScene * scene, QGraphicsItem * item1
     this->scene = scene;
 
     cardinalidade = ligacao->getCardItem();
-    nomeLigacao1 = NULL;
-    nomeLigacao2 = NULL;
 
     if (( cast1P == NULL ) && ( cast2P == NULL ))
     {
         delete ligacao;
         ligacao = NULL;
+        return;
     }
 
-    //EM CONSTRUÇÃO
-    //Faz CAST para verificar se existe auto-relacionamento e verificar a necessidade de colocar cardinalidade.
     if (( cast1P != NULL ) && ( cast2P != NULL ))
     {
         while(cast1P->getPoligonoAssociado())
@@ -49,16 +47,18 @@ AcaoCriarLigacao::AcaoCriarLigacao(QGraphicsScene * scene, QGraphicsItem * item1
     }
 
     //Altera posição do item para que slot seja ativado e linha seja atualizada.
-    if ( cast1P != NULL )
+    Poligono * properPoligono = (cast1P != NULL) ? cast1P : cast2P;
+    if ( properPoligono != NULL )
     {
-        cast1P->setPos(cast1P->x()+0.1, cast1P->y()+0.1);
-        cast1P->setPos(cast1P->x()-0.1, cast1P->y()-0.1);
+        properPoligono->moveBy(0.1, 0.1);
+        properPoligono->moveBy(-0.1, -0.1);
     }
-    else if ( cast2P != NULL )
-    {
-        cast2P->setPos(cast2P->x()+0.1, cast2P->y()+0.1);
-        cast2P->setPos(cast2P->x()-0.1, cast2P->y()-0.1);
+    Atributo * attr = ligacao->getCastItemA();
+    if(attr){
+        attr->moveBy(0.1, 0.1);
+        attr->moveBy(-0.1, -0.1);
     }
+
 }
 
 void AcaoCriarLigacao::fazerAcao()
@@ -73,12 +73,8 @@ void AcaoCriarLigacao::fazerAcao()
 
         scene->addItem(cardinalidade);
     }
+    ligacao->doRemove(false);
     scene->addItem(ligacao);
-    if(nomeLigacao1 && nomeLigacao2)
-    {
-        scene->addItem(nomeLigacao1);
-        scene->addItem(nomeLigacao2);
-    }
 }
 
 void AcaoCriarLigacao::desfazerAcao()
@@ -92,10 +88,17 @@ void AcaoCriarLigacao::desfazerAcao()
         cast2P->getCardinalidades_Associadas().removeAll(cardinalidade);
         scene->removeItem(cardinalidade);
     }
+    ligacao->doRemove(true);
     scene->removeItem(ligacao);
-    if(nomeLigacao1 && nomeLigacao2)
-    {
-        scene->removeItem(nomeLigacao1);
-        scene->removeItem(nomeLigacao2);
+}
+
+void AcaoCriarLigacao::dispose()
+{
+    try {
+        if(ligacao)
+            delete ligacao;
+    } catch(std::exception ex) {
+        qDebug() << "dispose do AcaoCriarLigacao tenta deletar item ja deletado";
+        // provavelmente atributo ja foi deletado anteriormente
     }
 }

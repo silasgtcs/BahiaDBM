@@ -1,5 +1,6 @@
 #include "atributo.h"
 #include "poligono.h"
+#include "ligacao.h"
 
 Atributo::Atributo( Tipo tipo, QGraphicsItem *parent, QGraphicsScene *scene ) : QGraphicsEllipseItem( parent, scene )
 {
@@ -37,4 +38,23 @@ void Atributo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     if ( isSelected() )
         painter->setPen(QPen(Qt::red, 2, Qt::DashLine));
     painter->drawEllipse(*circ);
+}
+
+void Atributo::doRemove(bool value)
+{
+    foreach(Ligacao * ligacao, linhaAssociada)
+        ligacao->doRemove(value);
+}
+
+QList<QGraphicsItem *> Atributo::getToDelete()
+{
+    QList<QGraphicsItem *> toDelete;
+    foreach(Ligacao * lig, linhaAssociada) {
+        toDelete.push_back(lig);
+
+        foreach(QGraphicsItem * subitem, lig->getToDelete()) {
+            toDelete.push_back(subitem);
+        }
+    }
+    return toDelete;
 }

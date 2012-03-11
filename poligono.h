@@ -4,63 +4,69 @@
 #define RELACIONAMENTO_H
 
 #include <QtGui>
-#include <ligacao.h>
-#include <atributo.h>
+#include <objetoremovivel.h>
+class Atributo;
 class Cardinalidade;
+class Ligacao;
 
-class Poligono : public QObject, public QGraphicsPolygonItem
+class Poligono : public QObject, public QGraphicsPolygonItem, public ObjetoRemovivel
 {
     Q_OBJECT
 
 public:
     enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };
     Poligono(Tipo tipo, bool pai, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+
+    virtual void doRemove(bool value);
+    virtual QList<QGraphicsItem *> getToDelete();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
     void setTipo(Tipo tipo) { this->tipo = tipo; }
     Tipo getTipo() { return tipo; }
+
     bool getConectado() { return this->conectado; }
     void setConectado( bool c ) { this->conectado = c; }
+
     bool getAutoRelacionamento() { return this->autoRelacionamento; }
     void setAutoRelacionamento( bool a ) { this->autoRelacionamento = a; }
+
     void atualizaItem();
-    void setPoligonoAssociado(Poligono * pol) { polig_associado = pol; }
     void itemRemovido();
+    void setPoligonoAssociado(Poligono * pol) { polig_associado = pol; }
     Poligono * getPoligonoAssociado() { return polig_associado; }
-    QList<Atributo *> getAtributosAssociados() { return atributosAssociados; }
-    QList< Cardinalidade *> getCardinalidades_Associadas() { return cardinalidades_associadas; }
-    QList< Ligacao *> getLinhas_Associadas() { return linhas_associadas; }
 
-    void setCardinalidades_Associadas( Cardinalidade *ca ) { this->cardinalidades_associadas.push_back(ca); }
-    void setLinhas_Associadas( Ligacao *la ) { this->linhas_associadas.push_back(la); }
-    void setAtributosAssociados( Atributo *aa ) { this->atributosAssociados.push_back(aa); }
+    QList<Atributo *> getAtributosAssociados() { return atributosAssociados.toList(); }
+    QList< Cardinalidade *> getCardinalidadesAssociadas() { return cardinalidades_associadas.toList(); }
+    QList< Ligacao *> getLinhasAssociadas() { return linhas_associadas.toList(); }
 
-    void remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }
-    void remove_Linha_Associada( int index ) { this->linhas_associadas.removeAt(index); }
-    void removeAtributoAssociado( int index ) { this->atributosAssociados.removeAt(index); }
+    void addCardinalidadesAssociadas( Cardinalidade *ca ) { this->cardinalidades_associadas.insert(ca); }
+    void addLinhasAssociadas( Ligacao *la ) { this->linhas_associadas.insert(la); }
+    void addAtributosAssociados( Atributo *aa ) { this->atributosAssociados.insert(aa); }
 
-    void removeTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }
-    void removeTodasLinhasAssociadas() { this->linhas_associadas.erase(this->linhas_associadas.begin(), this->linhas_associadas.end()); }
-    void removeTodosAtributosAssociados() {this->atributosAssociados.erase( this->atributosAssociados.begin(), this->atributosAssociados.end()); }
+    void limparCardinalidadesAssociadas() { this->cardinalidades_associadas.clear(); }
+    void limparLinhasAssociadas() { this->linhas_associadas.clear(); }
+    void limparAtributosAssociados() {this->atributosAssociados.clear(); }
 
-    void addPoligonosAssociado(Poligono * pol) {
-        poligonosAssociados[pol->getTipo()].push_back(pol);
+    void removerCardinalidadeAssociada(Cardinalidade * it) { cardinalidades_associadas.remove(it); }
+    void removerLinhaAssociada(Ligacao * it) { linhas_associadas.remove(it); }
+    void removerAtributoAssociada(Atributo * it) { atributosAssociados.remove(it); }
+
+    void removerPoligonoAssociado(Poligono * poligono) {
+        poligonosAssociados[poligono->getTipo()].remove(poligono);
     }
 
-    template<Tipo T>
-    void removePoligonosAssociadoAt(int index) {
-        getPoligonoAssociados<T>().removeAt(index);
+    template<Poligono::Tipo T>
+    void limparPoligonosOfType() {
+        poligonosAssociados[T].clear();
     }
 
-    template<Tipo T>
-    void removeTodosPoligonosAssociados() {
-        QList<Poligono *> pols = getPoligonoAssociados<T>();
-        pols.erase(pols.begin(), pols.end());
+    void addPoligonoAssociado(Poligono * pol) {
+        poligonosAssociados[pol->getTipo()].insert(pol);
     }
 
-    template<Tipo T>
-    QList<Poligono *> getPoligonoAssociados() {
-        QList<Poligono *> res = poligonosAssociados[T];
-        return res;
+    template<Poligono::Tipo T>
+    QList<Poligono *> getPoligonosAssociadoOfType() {
+       return poligonosAssociados[T].toList();
     }
 
     // Garante tipo unico para objeto desse tipo
@@ -91,10 +97,10 @@ private:
     Poligono * polig_associado;
 
     //Necessário para verificar os itens associados à determinada instância de outros itens.
-    QList< Cardinalidade * > cardinalidades_associadas;
-    QList< Ligacao * > linhas_associadas;
-    QList< Atributo * > atributosAssociados;
-    QMap<Tipo, QList<Poligono *> > poligonosAssociados;
+    QSet< Cardinalidade * > cardinalidades_associadas;
+    QSet< Ligacao * > linhas_associadas;
+    QSet< Atributo * > atributosAssociados;
+    QMap<Tipo, QSet<Poligono *> > poligonosAssociados;
 };
 
 #endif // RELACIONAMENTO_H

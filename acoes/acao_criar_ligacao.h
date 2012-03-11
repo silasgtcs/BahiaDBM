@@ -19,13 +19,13 @@ private:
 
     //Optionas itens:
     Cardinalidade * cardinalidade;
-    Texto * nomeLigacao1, * nomeLigacao2;
 public:
     AcaoCriarLigacao(QGraphicsScene * scene, QGraphicsItem * item1, QGraphicsItem * item2);
     virtual void fazerAcao();
     virtual void desfazerAcao();
     virtual bool podeDesfazer() { return true; }
     Ligacao *getLigacao() { return this->ligacao; }
+    virtual void dispose();
 };
 
 #endif // ACAO_CRIAR_LIGACAO_H

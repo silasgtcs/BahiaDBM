@@ -11,16 +11,20 @@ class Texto : public QGraphicsTextItem
 {
 public:
     Texto(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+
+    void setCount( int countR ) { this->count = countR; }
+    int getCount() { return count; }
+
+    void setTipoGenEsp( QString tipo ) { this->tipoGenEsp = tipo; }
+    QString getTipoGenEsp () { return this->tipoGenEsp; }
+
+    bool getGenEspAtiva() { return this->genEspAtiva; }
+    void setGenEspAtiva( bool gea ) { this->genEspAtiva = gea; }
+
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void focusOutEvent(QFocusEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void setCount( int countR ) { this->count = countR; }
-    int getCount() { return count; }
-    void setTipoGenEsp( QString tipo ) { this->tipoGenEsp = tipo; }
-    QString getTipoGenEsp () { return this->tipoGenEsp; }
-    bool getGenEspAtiva() { return this->genEspAtiva; }
-    void setGenEspAtiva( bool gea ) { this->genEspAtiva = gea; }
 
 private:
     int count;

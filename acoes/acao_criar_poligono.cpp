@@ -1,5 +1,4 @@
 #include "acao_criar_poligono.h"
-#include "texto.h"
 
 AcaoCriarPoligono::AcaoCriarPoligono(QGraphicsScene * scene, Poligono::Tipo tipo, QString nome, QPointF posicao)
 {
@@ -14,7 +13,7 @@ AcaoCriarPoligono::AcaoCriarPoligono(QGraphicsScene * scene, Poligono::Tipo tipo
     }
 
 
-    Texto * nomeEntidade = new Texto();
+    nomeEntidade = new Texto();
 
     nomeEntidade->setTextInteractionFlags(Qt::TextEditorInteraction);
     nomeEntidade->setFocus();
@@ -57,6 +56,7 @@ void AcaoCriarPoligono::fazerAcao()
         scene->addItem(childPol);
     mainPol->setParent(scene);
     mainPol->setPos(posicao);
+    mainPol->doRemove(false);
 }
 
 void AcaoCriarPoligono::desfazerAcao()
@@ -64,4 +64,18 @@ void AcaoCriarPoligono::desfazerAcao()
     scene->removeItem(mainPol);
     if(childPol)
         scene->removeItem(childPol);
+    mainPol->doRemove(true);
+}
+
+void AcaoCriarPoligono::dispose()
+{
+    try {
+        if(mainPol)
+            delete mainPol;
+        if(childPol)
+            delete childPol;
+    } catch(std::exception ex) {
+        qDebug() << "dispose do AcaoCriarPoligono tenta deletar item ja deletado";
+        // provavelmente atributo ja foi deletado anteriormente
+    }
 }

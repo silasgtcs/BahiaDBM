@@ -19,10 +19,6 @@ class Diagrama : public QGraphicsScene
 public:
     Diagrama(QObject *parent = 0);
     enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };
-    void setDesfazer( QGraphicsItem *item );
-    QStack<QGraphicsItem*> getDesfazerItem() { return this->desfazerItem; }
-    void popDesfazerItem() { this->desfazerItem.pop(); }
-    void popRefazerItem() { this->refazerItem.pop(); }
 
 public slots:
     TipoER getTipoER() { return tipoER; }
@@ -47,41 +43,13 @@ private:
 
     TipoER tipoER;
 
-    Poligono *poli;
-    Poligono *poli2;
-    Atributo *atr;
-    Poligono *cast1P;
-    Poligono *cast2P;
-    Atributo *castA;
-    Cardinalidade *insereCardinalidade;
-
     QGraphicsLineItem *novaLinha;
-    QGraphicsLineItem *Lselecionar;
-    QGraphicsRectItem *Rselecionar;
+    QGraphicsRectItem * selecionarBox;
 
     QPointF pontoInicial;
 
-    QGraphicsItem *item1;
-    QGraphicsItem *item2;
-
-    Ligacao *lig;
-    Ligacao *cast_linha;
-
-    Texto *nomeRelacionamento;
-    Texto *nomeEntidade;
-    Texto *nomeAtributo;
-    Texto *nomeAtributoIdentificador;
-    Texto *nomeEntidadeAssociativa;
-    Texto *nomeLigacao1;
-    Texto *nomeLigacao2;
-    Texto *card;
-    Texto *tipoGenEsp;
-
     bool ativaSelecao;
     bool ativaMover;
-
-    QStack<QGraphicsItem*> desfazerItem;
-    QStack<QGraphicsItem*> refazerItem;
 };
 
 #endif // DSCENE_H

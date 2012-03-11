@@ -227,7 +227,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
         {
             cardItem = new Cardinalidade( castItem1P, castItem2P, this );
             cardItem->setCursor(Qt::PointingHandCursor);
-            this->setCardinalidades_Associadas(cardItem);
+            this->addCardinalidadeAssociada(cardItem);
         }
     }
 
@@ -262,8 +262,8 @@ void Ligacao::conectarObjetos(){
             this->addPoligonoAssociado(properPoligono);
         }
 
-        this->setAtributoAssociado(castItemA);
-        castItemA->setLinhaAssociada(this);
+        this->addAtributoAssociado(castItemA);
+        castItemA->addLinhaAssociada(this);
         castItemA->setConectado(true);
     }
     else
@@ -280,7 +280,7 @@ void Ligacao::conectarObjetos(){
                 || ((( castItem1P->getTipo() == Poligono::relacionamento ) && ( castItem2P->getTipo() == Poligono::ent_associativa ))
                     || (( castItem1P->getTipo() == Poligono::ent_associativa ) && ( castItem2P->getTipo() == Poligono::relacionamento ))))
         {
-            this->setCardinalidades_Associadas(cardItem);
+            this->addCardinalidadeAssociada(cardItem);
 
             cardItem->addPoligonoAssociado(castItem1P);
             cardItem->addPoligonoAssociado(castItem2P);
@@ -312,12 +312,12 @@ void Ligacao::desconectarObjetos(){
 
             castItemA->setParentItem(NULL);
 
-            castItemA->removePoligonoAssociado(properPoligono);
+            castItemA->removerPoligonoAssociado(properPoligono);
             this->removePoligonoAssociado(properPoligono);
         }
 
         this->removeAtributoAssociada(castItemA);
-        castItemA->removeLinhaAssociada(this);
+        castItemA->removerLinhaAssociada(this);
         castItemA->setConectado(false);
     }
     else

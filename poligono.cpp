@@ -76,3 +76,21 @@ void Poligono::itemRemovido()
 {
     emit removido();
 }
+
+void Poligono::doRemove(bool value)
+{
+    foreach(Ligacao * ligacao, linhas_associadas)
+        ligacao->doRemove(value);
+}
+
+QList<QGraphicsItem *> Poligono::getToDelete()
+{
+    QList<QGraphicsItem *> toDelete;
+    foreach(Ligacao * lig, linhas_associadas) {
+        toDelete.push_back(lig);
+        foreach(QGraphicsItem * subitem, lig->getToDelete()) {
+            toDelete.push_back(subitem);
+        }
+    }
+    return toDelete;
+}

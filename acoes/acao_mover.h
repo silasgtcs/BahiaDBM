@@ -16,6 +16,7 @@ public:
     virtual void fazerAcao();
     virtual void desfazerAcao();
     virtual bool podeDesfazer() { return true; }
+    virtual void dispose() {}
 };
 
 #endif // ACAO_MOVER_H

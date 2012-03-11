@@ -269,18 +269,11 @@ Ligacao	ligacao.h	/^class Ligacao : public QObject, public QGraphicsLineItem$/;"
 Ligacao::Ligacao	ligacao.cpp	/^Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent ) : QGraphicsLineItem(parent)$/;"	f	class:Ligacao	signature:(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent )
 Ligacao::Ligacao	ligacao.h	/^    Ligacao( QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent = 0 );$/;"	p	class:Ligacao	access:public	signature:( QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent = 0 )
 Ligacao::RemoveAtributoAssociado	ligacao.h	/^    void RemoveAtributoAssociado( int index ) { this->atributo_associado.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Ligacao::RemoveTodaGeneralizacaoEspecializacaoAssociada	ligacao.h	/^    void RemoveTodaGeneralizacaoEspecializacaoAssociada() { this->generalizacao_especializacao_associada.erase(this->generalizacao_especializacao_associada.begin(), this->generalizacao_especializacao_associada.end()); }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::RemoveTodasCardinalidadesAssociadas	ligacao.h	/^    void RemoveTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::RemoveTodasEntidadesAssociadas	ligacao.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::RemoveTodasEntidadesAssociativasAssociadas	ligacao.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end(); }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::RemoveTodosAtributosAssociados	ligacao.h	/^    void RemoveTodosAtributosAssociados() { this->atributo_associado.erase(this->atributo_associado.begin(), this->atributo_associado.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::RemoveTodosRelacionamentosAssociados	ligacao.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::Remove_Cardinalidade_Associada	ligacao.h	/^    void Remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Ligacao::Remove_Entidade_Associada	ligacao.h	/^    void Remove_Entidade_Associada( int index ) { this->entidades_associadas.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Ligacao::Remove_Entidade_Associativa_Associada	ligacao.h	/^    void Remove_Entidade_Associativa_Associada( int index ) { this->entidades_associativas_associadas.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Ligacao::Remove_Generalizacao_Especializacao_Associada	ligacao.h	/^    void Remove_Generalizacao_Especializacao_Associada( int index ) { this->generalizacao_especializacao_associada.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Ligacao::Remove_Relacionamento_Associado	ligacao.h	/^    void Remove_Relacionamento_Associado( int index ) { this->relacionamentos_associados.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
 Ligacao::Type	ligacao.h	/^    enum { Type = UserType + 2 };$/;"	e	enum:Ligacao::__anon1
+Ligacao::addPoligonoAssociado	ligacao.h	/^    public addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Ligacao	access:public	signature:(Poligono * pol)
 Ligacao::atributo_associado	ligacao.h	/^    QList< Atributo * > atributo_associado;$/;"	m	class:Ligacao	access:private
 Ligacao::atualizaPos	ligacao.cpp	/^void Ligacao::atualizaPos()$/;"	f	class:Ligacao	signature:()
 Ligacao::atualizaPos	ligacao.h	/^    void atualizaPos();$/;"	p	class:Ligacao	access:public	signature:()
@@ -304,21 +297,20 @@ Ligacao::getCastItemA	ligacao.h	/^    Atributo * getCastItemA() { return this->c
 Ligacao::getEntidadeFracaAtiva	ligacao.h	/^    bool getEntidadeFracaAtiva () { return this->entidadeFracaAtiva; }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::getEntidades_Associadas	ligacao.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::getEntidades_Associativas_Associadas	ligacao.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::getGeneralizacao_Especializacao_Associada	ligacao.h	/^    QList< Poligono *> getGeneralizacao_Especializacao_Associada() { return generalizacao_especializacao_associada; }$/;"	f	class:Ligacao	access:public	signature:()
+Ligacao::getPoligonosAssociadoOfType	ligacao.h	/^    public getPoligonosAssociadoOfType() {$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::getRelacionamentos_Associados	ligacao.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::linhaAlterada	ligacao.h	/^    void linhaAlterada( QLineF nova_linha );$/;"	p	class:Ligacao	access:private	signature:( QLineF nova_linha )
 Ligacao::nomeLigacao1	ligacao.h	/^    Texto *nomeLigacao1, *nomeLigacao2;$/;"	m	class:Ligacao	access:private
 Ligacao::nomeLigacao2	ligacao.h	/^    Texto *nomeLigacao1, *nomeLigacao2;$/;"	m	class:Ligacao	access:private
 Ligacao::paint	ligacao.cpp	/^void Ligacao::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)$/;"	f	class:Ligacao	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 Ligacao::paint	ligacao.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);$/;"	p	class:Ligacao	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+Ligacao::poligonos_associados	ligacao.h	/^    QMap<Poligono::Tipo, QList<Poligono *> > poligonos_associados;$/;"	m	class:Ligacao	access:private
 Ligacao::relacionamentos_associados	ligacao.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Ligacao	access:private
+Ligacao::removePoligonoAssociadoAt	ligacao.h	/^    public removePoligonoAssociadoAt(int index) {$/;"	f	class:Ligacao	access:public	signature:(int index)
+Ligacao::removeTodosPoligonosOfType	ligacao.h	/^    public removeTodosPoligonosOfType() {$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::setAtributoAssociado	ligacao.h	/^    void setAtributoAssociado( Atributo *aa ) { this->atributo_associado.push_back(aa); }$/;"	f	class:Ligacao	access:public	signature:( Atributo *aa )
 Ligacao::setCardinalidades_Associadas	ligacao.h	/^    void setCardinalidades_Associadas( Cardinalidade *ca ) { this->cardinalidades_associadas.push_back(ca); }$/;"	f	class:Ligacao	access:public	signature:( Cardinalidade *ca )
 Ligacao::setEntidadeFracaAtiva	ligacao.h	/^    void setEntidadeFracaAtiva( bool set ) { this->entidadeFracaAtiva = set; }$/;"	f	class:Ligacao	access:public	signature:( bool set )
-Ligacao::setEntidades_Associadas	ligacao.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Ligacao	access:public	signature:( Poligono *ea )
-Ligacao::setEntidades_Associativas_Associadas	ligacao.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Ligacao	access:public	signature:( Poligono *eaa )
-Ligacao::setGeneralizacao_Especializacao_Associada	ligacao.h	/^    void setGeneralizacao_Especializacao_Associada( Poligono *gea ) { this->generalizacao_especializacao_associada.push_back(gea); }$/;"	f	class:Ligacao	access:public	signature:( Poligono *gea )
-Ligacao::setRelacionamento_Associados	ligacao.h	/^    void setRelacionamento_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Ligacao	access:public	signature:( Poligono *ra )
 Ligacao::shape	ligacao.cpp	/^QPainterPath Ligacao::shape() const$/;"	f	class:Ligacao	signature:() const
 Ligacao::shape	ligacao.h	/^    QPainterPath shape() const;$/;"	p	class:Ligacao	access:public	signature:() const
 Ligacao::temp	ligacao.h	/^    QPointF temp;$/;"	m	class:Ligacao	access:private
@@ -373,6 +365,8 @@ MainWindow::createMenu	mainwindow.h	/^    void createMenu();$/;"	p	class:MainWin
 MainWindow::createToolBar	mainwindow.cpp	/^void MainWindow::createToolBar()$/;"	f	class:MainWindow	signature:()
 MainWindow::createToolBar	mainwindow.h	/^    void createToolBar();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::deletar	mainwindow.h	/^    QToolButton *deletar;$/;"	m	class:MainWindow	access:private
+MainWindow::deletarSelecionado	mainwindow.cpp	/^void MainWindow::deletarSelecionado() {$/;"	f	class:MainWindow	signature:()
+MainWindow::deletarSelecionado	mainwindow.h	/^    void deletarSelecionado();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::desfazer	mainwindow.cpp	/^void MainWindow::desfazer()$/;"	f	class:MainWindow	signature:()
 MainWindow::desfazer	mainwindow.h	/^    void desfazer();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::desfazerAction	mainwindow.h	/^    QAction *desfazerAction;$/;"	m	class:MainWindow	access:private
@@ -423,24 +417,11 @@ Poligono	poligono.h	/^    Poligono(Tipo tipo, bool pai, QGraphicsItem *parent = 
 Poligono	poligono.h	/^class Poligono : public QObject, public QGraphicsPolygonItem$/;"	c	inherits:QObject,QGraphicsPolygonItem
 Poligono::Poligono	poligono.cpp	/^Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *scene )$/;"	f	class:Poligono	signature:(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *scene )
 Poligono::Poligono	poligono.h	/^    Poligono(Tipo tipo, bool pai, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);$/;"	p	class:Poligono	access:public	signature:(Tipo tipo, bool pai, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0)
-Poligono::RemoveAtributoAssociado	poligono.h	/^    void RemoveAtributoAssociado( int index ) { this->atributosAssociados.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Poligono::RemoveTodaGeneralizacaoEspecializacaoAssociada	poligono.h	/^    void RemoveTodaGeneralizacaoEspecializacaoAssociada() { this->generalizacao_especializacao_associada.erase(this->generalizacao_especializacao_associada.begin(), this->generalizacao_especializacao_associada.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::RemoveTodasCardinalidadesAssociadas	poligono.h	/^    void RemoveTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::RemoveTodasEntidadesAssociadas	poligono.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::RemoveTodasEntidadesAssociativasAssociadas	poligono.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.erase(this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::RemoveTodasLinhasAssociadas	poligono.h	/^    void RemoveTodasLinhasAssociadas() { this->linhas_associadas.erase(this->linhas_associadas.begin(), this->linhas_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::RemoveTodosAtributosAssociados	poligono.h	/^    void RemoveTodosAtributosAssociados() {this->atributosAssociados.erase( this->atributosAssociados.begin(), this->atributosAssociados.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::RemoveTodosRelacionamentosAssociados	poligono.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::Remove_Cardinalidade_Associada	poligono.h	/^    void Remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Poligono::Remove_Entidade_Associada	poligono.h	/^    void Remove_Entidade_Associada( int index ) { this->entidades_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Poligono::Remove_Entidade_Associativa_Associada	poligono.h	/^    void Remove_Entidade_Associativa_Associada( int index ) { this->entidades_associativas_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Poligono::Remove_Generalizacao_Especializacao_Associada	poligono.h	/^    void Remove_Generalizacao_Especializacao_Associada( int index ) { this->generalizacao_especializacao_associada.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Poligono::Remove_Linha_Associada	poligono.h	/^    void Remove_Linha_Associada( int index ) { this->linhas_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Poligono::Remove_Relacionamento_Associado	poligono.h	/^    void Remove_Relacionamento_Associado( int index ) { this->relacionamentos_associados.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
 Poligono::Tipo	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	g	class:Poligono	access:public
 Poligono::Type	poligono.h	/^    enum { Type = UserType + 1 };$/;"	e	enum:Poligono::__anon3
 Poligono::acompanharObjeto	poligono.cpp	/^void Poligono::acompanharObjeto(const QPointF objNewPos)$/;"	f	class:Poligono	signature:(const QPointF objNewPos)
 Poligono::acompanharObjeto	poligono.h	/^    void acompanharObjeto(const QPointF objNewPos);$/;"	p	class:Poligono	access:public	signature:(const QPointF objNewPos)
+Poligono::addPoligonosAssociado	poligono.h	/^    void addPoligonosAssociado(Poligono * pol) {$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
 Poligono::atributosAssociados	poligono.h	/^    QList< Atributo * > atributosAssociados;$/;"	m	class:Poligono	access:private
 Poligono::atualizaItem	poligono.cpp	/^void Poligono::atualizaItem()$/;"	f	class:Poligono	signature:()
 Poligono::atualizaItem	poligono.h	/^    void atualizaItem();$/;"	p	class:Poligono	access:public	signature:()
@@ -449,20 +430,14 @@ Poligono::cardinalidades_associadas	poligono.h	/^    QList< Cardinalidade * > ca
 Poligono::conectado	poligono.h	/^    bool conectado;$/;"	m	class:Poligono	access:private
 Poligono::ent_associativa	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
 Poligono::entidade	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
-Poligono::entidades_associadas	poligono.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Poligono	access:private
-Poligono::entidades_associativas_associadas	poligono.h	/^    QList< Poligono * > entidades_associativas_associadas;$/;"	m	class:Poligono	access:private
 Poligono::gen_esp	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
-Poligono::generalizacao_especializacao_associada	poligono.h	/^    QList< Poligono * > generalizacao_especializacao_associada;$/;"	m	class:Poligono	access:private
 Poligono::getAtributosAssociados	poligono.h	/^    QList<Atributo *> getAtributosAssociados() { return atributosAssociados; }$/;"	f	class:Poligono	access:public	signature:()
 Poligono::getAutoRelacionamento	poligono.h	/^    bool getAutoRelacionamento() { return this->autoRelacionamento; }$/;"	f	class:Poligono	access:public	signature:()
 Poligono::getCardinalidades_Associadas	poligono.h	/^    QList< Cardinalidade *> getCardinalidades_Associadas() { return cardinalidades_associadas; }$/;"	f	class:Poligono	access:public	signature:()
 Poligono::getConectado	poligono.h	/^    bool getConectado() { return this->conectado; }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::getEntidades_Associadas	poligono.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::getEntidades_Associativas_Associadas	poligono.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::getGeneralizacao_Especializacao_Associada	poligono.h	/^    QList< Poligono *> getGeneralizacao_Especializacao_Associada() { return generalizacao_especializacao_associada; }$/;"	f	class:Poligono	access:public	signature:()
 Poligono::getLinhas_Associadas	poligono.h	/^    QList< Ligacao *> getLinhas_Associadas() { return linhas_associadas; }$/;"	f	class:Poligono	access:public	signature:()
 Poligono::getPoligonoAssociado	poligono.h	/^    Poligono * getPoligonoAssociado() { return polig_associado; }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::getRelacionamentos_Associados	poligono.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::getPoligonoAssociados	poligono.h	/^    QList<Poligono *> getPoligonoAssociados() {$/;"	f	class:Poligono	access:public	signature:()
 Poligono::getTipo	poligono.h	/^    Tipo getTipo() { return tipo; }$/;"	f	class:Poligono	access:public	signature:()
 Poligono::itemChange	poligono.cpp	/^QVariant Poligono::itemChange(GraphicsItemChange change, const QVariant &value)$/;"	f	class:Poligono	signature:(GraphicsItemChange change, const QVariant &value)
 Poligono::itemChange	poligono.h	/^    QVariant itemChange(GraphicsItemChange change, const QVariant &value);$/;"	p	class:Poligono	access:protected	signature:(GraphicsItemChange change, const QVariant &value)
@@ -473,10 +448,18 @@ Poligono::paint	poligono.cpp	/^void Poligono::paint(QPainter *painter, const QSt
 Poligono::paint	poligono.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);$/;"	p	class:Poligono	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 Poligono::polig_associado	poligono.h	/^    Poligono * polig_associado;$/;"	m	class:Poligono	access:private
 Poligono::poligono	poligono.h	/^    QPolygonF poligono;$/;"	m	class:Poligono	access:private
+Poligono::poligonosAssociados	poligono.h	/^    QMap<Tipo, QList<Poligono *> > poligonosAssociados;$/;"	m	class:Poligono	access:private
 Poligono::posicaoAlterada	poligono.h	/^    void posicaoAlterada();$/;"	p	class:Poligono	access:protected	signature:()
 Poligono::posicaoAlterada	poligono.h	/^    void posicaoAlterada(const QPointF newPos);$/;"	p	class:Poligono	access:protected	signature:(const QPointF newPos)
 Poligono::relacionamento	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
-Poligono::relacionamentos_associados	poligono.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Poligono	access:private
+Poligono::removeAtributoAssociado	poligono.h	/^    void removeAtributoAssociado( int index ) { this->atributosAssociados.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
+Poligono::removePoligonosAssociadoAt	poligono.h	/^    void removePoligonosAssociadoAt(int index) {$/;"	f	class:Poligono	access:public	signature:(int index)
+Poligono::removeTodasCardinalidadesAssociadas	poligono.h	/^    void removeTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::removeTodasLinhasAssociadas	poligono.h	/^    void removeTodasLinhasAssociadas() { this->linhas_associadas.erase(this->linhas_associadas.begin(), this->linhas_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::removeTodosAtributosAssociados	poligono.h	/^    void removeTodosAtributosAssociados() {this->atributosAssociados.erase( this->atributosAssociados.begin(), this->atributosAssociados.end()); }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::removeTodosPoligonosAssociados	poligono.h	/^    void removeTodosPoligonosAssociados() {$/;"	f	class:Poligono	access:public	signature:()
+Poligono::remove_Cardinalidade_Associada	poligono.h	/^    void remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
+Poligono::remove_Linha_Associada	poligono.h	/^    void remove_Linha_Associada( int index ) { this->linhas_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
 Poligono::remover	poligono.cpp	/^void Poligono::remover()$/;"	f	class:Poligono	signature:()
 Poligono::remover	poligono.h	/^    void remover();$/;"	p	class:Poligono	access:public	signature:()
 Poligono::removido	poligono.h	/^    void removido();$/;"	p	class:Poligono	access:protected	signature:()
@@ -484,52 +467,26 @@ Poligono::setAtributosAssociados	poligono.h	/^    void setAtributosAssociados( A
 Poligono::setAutoRelacionamento	poligono.h	/^    void setAutoRelacionamento( bool a ) { this->autoRelacionamento = a; }$/;"	f	class:Poligono	access:public	signature:( bool a )
 Poligono::setCardinalidades_Associadas	poligono.h	/^    void setCardinalidades_Associadas( Cardinalidade *ca ) { this->cardinalidades_associadas.push_back(ca); }$/;"	f	class:Poligono	access:public	signature:( Cardinalidade *ca )
 Poligono::setConectado	poligono.h	/^    void setConectado( bool c ) { this->conectado = c; }$/;"	f	class:Poligono	access:public	signature:( bool c )
-Poligono::setEntidades_Associadas	poligono.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Poligono	access:public	signature:( Poligono *ea )
-Poligono::setEntidades_Associativas_Associadas	poligono.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Poligono	access:public	signature:( Poligono *eaa )
-Poligono::setGeneralizacao_Especializacao_Associada	poligono.h	/^    void setGeneralizacao_Especializacao_Associada( Poligono *gea ) { this->generalizacao_especializacao_associada.push_back(gea); }$/;"	f	class:Poligono	access:public	signature:( Poligono *gea )
 Poligono::setLinhas_Associadas	poligono.h	/^    void setLinhas_Associadas( Ligacao *la ) { this->linhas_associadas.push_back(la); }$/;"	f	class:Poligono	access:public	signature:( Ligacao *la )
 Poligono::setPoligonoAssociado	poligono.h	/^    void setPoligonoAssociado(Poligono * pol) { polig_associado = pol; }$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
-Poligono::setRelacionamentos_Associados	poligono.h	/^    void setRelacionamentos_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Poligono	access:public	signature:( Poligono *ra )
 Poligono::setTipo	poligono.h	/^    void setTipo(Tipo tipo) { this->tipo = tipo; }$/;"	f	class:Poligono	access:public	signature:(Tipo tipo)
 Poligono::tipo	poligono.h	/^    Tipo tipo;$/;"	m	class:Poligono	access:private
 Poligono::type	poligono.h	/^    int type() const$/;"	f	class:Poligono	access:public	signature:() const
 RELACIONAMENTO_H	poligono.h	4;"	d
 RemoveAtributoAssociado	ligacao.h	/^    void RemoveAtributoAssociado( int index ) { this->atributo_associado.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-RemoveAtributoAssociado	poligono.h	/^    void RemoveAtributoAssociado( int index ) { this->atributosAssociados.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-RemoveTodaGeneralizacaoEspecializacaoAssociada	ligacao.h	/^    void RemoveTodaGeneralizacaoEspecializacaoAssociada() { this->generalizacao_especializacao_associada.erase(this->generalizacao_especializacao_associada.begin(), this->generalizacao_especializacao_associada.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-RemoveTodaGeneralizacaoEspecializacaoAssociada	poligono.h	/^    void RemoveTodaGeneralizacaoEspecializacaoAssociada() { this->generalizacao_especializacao_associada.erase(this->generalizacao_especializacao_associada.begin(), this->generalizacao_especializacao_associada.end()); }$/;"	f	class:Poligono	access:public	signature:()
 RemoveTodasCardinalidadesAssociadas	ligacao.h	/^    void RemoveTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-RemoveTodasCardinalidadesAssociadas	poligono.h	/^    void RemoveTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
 RemoveTodasEntidadesAssociadas	atributo.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Atributo	access:public	signature:()
 RemoveTodasEntidadesAssociadas	cardinalidade.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Cardinalidade	access:public	signature:()
-RemoveTodasEntidadesAssociadas	ligacao.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-RemoveTodasEntidadesAssociadas	poligono.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
 RemoveTodasEntidadesAssociativasAssociadas	atributo.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.erase(this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end()); }$/;"	f	class:Atributo	access:public	signature:()
 RemoveTodasEntidadesAssociativasAssociadas	cardinalidade.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.erase(this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end()); }$/;"	f	class:Cardinalidade	access:public	signature:()
-RemoveTodasEntidadesAssociativasAssociadas	ligacao.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end(); }$/;"	f	class:Ligacao	access:public	signature:()
-RemoveTodasEntidadesAssociativasAssociadas	poligono.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.erase(this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
 RemoveTodasLinhasAssociadas	atributo.h	/^    void RemoveTodasLinhasAssociadas() { this->linhaAssociada.erase(this->linhaAssociada.begin(), this->linhaAssociada.end()); }$/;"	f	class:Atributo	access:public	signature:()
-RemoveTodasLinhasAssociadas	poligono.h	/^    void RemoveTodasLinhasAssociadas() { this->linhas_associadas.erase(this->linhas_associadas.begin(), this->linhas_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
 RemoveTodosAtributosAssociados	ligacao.h	/^    void RemoveTodosAtributosAssociados() { this->atributo_associado.erase(this->atributo_associado.begin(), this->atributo_associado.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-RemoveTodosAtributosAssociados	poligono.h	/^    void RemoveTodosAtributosAssociados() {this->atributosAssociados.erase( this->atributosAssociados.begin(), this->atributosAssociados.end()); }$/;"	f	class:Poligono	access:public	signature:()
 RemoveTodosRelacionamentosAssociados	atributo.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Atributo	access:public	signature:()
 RemoveTodosRelacionamentosAssociados	cardinalidade.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Cardinalidade	access:public	signature:()
-RemoveTodosRelacionamentosAssociados	ligacao.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-RemoveTodosRelacionamentosAssociados	poligono.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Poligono	access:public	signature:()
 Remove_Cardinalidade_Associada	ligacao.h	/^    void Remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Remove_Cardinalidade_Associada	poligono.h	/^    void Remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
 Remove_Entidade_Associada	cardinalidade.h	/^    void Remove_Entidade_Associada( int index ) { this->entidades_associadas.removeAt(index); }$/;"	f	class:Cardinalidade	access:public	signature:( int index )
-Remove_Entidade_Associada	ligacao.h	/^    void Remove_Entidade_Associada( int index ) { this->entidades_associadas.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Remove_Entidade_Associada	poligono.h	/^    void Remove_Entidade_Associada( int index ) { this->entidades_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
 Remove_Entidade_Associativa_Associada	cardinalidade.h	/^    void Remove_Entidade_Associativa_Associada( int index ) { this->entidades_associativas_associadas.removeAt(index); }$/;"	f	class:Cardinalidade	access:public	signature:( int index )
-Remove_Entidade_Associativa_Associada	ligacao.h	/^    void Remove_Entidade_Associativa_Associada( int index ) { this->entidades_associativas_associadas.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Remove_Entidade_Associativa_Associada	poligono.h	/^    void Remove_Entidade_Associativa_Associada( int index ) { this->entidades_associativas_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Remove_Generalizacao_Especializacao_Associada	ligacao.h	/^    void Remove_Generalizacao_Especializacao_Associada( int index ) { this->generalizacao_especializacao_associada.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Remove_Generalizacao_Especializacao_Associada	poligono.h	/^    void Remove_Generalizacao_Especializacao_Associada( int index ) { this->generalizacao_especializacao_associada.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Remove_Linha_Associada	poligono.h	/^    void Remove_Linha_Associada( int index ) { this->linhas_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
 Remove_Relacionamento_Associado	cardinalidade.h	/^    void Remove_Relacionamento_Associado( int index ) { this->relacionamentos_associados.removeAt(index); }$/;"	f	class:Cardinalidade	access:public	signature:( int index )
-Remove_Relacionamento_Associado	ligacao.h	/^    void Remove_Relacionamento_Associado( int index ) { this->relacionamentos_associados.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Remove_Relacionamento_Associado	poligono.h	/^    void Remove_Relacionamento_Associado( int index ) { this->relacionamentos_associados.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
 Rselecionar	diagrama.h	/^    QGraphicsRectItem *Rselecionar;$/;"	m	class:Diagrama	access:private
 TEXTO_H	texto.h	5;"	d
 Texto	texto.cpp	/^Texto::Texto(QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsTextItem(parent, scene)$/;"	f	class:Texto	signature:(QGraphicsItem *parent, QGraphicsScene *scene)
@@ -581,6 +538,8 @@ acompanharObjeto	poligono.cpp	/^void Poligono::acompanharObjeto(const QPointF ob
 acompanharObjeto	poligono.h	/^    void acompanharObjeto(const QPointF objNewPos);$/;"	p	class:Poligono	access:public	signature:(const QPointF objNewPos)
 addAcao	acoespilha.cpp	/^void AcoesPilha::addAcao(Acao *acao)$/;"	f	class:AcoesPilha	signature:(Acao *acao)
 addAcao	acoespilha.h	/^    void addAcao(Acao * command);$/;"	p	class:AcoesPilha	access:public	signature:(Acao * command)
+addPoligonoAssociado	ligacao.h	/^    public addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Ligacao	access:public	signature:(Poligono * pol)
+addPoligonosAssociado	poligono.h	/^    void addPoligonosAssociado(Poligono * pol) {$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
 ajudaAction	mainwindow.h	/^    QAction *ajudaAction;$/;"	m	class:MainWindow	access:private
 ajudaMenu	mainwindow.h	/^    QMenu *ajudaMenu;$/;"	m	class:MainWindow	access:private
 ampliar	mainwindow.h	/^    QToolButton *ampliar;$/;"	m	class:MainWindow	access:private
@@ -659,6 +618,8 @@ createMenu	mainwindow.h	/^    void createMenu();$/;"	p	class:MainWindow	access:p
 createToolBar	mainwindow.cpp	/^void MainWindow::createToolBar()$/;"	f	class:MainWindow	signature:()
 createToolBar	mainwindow.h	/^    void createToolBar();$/;"	p	class:MainWindow	access:private	signature:()
 deletar	mainwindow.h	/^    QToolButton *deletar;$/;"	m	class:MainWindow	access:private
+deletarSelecionado	mainwindow.cpp	/^void MainWindow::deletarSelecionado() {$/;"	f	class:MainWindow	signature:()
+deletarSelecionado	mainwindow.h	/^    void deletarSelecionado();$/;"	p	class:MainWindow	access:private	signature:()
 desfazer	acoespilha.cpp	/^bool AcoesPilha::desfazer()$/;"	f	class:AcoesPilha	signature:()
 desfazer	acoespilha.h	/^    bool desfazer();$/;"	p	class:AcoesPilha	access:public	signature:()
 desfazer	mainwindow.cpp	/^void MainWindow::desfazer()$/;"	f	class:MainWindow	signature:()
@@ -686,11 +647,9 @@ entidadeFracaAtiva	ligacao.h	/^    bool entidadeFracaAtiva;$/;"	m	class:Ligacao	
 entidades_associadas	atributo.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Atributo	access:private
 entidades_associadas	cardinalidade.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Cardinalidade	access:private
 entidades_associadas	ligacao.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Ligacao	access:private
-entidades_associadas	poligono.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Poligono	access:private
 entidades_associativas_associadas	atributo.h	/^    QList < Poligono *> entidades_associativas_associadas;$/;"	m	class:Atributo	access:private
 entidades_associativas_associadas	cardinalidade.h	/^    QList< Poligono * > entidades_associativas_associadas;$/;"	m	class:Cardinalidade	access:private
 entidades_associativas_associadas	ligacao.h	/^    QList < Poligono * > entidades_associativas_associadas;$/;"	m	class:Ligacao	access:private
-entidades_associativas_associadas	poligono.h	/^    QList< Poligono * > entidades_associativas_associadas;$/;"	m	class:Poligono	access:private
 exibicaoToolBar	mainwindow.h	/^    QToolBar * exibicaoToolBar;$/;"	m	class:MainWindow	access:private
 fazerAcao	acao.h	/^    virtual void fazerAcao() = 0;$/;"	p	class:Acao	access:public	signature:()
 fazerAcao	acoes/acao_criar_atributo.cpp	/^void AcaoCriarAtributo::fazerAcao()$/;"	f	class:AcaoCriarAtributo	signature:()
@@ -709,7 +668,6 @@ gen_esp	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_as
 gen_esp	mainwindow.h	/^    QToolButton *gen_esp;$/;"	m	class:MainWindow	access:private
 gen_esp	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
 generalizacao_especializacao_associada	ligacao.h	/^    QList< Poligono * > generalizacao_especializacao_associada;$/;"	m	class:Ligacao	access:private
-generalizacao_especializacao_associada	poligono.h	/^    QList< Poligono * > generalizacao_especializacao_associada;$/;"	m	class:Poligono	access:private
 getAtributoAssociado	ligacao.h	/^    QList< Atributo *> getAtributoAssociado() { return atributo_associado; }$/;"	f	class:Ligacao	access:public	signature:()
 getAtributosAssociados	poligono.h	/^    QList<Atributo *> getAtributosAssociados() { return atributosAssociados; }$/;"	f	class:Poligono	access:public	signature:()
 getAtualCardinalidade	cardinalidade.h	/^    QString getAtualCardinalidade() { return this->atualCardinalidade; }$/;"	f	class:Cardinalidade	access:public	signature:()
@@ -728,23 +686,20 @@ getEntidadeFracaAtiva	ligacao.h	/^    bool getEntidadeFracaAtiva () { return thi
 getEntidades_Associadas	atributo.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Atributo	access:public	signature:()
 getEntidades_Associadas	cardinalidade.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Cardinalidade	access:public	signature:()
 getEntidades_Associadas	ligacao.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
-getEntidades_Associadas	poligono.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Poligono	access:public	signature:()
 getEntidades_Associativas_Associadas	atributo.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Atributo	access:public	signature:()
 getEntidades_Associativas_Associadas	cardinalidade.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Cardinalidade	access:public	signature:()
 getEntidades_Associativas_Associadas	ligacao.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
-getEntidades_Associativas_Associadas	poligono.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Poligono	access:public	signature:()
 getGenEspAtiva	texto.h	/^    bool getGenEspAtiva() { return this->genEspAtiva; }$/;"	f	class:Texto	access:public	signature:()
-getGeneralizacao_Especializacao_Associada	ligacao.h	/^    QList< Poligono *> getGeneralizacao_Especializacao_Associada() { return generalizacao_especializacao_associada; }$/;"	f	class:Ligacao	access:public	signature:()
-getGeneralizacao_Especializacao_Associada	poligono.h	/^    QList< Poligono *> getGeneralizacao_Especializacao_Associada() { return generalizacao_especializacao_associada; }$/;"	f	class:Poligono	access:public	signature:()
 getLigacao	acoes/acao_criar_ligacao.h	/^    Ligacao *getLigacao() { return this->ligacao; }$/;"	f	class:AcaoCriarLigacao	access:public	signature:()
 getLinhaAssociada	atributo.h	/^    QList< QGraphicsLineItem *> getLinhaAssociada() { return linhaAssociada; }$/;"	f	class:Atributo	access:public	signature:()
 getLinhas_Associadas	poligono.h	/^    QList< Ligacao *> getLinhas_Associadas() { return linhas_associadas; }$/;"	f	class:Poligono	access:public	signature:()
 getPoligono	acoes/acao_criar_poligono.h	/^    Poligono * getPoligono() { return this->mainPol; }$/;"	f	class:AcaoCriarPoligono	access:public	signature:()
 getPoligonoAssociado	poligono.h	/^    Poligono * getPoligonoAssociado() { return polig_associado; }$/;"	f	class:Poligono	access:public	signature:()
+getPoligonoAssociados	poligono.h	/^    QList<Poligono *> getPoligonoAssociados() {$/;"	f	class:Poligono	access:public	signature:()
+getPoligonosAssociadoOfType	ligacao.h	/^    public getPoligonosAssociadoOfType() {$/;"	f	class:Ligacao	access:public	signature:()
 getRelacionamentos_Associados	atributo.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Atributo	access:public	signature:()
 getRelacionamentos_Associados	cardinalidade.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Cardinalidade	access:public	signature:()
 getRelacionamentos_Associados	ligacao.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Ligacao	access:public	signature:()
-getRelacionamentos_Associados	poligono.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Poligono	access:public	signature:()
 getTipo	atributo.h	/^    Tipo getTipo() { return tipo; }$/;"	f	class:Atributo	access:public	signature:()
 getTipo	poligono.h	/^    Tipo getTipo() { return tipo; }$/;"	f	class:Poligono	access:public	signature:()
 getTipoER	diagrama.h	/^    TipoER getTipoER() { return tipoER; }$/;"	f	class:Diagrama	access:public	signature:()
@@ -842,6 +797,8 @@ poli	diagrama.h	/^    Poligono *poli;$/;"	m	class:Diagrama	access:private
 poli2	diagrama.h	/^    Poligono *poli2;$/;"	m	class:Diagrama	access:private
 polig_associado	poligono.h	/^    Poligono * polig_associado;$/;"	m	class:Poligono	access:private
 poligono	poligono.h	/^    QPolygonF poligono;$/;"	m	class:Poligono	access:private
+poligonosAssociados	poligono.h	/^    QMap<Tipo, QList<Poligono *> > poligonosAssociados;$/;"	m	class:Poligono	access:private
+poligonos_associados	ligacao.h	/^    QMap<Poligono::Tipo, QList<Poligono *> > poligonos_associados;$/;"	m	class:Ligacao	access:private
 pontoInicial	diagrama.h	/^    QPointF pontoInicial;$/;"	m	class:Diagrama	access:private
 popDesfazerItem	diagrama.h	/^    void popDesfazerItem() { this->desfazerItem.pop(); }$/;"	f	class:Diagrama	access:public	signature:()
 popRefazerItem	diagrama.h	/^    void popRefazerItem() { this->refazerItem.pop(); }$/;"	f	class:Diagrama	access:public	signature:()
@@ -864,7 +821,16 @@ relacionamento	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, e
 relacionamentos_associados	atributo.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Atributo	access:private
 relacionamentos_associados	cardinalidade.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Cardinalidade	access:private
 relacionamentos_associados	ligacao.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Ligacao	access:private
-relacionamentos_associados	poligono.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Poligono	access:private
+removeAtributoAssociado	poligono.h	/^    void removeAtributoAssociado( int index ) { this->atributosAssociados.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
+removePoligonoAssociadoAt	ligacao.h	/^    public removePoligonoAssociadoAt(int index) {$/;"	f	class:Ligacao	access:public	signature:(int index)
+removePoligonosAssociadoAt	poligono.h	/^    void removePoligonosAssociadoAt(int index) {$/;"	f	class:Poligono	access:public	signature:(int index)
+removeTodasCardinalidadesAssociadas	poligono.h	/^    void removeTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
+removeTodasLinhasAssociadas	poligono.h	/^    void removeTodasLinhasAssociadas() { this->linhas_associadas.erase(this->linhas_associadas.begin(), this->linhas_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
+removeTodosAtributosAssociados	poligono.h	/^    void removeTodosAtributosAssociados() {this->atributosAssociados.erase( this->atributosAssociados.begin(), this->atributosAssociados.end()); }$/;"	f	class:Poligono	access:public	signature:()
+removeTodosPoligonosAssociados	poligono.h	/^    void removeTodosPoligonosAssociados() {$/;"	f	class:Poligono	access:public	signature:()
+removeTodosPoligonosOfType	ligacao.h	/^    public removeTodosPoligonosOfType() {$/;"	f	class:Ligacao	access:public	signature:()
+remove_Cardinalidade_Associada	poligono.h	/^    void remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
+remove_Linha_Associada	poligono.h	/^    void remove_Linha_Associada( int index ) { this->linhas_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
 remover	poligono.cpp	/^void Poligono::remover()$/;"	f	class:Poligono	signature:()
 remover	poligono.h	/^    void remover();$/;"	p	class:Poligono	access:public	signature:()
 removido	poligono.h	/^    void removido();$/;"	p	class:Poligono	access:protected	signature:()
@@ -893,15 +859,9 @@ setDesfazer	diagrama.h	/^    void setDesfazer( QGraphicsItem *item );$/;"	p	clas
 setEntidadeFracaAtiva	ligacao.h	/^    void setEntidadeFracaAtiva( bool set ) { this->entidadeFracaAtiva = set; }$/;"	f	class:Ligacao	access:public	signature:( bool set )
 setEntidades_Associadas	atributo.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Atributo	access:public	signature:( Poligono *ea )
 setEntidades_Associadas	cardinalidade.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *ea )
-setEntidades_Associadas	ligacao.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Ligacao	access:public	signature:( Poligono *ea )
-setEntidades_Associadas	poligono.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Poligono	access:public	signature:( Poligono *ea )
 setEntidades_Associativas_Associadas	atributo.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Atributo	access:public	signature:( Poligono *eaa )
 setEntidades_Associativas_Associadas	cardinalidade.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *eaa )
-setEntidades_Associativas_Associadas	ligacao.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Ligacao	access:public	signature:( Poligono *eaa )
-setEntidades_Associativas_Associadas	poligono.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Poligono	access:public	signature:( Poligono *eaa )
 setGenEspAtiva	texto.h	/^    void setGenEspAtiva( bool gea ) { this->genEspAtiva = gea; }$/;"	f	class:Texto	access:public	signature:( bool gea )
-setGeneralizacao_Especializacao_Associada	ligacao.h	/^    void setGeneralizacao_Especializacao_Associada( Poligono *gea ) { this->generalizacao_especializacao_associada.push_back(gea); }$/;"	f	class:Ligacao	access:public	signature:( Poligono *gea )
-setGeneralizacao_Especializacao_Associada	poligono.h	/^    void setGeneralizacao_Especializacao_Associada( Poligono *gea ) { this->generalizacao_especializacao_associada.push_back(gea); }$/;"	f	class:Poligono	access:public	signature:( Poligono *gea )
 setItemA	cardinalidade.h	/^    void setItemA ( Poligono *item ) { this->itemA = item; }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *item )
 setItemB	cardinalidade.h	/^    void setItemB ( Poligono *item ) { this->itemB = item; }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *item )
 setLinhaAssociada	atributo.h	/^    void setLinhaAssociada( QGraphicsLineItem *la ) { this->linhaAssociada.push_back(la); }$/;"	f	class:Atributo	access:public	signature:( QGraphicsLineItem *la )
@@ -909,9 +869,7 @@ setLinha_Atual	cardinalidade.h	/^    void setLinha_Atual ( Ligacao *linha ) { th
 setLinhas_Associadas	poligono.h	/^    void setLinhas_Associadas( Ligacao *la ) { this->linhas_associadas.push_back(la); }$/;"	f	class:Poligono	access:public	signature:( Ligacao *la )
 setPoligonoAssociado	poligono.h	/^    void setPoligonoAssociado(Poligono * pol) { polig_associado = pol; }$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
 setRelacionamento_Associados	cardinalidade.h	/^    void setRelacionamento_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *ra )
-setRelacionamento_Associados	ligacao.h	/^    void setRelacionamento_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Ligacao	access:public	signature:( Poligono *ra )
 setRelacionamentos_Associados	atributo.h	/^    void setRelacionamentos_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Atributo	access:public	signature:( Poligono *ra )
-setRelacionamentos_Associados	poligono.h	/^    void setRelacionamentos_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Poligono	access:public	signature:( Poligono *ra )
 setScrool	diagramaview.cpp	/^void DiagramaView::setScrool(QSpinBox *scrool)$/;"	f	class:DiagramaView	signature:(QSpinBox *scrool)
 setScrool	diagramaview.h	/^    void setScrool(QSpinBox * scrool);$/;"	p	class:DiagramaView	access:public	signature:(QSpinBox * scrool)
 setTipo	atributo.h	/^    void setTipo(Tipo tipo) { this->tipo = tipo; }$/;"	f	class:Atributo	access:public	signature:(Tipo tipo)
