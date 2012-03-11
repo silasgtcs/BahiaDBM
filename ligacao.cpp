@@ -60,7 +60,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
             castItem1P = castItem2P = NULL;
         }
 
-        else if ( castItem1P->getLinhas_Associadas().size() > 0 )
+        else if ( castItem1P->getLinhasAssociadas().size() > 0 )
         {
             bool controleAR = false;
             if ( castItem2P->getTipo() == Poligono::entidade )
@@ -175,7 +175,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
             castItemA = NULL;
         }
 
-        else if ( castItem1P->getLinhas_Associadas().size() > 0 )
+        else if ( castItem1P->getLinhasAssociadas().size() > 0 )
         {
             QList<Atributo *> verifica = castItem1P->getAtributosAssociados();
             for ( int i=0; i<verifica.size(); i++ )
@@ -227,7 +227,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
         {
             cardItem = new Cardinalidade( castItem1P, castItem2P, this );
             cardItem->setCursor(Qt::PointingHandCursor);
-            this->setCardinalidades_Associadas(cardItem);
+            this->addCardinalidadeAssociada(cardItem);
         }
     }
 
@@ -242,8 +242,8 @@ void Ligacao::conectarObjetos(){
         //Nao precisa verificar tipo de cada item,  funcao addPoligonoAssociado ja trata internamente
         castItem1P->addPoligonoAssociado(castItem2P);
         castItem2P->addPoligonoAssociado(castItem1P);
-        castItem2P->setLinhas_Associadas(this);
-        castItem1P->setLinhas_Associadas(this);
+        castItem2P->addLinhasAssociadas(this);
+        castItem1P->addLinhasAssociadas(this);
         this->addPoligonoAssociado(castItem1P);
         this->addPoligonoAssociado(castItem2P);
     }
@@ -253,8 +253,8 @@ void Ligacao::conectarObjetos(){
         if ( properPoligono != NULL )
         {
             //Adiciona no vector dessa entidade que esta linha pertence-a.
-            properPoligono->setLinhas_Associadas(this);
-            properPoligono->setAtributosAssociados(castItemA);
+            properPoligono->addLinhasAssociadas(this);
+            properPoligono->addAtributosAssociados(castItemA);
 
             castItemA->setParentItem(properPoligono);
 
@@ -262,8 +262,8 @@ void Ligacao::conectarObjetos(){
             this->addPoligonoAssociado(properPoligono);
         }
 
-        this->setAtributoAssociado(castItemA);
-        castItemA->setLinhaAssociada(this);
+        this->addAtributoAssociado(castItemA);
+        castItemA->addLinhaAssociada(this);
         castItemA->setConectado(true);
     }
     else
@@ -280,7 +280,7 @@ void Ligacao::conectarObjetos(){
                 || ((( castItem1P->getTipo() == Poligono::relacionamento ) && ( castItem2P->getTipo() == Poligono::ent_associativa ))
                     || (( castItem1P->getTipo() == Poligono::ent_associativa ) && ( castItem2P->getTipo() == Poligono::relacionamento ))))
         {
-            this->setCardinalidades_Associadas(cardItem);
+            this->addCardinalidadeAssociada(cardItem);
 
             cardItem->addPoligonoAssociado(castItem1P);
             cardItem->addPoligonoAssociado(castItem2P);
@@ -296,8 +296,8 @@ void Ligacao::desconectarObjetos(){
         //Nao precisa verificar tipo de cada item,  funcao addPoligonoAssociado ja trata internamente
         castItem1P->removePoligonoAssociado(castItem2P);
         castItem2P->removePoligonoAssociado(castItem1P);
-        castItem2P->removeLinhaAssociada(this);
-        castItem1P->removeLinhaAssociada(this);
+        castItem2P->removerLinhaAssociada(this);
+        castItem1P->removerLinhaAssociada(this);
         this->removePoligonoAssociado(castItem1P);
         this->removePoligonoAssociado(castItem2P);
     }
@@ -307,17 +307,17 @@ void Ligacao::desconectarObjetos(){
         if ( properPoligono != NULL )
         {
             //Adiciona no vector dessa entidade que esta linha pertence-a.
-            properPoligono->removeLinhaAssociada(this);
-            properPoligono->removeAtributoAssociada(castItemA);
+            properPoligono->removerLinhaAssociada(this);
+            properPoligono->removerAtributoAssociada(castItemA);
 
             castItemA->setParentItem(NULL);
 
-            castItemA->removePoligonoAssociado(properPoligono);
+            castItemA->removerPoligonoAssociado(properPoligono);
             this->removePoligonoAssociado(properPoligono);
         }
 
-        this->removeAtributoAssociada(castItemA);
-        castItemA->removeLinhaAssociada(this);
+        this->removerAtributoAssociado(castItemA);
+        castItemA->removerLinhaAssociada(this);
         castItemA->setConectado(false);
     }
     else
@@ -334,7 +334,7 @@ void Ligacao::desconectarObjetos(){
                 || ((( castItem1P->getTipo() == Poligono::relacionamento ) && ( castItem2P->getTipo() == Poligono::ent_associativa ))
                     || (( castItem1P->getTipo() == Poligono::ent_associativa ) && ( castItem2P->getTipo() == Poligono::relacionamento ))))
         {
-            this->removeCardinalidadeAssociada(cardItem);
+            this->removerCardinalidadeAssociada(cardItem);
 
             cardItem->removePoligonoAssociado(castItem1P);
             cardItem->removePoligonoAssociado(castItem2P);

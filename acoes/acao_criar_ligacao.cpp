@@ -68,8 +68,8 @@ void AcaoCriarLigacao::fazerAcao()
         //        Poligono * cast1P = qgraphicsitem_cast<Poligono *>(item1);
         //        Poligono * cast2P = qgraphicsitem_cast<Poligono *>(item2);
 
-        cast1P->setCardinalidades_Associadas(cardinalidade);
-        cast2P->setCardinalidades_Associadas(cardinalidade);
+        cast1P->addCardinalidadesAssociadas(cardinalidade);
+        cast2P->addCardinalidadesAssociadas(cardinalidade);
 
         scene->addItem(cardinalidade);
     }
@@ -84,8 +84,8 @@ void AcaoCriarLigacao::desfazerAcao()
         //        Poligono * cast1P = qgraphicsitem_cast<Poligono *>(item1);
         //        Poligono * cast2P = qgraphicsitem_cast<Poligono *>(item2);
 
-        cast1P->getCardinalidades_Associadas().removeAll(cardinalidade);
-        cast2P->getCardinalidades_Associadas().removeAll(cardinalidade);
+        cast1P->getCardinalidadesAssociadas().removeAll(cardinalidade);
+        cast2P->getCardinalidadesAssociadas().removeAll(cardinalidade);
         scene->removeItem(cardinalidade);
     }
     ligacao->doRemove(true);
