@@ -32,8 +32,12 @@ public:
 
     void atualizaItem();
     void itemRemovido();
-    void setPoligonoAssociado(Poligono * pol) { polig_associado = pol; }
-    Poligono * getPoligonoAssociado() { return polig_associado; }
+
+    void setPoligonoPai(Poligono * pol) { poligonoPai = pol; }
+    Poligono * getPoligonoPai() { return poligonoPai; }
+
+    void setPoligonoFilho(Poligono * filho) { poligonoFilho = filho; }
+    Poligono * getPoligonoFilho() { return poligonoFilho; }
 
     QList<Atributo *> getAtributosAssociados() { return atributosAssociados.toList(); }
     QList< Cardinalidade *> getCardinalidadesAssociadas() { return cardinalidades_associadas.toList(); }
@@ -94,7 +98,8 @@ private:
 
     bool conectado;
     bool autoRelacionamento;
-    Poligono * polig_associado;
+    Poligono * poligonoPai;
+    Poligono * poligonoFilho;
 
     //Necessário para verificar os itens associados à determinada instância de outros itens.
     QSet< Cardinalidade * > cardinalidades_associadas;

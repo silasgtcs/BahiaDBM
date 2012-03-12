@@ -34,8 +34,10 @@ AcaoCriarPoligono::AcaoCriarPoligono(QGraphicsScene * scene, Poligono::Tipo tipo
 
     if(tipo == Poligono::ent_associativa)
     {
+        mainPol->setPoligonoFilho(childPol);
+
         childPol->setScale(childPol->scale()-0.2);
-        childPol->setPoligonoAssociado(mainPol);
+        childPol->setPoligonoPai(mainPol);
         childPol->setPos(posicao);
 
         mainPol->setZValue(-500);

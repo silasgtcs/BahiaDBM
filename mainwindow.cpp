@@ -263,10 +263,10 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
 
             else if ( castPoligono->getTipo() == Poligono::Tipo(3) )
             {
-                if ( castPoligono->getPoligonoAssociado() > 0 )
+                if ( castPoligono->getPoligonoPai() > 0 )
                 {
                     QString nome = "|_entidade_associativa_|";
-                    out << nome << castPoligono->getPoligonoAssociado()->x() << castPoligono->getPoligonoAssociado()->y() << castPoligono->getPoligonoAssociado()->scale();
+                    out << nome << castPoligono->getPoligonoPai()->x() << castPoligono->getPoligonoPai()->y() << castPoligono->getPoligonoPai()->scale();
                     QList<QGraphicsItem *> txt = castPoligono->childItems();
                     Texto *t = NULL;
                     for ( int j=0; j<txt.size(); j++ )

@@ -32,10 +32,10 @@ AcaoCriarLigacao::AcaoCriarLigacao(QGraphicsScene * scene, QGraphicsItem * item1
 
     if (( cast1P != NULL ) && ( cast2P != NULL ))
     {
-        while(cast1P->getPoligonoAssociado())
-            cast1P = cast1P->getPoligonoAssociado();
-        while(cast2P->getPoligonoAssociado())
-            cast2P = cast2P->getPoligonoAssociado();
+        while(cast1P->getPoligonoPai())
+            cast1P = cast1P->getPoligonoPai();
+        while(cast2P->getPoligonoPai())
+            cast2P = cast2P->getPoligonoPai();
 
         if (( cast1P->getTipo() == Poligono::ent_associativa ) || ( cast2P->getTipo() == Poligono::ent_associativa ))
         {
@@ -45,20 +45,6 @@ AcaoCriarLigacao::AcaoCriarLigacao(QGraphicsScene * scene, QGraphicsItem * item1
             }
         }
     }
-
-    //Altera posição do item para que slot seja ativado e linha seja atualizada.
-    Poligono * properPoligono = (cast1P != NULL) ? cast1P : cast2P;
-    if ( properPoligono != NULL )
-    {
-        properPoligono->moveBy(0.1, 0.1);
-        properPoligono->moveBy(-0.1, -0.1);
-    }
-    Atributo * attr = ligacao->getCastItemA();
-    if(attr){
-        attr->moveBy(0.1, 0.1);
-        attr->moveBy(-0.1, -0.1);
-    }
-
 }
 
 void AcaoCriarLigacao::fazerAcao()

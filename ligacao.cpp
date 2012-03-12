@@ -207,8 +207,6 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
         Poligono * properPoligono = (castItem1P != NULL) ? castItem1P : castItem2P;
         if ( properPoligono != NULL )
         {
-            temp = mapToItem(properPoligono, castItemA->scenePos());
-            castItemA->setPos(temp); //Seta atributo como filho e atualiza posição
             connect(castItemA, SIGNAL(posicaoAlterada()), this, SLOT(atualizaPos()) );
             connect(properPoligono, SIGNAL(posicaoAlterada()), this, SLOT(atualizaPos()) );
         }
@@ -256,6 +254,10 @@ void Ligacao::conectarObjetos(){
             properPoligono->addLinhasAssociadas(this);
             properPoligono->addAtributosAssociados(castItemA);
 
+            if(castItemA->parentItem() == NULL) {
+                temp = mapToItem(properPoligono, castItemA->scenePos());
+                castItemA->setPos(temp); //Seta atributo como filho e atualiza posição
+            }
             castItemA->setParentItem(properPoligono);
 
             castItemA->addPoligonoAssociado(properPoligono);
@@ -286,6 +288,17 @@ void Ligacao::conectarObjetos(){
             cardItem->addPoligonoAssociado(castItem2P);
         }
     }
+    //Altera posição do item para que slot seja ativado e linha seja atualizada.
+    Poligono * properPoligono = (castItem1P != NULL) ? castItem1P : castItem2P;
+    if ( properPoligono != NULL )
+    {
+        properPoligono->moveBy(0.1, 0.1);
+        properPoligono->moveBy(-0.1, -0.1);
+    }
+    if(castItemA){
+        castItemA->moveBy(0.1, 0.1);
+        castItemA->moveBy(-0.1, -0.1);
+    }
 }
 
 void Ligacao::desconectarObjetos(){
@@ -310,6 +323,7 @@ void Ligacao::desconectarObjetos(){
             properPoligono->removerLinhaAssociada(this);
             properPoligono->removerAtributoAssociada(castItemA);
 
+            castItemA->setPos(castItemA->scenePos());
             castItemA->setParentItem(NULL);
 
             castItemA->removerPoligonoAssociado(properPoligono);

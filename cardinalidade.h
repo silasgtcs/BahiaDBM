@@ -17,6 +17,7 @@ public:
     void setItemB ( Poligono *item ) { this->itemB = item; }
 
     void setLinhaAtual ( Ligacao *linha ) { this->linha_atual = linha; }
+
     QString getCardinalidadeAtual() { return this->atualCardinalidade; }
     void setCardinalidadeAtual( QString c ) { this->atualCardinalidade = c; }
 

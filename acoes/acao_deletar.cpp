@@ -14,7 +14,6 @@ void AcaoDeletar::fazerAcao()
 {
     removidos.clear();
     foreach(QGraphicsItem * item, items) {
-        scene->removeItem(item);
         ObjetoRemovivel * objeto = dynamic_cast<ObjetoRemovivel *>(item);
         if(objeto) {
             foreach(QGraphicsItem * subItem, objeto->getToDelete()){
@@ -22,6 +21,7 @@ void AcaoDeletar::fazerAcao()
                 removidos.push_back(subItem);
             }
             objeto->doRemove(true);
+            scene->removeItem(item);
         }
     }
     this->deleted = true;
@@ -68,20 +68,13 @@ void AcaoDeletar::dispose()
             foreach(QGraphicsItem * subItem, objeto->getToDelete()) // Percorre itens associados que devem ser deletados
                 objectsToRemove.insert(subItem);
         }
-
-        Poligono * pol = qgraphicsitem_cast<Poligono *>(item);
-        if(pol)
-            if(pol->getPoligonoAssociado())
-                objectsToRemove.insert(pol->getPoligonoAssociado());
     }
+
+
     foreach(QGraphicsItem * toRemove, objectsToRemove) {
         if(parentIsInSet(objectsToRemove, toRemove)) //Verifica se parentItem ja nao esta no set
            continue;
-        Poligono * pol = qgraphicsitem_cast<Poligono *>(toRemove);
-        if(pol){
-            if(objectsToRemove.contains(pol->getPoligonoAssociado()))
-                continue;
-        }
+
         QObject * obj = dynamic_cast<QObject *>(toRemove);
         if(obj)
             obj->deleteLater();

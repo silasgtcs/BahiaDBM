@@ -25,7 +25,8 @@ Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *s
                      << QPointF(60, 30);
             break;
     }
-    polig_associado = NULL;
+    poligonoPai = NULL;
+    poligonoFilho = NULL;
 
     setPolygon(poligono);
     setConectado(false);
@@ -92,5 +93,24 @@ QList<QGraphicsItem *> Poligono::getToDelete()
             toDelete.push_back(subitem);
         }
     }
+    if(poligonoFilho) {
+        toDelete.push_back(poligonoFilho);
+        foreach(Ligacao * lig, poligonoFilho->getLinhasAssociadas()) {
+            toDelete.push_back(lig);
+            foreach(QGraphicsItem * subitem, lig->getToDelete()) {
+                toDelete.push_back(subitem);
+            }
+        }
+    }
+    if(poligonoPai) {
+        toDelete.push_back(poligonoPai);
+        foreach(Ligacao * lig, poligonoPai->getLinhasAssociadas()) {
+            toDelete.push_back(lig);
+            foreach(QGraphicsItem * subitem, lig->getToDelete()) {
+                toDelete.push_back(subitem);
+            }
+        }
+    }
+
     return toDelete;
 }
