@@ -53,7 +53,7 @@ void Poligono::atualizaItem()
     setPos(x()-0.1, y()-0.1);
 }
 
-void Poligono::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Poligono::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     painter->setBrush(Qt::white);
     if ( isSelected() )

@@ -23,7 +23,7 @@ QVariant Atributo::itemChange(GraphicsItemChange change, const QVariant &value)
     return value;
 }
 
-void Atributo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Atributo::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     switch(tipo)
     {

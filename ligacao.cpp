@@ -65,7 +65,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
             bool controleAR = false;
             if ( castItem2P->getTipo() == Poligono::entidade )
             {
-                QList<Poligono *> verifica = castItem1P->getPoligonoAssociados<Poligono::ent_associativa>();
+                QList<Poligono *> verifica = castItem1P->getPoligonosAssociadoOfType<Poligono::ent_associativa>();
                 for ( int i=0; i<verifica.size(); i++ )
                     if ( verifica[i] == castItem2P )
                     {
@@ -86,7 +86,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
 
             else if ( castItem2P->getTipo() == Poligono::relacionamento )
             {
-                QList<Poligono *> verifica = castItem1P->getPoligonoAssociados<Poligono::relacionamento>();
+                QList<Poligono *> verifica = castItem1P->getPoligonosAssociadoOfType<Poligono::relacionamento>();
                 for ( int i=0; i<verifica.size(); i++ )
                     if ( verifica[i] == castItem2P )
                     {
@@ -107,7 +107,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
 
             else if ( castItem2P->getTipo() == Poligono::gen_esp )
             {
-                QList<Poligono *> verifica = castItem1P->getPoligonoAssociados<Poligono::gen_esp>();
+                QList<Poligono *> verifica = castItem1P->getPoligonosAssociadoOfType<Poligono::gen_esp>();
                 for ( int i=0; i<verifica.size(); i++ )
                     if ( verifica[i] == castItem2P )
                     {
@@ -118,7 +118,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
 
             else if ( castItem2P->getTipo() == Poligono::ent_associativa )
             {
-                QList<Poligono *> verifica = castItem1P->getPoligonoAssociados<Poligono::ent_associativa>();
+                QList<Poligono *> verifica = castItem1P->getPoligonosAssociadoOfType<Poligono::ent_associativa>();
                 for ( int i=0; i<verifica.size(); i++ )
                     if ( verifica[i] == castItem2P )
                     {
@@ -294,12 +294,12 @@ void Ligacao::desconectarObjetos(){
         //Adiciona no vector dessa entidade que esse relacionamento e esta linha pertence-a.
 
         //Nao precisa verificar tipo de cada item,  funcao addPoligonoAssociado ja trata internamente
-        castItem1P->removePoligonoAssociado(castItem2P);
-        castItem2P->removePoligonoAssociado(castItem1P);
+        castItem1P->removerPoligonoAssociado(castItem2P);
+        castItem2P->removerPoligonoAssociado(castItem1P);
         castItem2P->removerLinhaAssociada(this);
         castItem1P->removerLinhaAssociada(this);
-        this->removePoligonoAssociado(castItem1P);
-        this->removePoligonoAssociado(castItem2P);
+        this->removerPoligonoAssociado(castItem1P);
+        this->removerPoligonoAssociado(castItem2P);
     }
     else if ((( castItem1P != NULL ) || ( castItem2P != NULL )) && ( castItemA != NULL ))
     {
@@ -313,7 +313,7 @@ void Ligacao::desconectarObjetos(){
             castItemA->setParentItem(NULL);
 
             castItemA->removerPoligonoAssociado(properPoligono);
-            this->removePoligonoAssociado(properPoligono);
+            this->removerPoligonoAssociado(properPoligono);
         }
 
         this->removerAtributoAssociado(castItemA);
@@ -336,8 +336,8 @@ void Ligacao::desconectarObjetos(){
         {
             this->removerCardinalidadeAssociada(cardItem);
 
-            cardItem->removePoligonoAssociado(castItem1P);
-            cardItem->removePoligonoAssociado(castItem2P);
+            cardItem->removerPoligonoAssociado(castItem1P);
+            cardItem->removerPoligonoAssociado(castItem2P);
         }
     }
 }
@@ -377,7 +377,7 @@ void Ligacao::atualizaPosAutoRelacionamento()
     }
 }
 
-void Ligacao::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Ligacao::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     if ( !getEntidadeFracaAtiva() )
         painter->setPen(QPen(Qt::black, 1.0, Qt::SolidLine));

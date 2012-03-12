@@ -16,7 +16,7 @@ class Ligacao : public QObject, public QGraphicsLineItem, public ObjetoRemovivel
     Q_OBJECT
 public:
     Ligacao( QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent = 0 );
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
     void setEntidadeFracaAtiva( bool set ) { this->entidadeFracaAtiva = set; }
     bool getEntidadeFracaAtiva () { return this->entidadeFracaAtiva; }

@@ -45,7 +45,7 @@ HEADERS  += mainwindow.h \
     acoes/acao_deletar.h \
     objetoremovivel.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
 
 OTHER_FILES += \
     imagens/mouse.png \

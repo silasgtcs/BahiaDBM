@@ -14,10 +14,6 @@
 
 class Diagrama;
 
-namespace Ui {
-    class MainWindow;
-}
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -43,8 +39,6 @@ private slots:
     void salvarComo();
 
 private:
-    Ui::MainWindow *ui;
-
     void createActions();
     void createMenu();
     void createToolBar();

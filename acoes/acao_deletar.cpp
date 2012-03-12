@@ -48,7 +48,7 @@ bool parentIsInSet(QSet<QGraphicsItem *> & set, QGraphicsItem * item) {
         return false;
 
     QGraphicsItem * parent = item;
-    while(parent = parent->parentItem()) //enquanto existir parent
+    while( (parent = parent->parentItem()) != NULL) //enquanto existir parent
         if(set.contains(parent))
             return true;
 
