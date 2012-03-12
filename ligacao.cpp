@@ -65,7 +65,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
             bool controleAR = false;
             if ( castItem2P->getTipo() == Poligono::entidade )
             {
-                QList<Poligono *> verifica = castItem1P->getPoligonosAssociadoOfType<Poligono::ent_associativa>();
+                QList<Poligono *> verifica = castItem1P->getPoligonosAssociadoOfType<Poligono::entidade>();
                 for ( int i=0; i<verifica.size(); i++ )
                     if ( verifica[i] == castItem2P )
                     {

@@ -380,9 +380,18 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
         }
     }
 
+    setArquivoAtual(nomeArquivo);
     QApplication::restoreOverrideCursor();
 
     statusBar()->showMessage(tr("Arquivo salvo com sucesso!"), 2000);
+}
+
+void MainWindow::salvar()
+{
+    if ( nomeArquivoAtual.isEmpty() )
+        salvarComo();
+    else
+        salvarArquivo(nomeArquivoAtual);
 }
 
 void MainWindow::abrirArquivo(const QString nomeArquivo)
@@ -392,10 +401,13 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
     if ( !file.open( QIODevice::ReadOnly) )
     {
         QMessageBox::warning(this, tr("Erro"),
-                             tr("Erro ao salvar arquivo"));
+                             tr("Erro ao abrir arquivo"));
         return;
     }
 
+    QString nome = diminuirNome(nomeArquivo);
+    setArquivoAtualTitulo(nome);
+    setNomeArquivoAtual(nomeArquivo);
     scene->clear();
     pilhaDeAcoes->limpar();
     QDataStream in(&file);
@@ -651,7 +663,15 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
     QApplication::restoreOverrideCursor();
 
+    setArquivoAtual(nomeArquivo);
     statusBar()->showMessage(tr("Arquivo aberto com sucesso!"), 2000);
+}
+
+void MainWindow::abrirArquivoRecente()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action)
+        abrirArquivo(action->data().toString());
 }
 
 void MainWindow::abrir()
@@ -711,10 +731,22 @@ void MainWindow::createActions()
     abrirAction->setStatusTip("Abrir um arquivo .bdm");
     connect(abrirAction, SIGNAL(triggered()), this, SLOT(abrir()));
 
-    salvarAction = new QAction(tr("&Salvar como..."), this);
-    salvarAction->setShortcut(QKeySequence::SaveAs);
-    salvarAction->setStatusTip("Salvar projeto atual");
-    connect(salvarAction, SIGNAL(triggered()), this, SLOT(salvarComo()));
+    salvarAction = new QAction(tr("&Salvar"), this);
+    salvarAction->setShortcut(QKeySequence::Save);
+    salvarAction->setStatusTip("Salvar alterações do projeto atual");
+    connect(salvarAction, SIGNAL(triggered()), this, SLOT(salvar()));
+
+    salvarComoAction = new QAction(tr("&Salvar como..."), this);
+    salvarComoAction->setShortcut(QKeySequence::SaveAs);
+    salvarComoAction->setStatusTip("Salvar projeto atual");
+    connect(salvarComoAction, SIGNAL(triggered()), this, SLOT(salvarComo()));
+
+    for ( int i=0; i<MAXARQRECENTES; i++ )
+    {
+        arquivosRecentes[i] = new QAction(this);
+        arquivosRecentes[i]->setVisible(false);
+        connect(arquivosRecentes[i], SIGNAL(triggered()), this, SLOT(abrirArquivoRecente()));
+    }
 
     sairAction = new QAction(tr("&Sair"), this);
     sairAction->setShortcut(QKeySequence::Quit);
@@ -743,8 +775,13 @@ void MainWindow::createMenu()
     arquivoMenu->addAction(novaAction);
     arquivoMenu->addAction(abrirAction);
     arquivoMenu->addAction(salvarAction);
+    arquivoMenu->addAction(salvarComoAction);
+    arquivoMenu->addSeparator();
+    for ( int i=0; i<MAXARQRECENTES; i++ )
+        arquivoMenu->addAction(arquivosRecentes[i]);
     arquivoMenu->addSeparator();
     arquivoMenu->addAction(sairAction);
+    atualizarAcaoArquivosRecentes();
 
     editarMenu = menuBar()->addMenu(tr("&Editar"));
     editarMenu->addAction(desfazerAction);
@@ -887,4 +924,52 @@ void MainWindow::createToolBar()
     view->setScrool(scroolZoom);
 
     exibicaoToolBar->addWidget(scroolZoom);
+}
+
+void MainWindow::setArquivoAtual(const QString nome)
+{
+    nomeArquivoAtual = nome;
+    setWindowFilePath(nomeArquivoAtual);
+
+    QSettings settings;
+    QStringList files = settings.value("listaArquivosRecentes").toStringList();
+    files.removeAll(nome);
+    files.prepend(nome);
+    while (files.size() > MAXARQRECENTES)
+        files.removeLast();
+
+    settings.setValue("listaArquivosRecentes", files);
+
+    foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+        MainWindow *mainWin = qobject_cast<MainWindow *>(widget);
+        if (mainWin)
+            mainWin->atualizarAcaoArquivosRecentes();
+    }
+}
+
+void MainWindow::atualizarAcaoArquivosRecentes()
+{
+    QSettings settings;
+    QStringList files = settings.value("listaArquivosRecentes").toStringList();
+
+    int numRecentFiles = qMin(files.size(), (int)MAXARQRECENTES);
+
+    for (int i = 0; i < numRecentFiles; ++i) {
+        QString text = tr("&%1 %2").arg(i + 1).arg(diminuirNome(files[i]));
+        arquivosRecentes[i]->setText(text);
+        arquivosRecentes[i]->setData(files[i]);
+        arquivosRecentes[i]->setVisible(true);
+    }
+    for (int j = numRecentFiles; j < MAXARQRECENTES; ++j)
+        arquivosRecentes[j]->setVisible(false);
+}
+
+QString MainWindow::diminuirNome(const QString nomeCompleto)
+{
+    return QFileInfo(nomeCompleto).fileName();
+}
+
+void MainWindow::setArquivoAtualTitulo(const QString nome)
+{
+    setWindowTitle(nome+" - BahiaDBM");
 }

@@ -1,5 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+#define MAXARQRECENTES 5
 
 #include "ligacao.h"
 #include "diagrama.h"
@@ -36,7 +37,9 @@ private slots:
     void refazer();
     void novaJanela();
     void abrir();
+    void salvar();
     void salvarComo();
+    void abrirArquivoRecente();
 
 private:
     void createActions();
@@ -46,6 +49,11 @@ private:
     void salvarArquivo(const QString nomeArquivo);
     void abrirArquivo(const QString nomeArquivo);
     void deletarSelecionados();
+    void setNomeArquivoAtual(QString nome) { this->nomeArquivoAtual = nome; }
+    void setArquivoAtual(const QString nomeArquivo);
+    void atualizarAcaoArquivosRecentes();
+    void setArquivoAtualTitulo(const QString nome);
+    QString diminuirNome(const QString nomeCompleto);
 
     AcoesPilha * pilhaDeAcoes;
 
@@ -58,8 +66,10 @@ private:
     QAction *desfazerAction;
     QAction *refazerAction;
     QAction *abrirAction;
+    QAction *salvarComoAction;
     QAction *salvarAction;
     QAction *novaAction;
+    QAction *arquivosRecentes[MAXARQRECENTES];
 
     QMenu *arquivoMenu;
     QMenu *editarMenu;
@@ -92,6 +102,8 @@ private:
 
     QToolBar * exibicaoToolBar;
     QSpinBox * scroolZoom;
+
+    QString nomeArquivoAtual;
 };
 
 #endif // MAINWINDOW_H
