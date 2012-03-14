@@ -40,6 +40,7 @@ private slots:
     void salvar();
     void salvarComo();
     void abrirArquivoRecente();
+    void fecharDiagrama();
 
 private:
     void createActions();
@@ -54,6 +55,8 @@ private:
     void atualizarAcaoArquivosRecentes();
     void setArquivoAtualTitulo(const QString nome);
     QString diminuirNome(const QString nomeCompleto);
+    void criarScene();
+    void deletarScene();
 
     AcoesPilha * pilhaDeAcoes;
 
@@ -70,6 +73,7 @@ private:
     QAction *salvarAction;
     QAction *novaAction;
     QAction *arquivosRecentes[MAXARQRECENTES];
+    QAction *fecharDiagramaAtual;
 
     QMenu *arquivoMenu;
     QMenu *editarMenu;

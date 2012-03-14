@@ -3,9 +3,20 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-
     pilhaDeAcoes = AcoesPilha::instanciaUnica();
 
+    criarScene();
+    createActions();
+    createMenu();
+    createToolBar();
+}
+
+MainWindow::~MainWindow()
+{
+}
+
+void MainWindow::criarScene()
+{
     scene = new Diagrama(this);
     scene->setSceneRect(QRectF(0, 0, 5000, 5000));
     connect(scene, SIGNAL(itemInserido()),
@@ -15,10 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(view);
 
-    createActions();
-    createMenu();
-    createToolBar();
-
     QWidget *widget = new QWidget;
     widget->setLayout(layout);
 
@@ -26,8 +33,12 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle("BahiaDBM");
 }
 
-MainWindow::~MainWindow()
+void MainWindow::deletarScene()
 {
+    delete scene;
+    delete view;
+    scene = NULL;
+    view = NULL;
 }
 
 void MainWindow::itemInserido()
@@ -405,14 +416,16 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
         return;
     }
 
+    if ( scene )
+        deletarScene();
+
     QString nome = diminuirNome(nomeArquivo);
     setArquivoAtualTitulo(nome);
     setNomeArquivoAtual(nomeArquivo);
-    scene->clear();
     pilhaDeAcoes->limpar();
     QDataStream in(&file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
-
+    criarScene();
 
     Poligono *abrirPoligono;
     Atributo *abrirAtributo;
@@ -684,7 +697,9 @@ void MainWindow::abrir()
 
 void MainWindow::salvarComo()
 {
-    QString nomeArquivo = QFileDialog::getSaveFileName(this);
+    QString nomeArquivo = QFileDialog::getSaveFileName(this,tr("Save File"),
+                                                       "meudiagrama.bdm",
+                                                       tr("BahiaDBM (*.bdm)"));
     if (nomeArquivo.isEmpty())
         return;
 
@@ -741,6 +756,11 @@ void MainWindow::createActions()
     salvarComoAction->setStatusTip("Salvar projeto atual");
     connect(salvarComoAction, SIGNAL(triggered()), this, SLOT(salvarComo()));
 
+    fecharDiagramaAtual = new QAction(tr("&Fechar Diagrama"), this);
+    fecharDiagramaAtual->setShortcut(tr("Ctrl+D"));
+    fecharDiagramaAtual->setStatusTip("Fechar diagrama atual");
+    connect(fecharDiagramaAtual, SIGNAL(triggered()), this, SLOT(fecharDiagrama()));
+
     for ( int i=0; i<MAXARQRECENTES; i++ )
     {
         arquivosRecentes[i] = new QAction(this);
@@ -776,6 +796,8 @@ void MainWindow::createMenu()
     arquivoMenu->addAction(abrirAction);
     arquivoMenu->addAction(salvarAction);
     arquivoMenu->addAction(salvarComoAction);
+    arquivoMenu->addSeparator();
+    arquivoMenu->addAction(fecharDiagramaAtual);
     arquivoMenu->addSeparator();
     for ( int i=0; i<MAXARQRECENTES; i++ )
         arquivoMenu->addAction(arquivosRecentes[i]);
@@ -972,4 +994,10 @@ QString MainWindow::diminuirNome(const QString nomeCompleto)
 void MainWindow::setArquivoAtualTitulo(const QString nome)
 {
     setWindowTitle(nome+" - BahiaDBM");
+}
+
+void MainWindow::fecharDiagrama()
+{
+    if (scene)
+        deletarScene();
 }
