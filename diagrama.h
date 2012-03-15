@@ -17,7 +17,7 @@ class Diagrama : public QGraphicsScene
     Q_OBJECT
 
 public:
-    Diagrama(QObject *parent = 0);
+    Diagrama(QObject *parent, AcoesPilha * pilhaDeAcoes);
     enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };
 
 public slots:

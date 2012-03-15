@@ -41,6 +41,7 @@ private slots:
     void salvarComo();
     void abrirArquivoRecente();
     void fecharDiagrama();
+    void houveModificacao();
 
 private:
     void createActions();
@@ -57,6 +58,7 @@ private:
     QString diminuirNome(const QString nomeCompleto);
     void criarScene();
     void deletarScene();
+    bool questionarSalvar();
 
     AcoesPilha * pilhaDeAcoes;
 

@@ -1,8 +1,9 @@
 #include <QtGui>
 
 #include "diagrama.h"
+#include "acoespilha.h"
 
-Diagrama::Diagrama( QObject *parent ) : QGraphicsScene(parent)
+Diagrama::Diagrama( QObject *parent, AcoesPilha * pilhaDeAcoes ) : QGraphicsScene(parent)
 {
     novaLinha = NULL;
     ativaSelecao = false;
@@ -12,7 +13,7 @@ Diagrama::Diagrama( QObject *parent ) : QGraphicsScene(parent)
     countAtributo = 1;
     countAtributoIdentificador = 1;
     countEntidadeAssociativa = 1;
-    pilhaDeAcoes = AcoesPilha::instanciaUnica();
+    this->pilhaDeAcoes = pilhaDeAcoes;
 }
 
 void Diagrama::mousePressEvent(QGraphicsSceneMouseEvent *event)

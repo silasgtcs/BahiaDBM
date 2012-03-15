@@ -3,7 +3,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    pilhaDeAcoes = AcoesPilha::instanciaUnica();
+    pilhaDeAcoes = new AcoesPilha();
+    connect(pilhaDeAcoes, SIGNAL(changed()), this, SLOT(houveModificacao()));
 
     criarScene();
     createActions();
@@ -17,7 +18,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::criarScene()
 {
-    scene = new Diagrama(this);
+    scene = new Diagrama(this, pilhaDeAcoes);
+    pilhaDeAcoes->setUnchaged();
     scene->setSceneRect(QRectF(0, 0, 5000, 5000));
     connect(scene, SIGNAL(itemInserido()),
             this, SLOT(itemInserido()));
@@ -35,10 +37,13 @@ void MainWindow::criarScene()
 
 void MainWindow::deletarScene()
 {
+    pilhaDeAcoes->limpar();
+    pilhaDeAcoes->setUnchaged();
     delete scene;
     delete view;
     scene = NULL;
     view = NULL;
+    setArquivoAtualTitulo("");
 }
 
 void MainWindow::itemInserido()
@@ -391,7 +396,9 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
         }
     }
 
+    pilhaDeAcoes->setUnchaged();
     setArquivoAtual(nomeArquivo);
+    setArquivoAtualTitulo(diminuirNome(nomeArquivo));
     QApplication::restoreOverrideCursor();
 
     statusBar()->showMessage(tr("Arquivo salvo com sucesso!"), 2000);
@@ -419,10 +426,6 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
     if ( scene )
         deletarScene();
 
-    QString nome = diminuirNome(nomeArquivo);
-    setArquivoAtualTitulo(nome);
-    setNomeArquivoAtual(nomeArquivo);
-    pilhaDeAcoes->limpar();
     QDataStream in(&file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
     criarScene();
@@ -676,12 +679,19 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
     QApplication::restoreOverrideCursor();
 
+    QString nome = diminuirNome(nomeArquivo);
+    setArquivoAtualTitulo(nome);
+    setNomeArquivoAtual(nomeArquivo);
+
     setArquivoAtual(nomeArquivo);
+    pilhaDeAcoes->setUnchaged();
     statusBar()->showMessage(tr("Arquivo aberto com sucesso!"), 2000);
 }
 
 void MainWindow::abrirArquivoRecente()
 {
+    if(!questionarSalvar())
+        return;
     QAction *action = qobject_cast<QAction *>(sender());
     if (action)
         abrirArquivo(action->data().toString());
@@ -689,6 +699,8 @@ void MainWindow::abrirArquivoRecente()
 
 void MainWindow::abrir()
 {
+    if(!questionarSalvar())
+        return;
     QString nomeArquivo = QFileDialog::getOpenFileName(this, tr("Abrir..."), "",
                                                        tr("BahiaDBM (*.bdm)"));
     if (!nomeArquivo.isEmpty())
@@ -996,8 +1008,29 @@ void MainWindow::setArquivoAtualTitulo(const QString nome)
     setWindowTitle(nome+" - BahiaDBM");
 }
 
+bool MainWindow::questionarSalvar(){
+    if(pilhaDeAcoes->hasChanged()) {
+        int res = QMessageBox::question(this, "Deseja salvar?", "Diagrama foi alterado, deseja salva-lo?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
+
+        if(res == QMessageBox::Yes)
+            salvar();
+        else if(res == QMessageBox::Cancel)
+            return false; // Nao fecha Diagrama
+    }
+    return true;
+}
+
 void MainWindow::fecharDiagrama()
 {
-    if (scene)
+    if (scene) {
+        if(!questionarSalvar())
+            return;
         deletarScene();
+    }
+}
+
+void MainWindow::houveModificacao()
+{
+    if(!windowTitle().startsWith("(*) "))
+        setWindowTitle( "(*) " + windowTitle());
 }

@@ -1,7 +1,13 @@
 #include "acoespilha.h"
 
-AcoesPilha::AcoesPilha() : posAtual(-1)
+AcoesPilha::AcoesPilha() : posAtual(-1), _changed(false)
 {
+}
+
+void AcoesPilha::setChanged()
+{
+    _changed = true;
+    emit changed();
 }
 
 Acao * AcoesPilha::getTopCommand()
@@ -33,6 +39,8 @@ void AcoesPilha::addAcao(Acao *acao, bool run)
     }
     if(run)
         acao->fazerAcao();
+
+    setChanged();
 }
 
 bool AcoesPilha::desfazer()
@@ -42,6 +50,7 @@ bool AcoesPilha::desfazer()
 
     pilhaDeAcoes.at(posAtual)->desfazerAcao();
     posAtual--;
+    setChanged();
     return true;
 }
 
@@ -51,6 +60,7 @@ bool AcoesPilha::refazer()
             return false;
 
     pilhaDeAcoes.at(++posAtual)->fazerAcao();
+    setChanged();
     return true;
 }
 
@@ -61,4 +71,5 @@ void AcoesPilha::limpar()
         pilhaDeAcoes.at(i)->deleteLater();
     }
     pilhaDeAcoes.clear();
+    setChanged();
 }

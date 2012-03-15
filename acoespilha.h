@@ -11,22 +11,27 @@
 #include "acoes/acao_deletar.h"
 #include "QList"
 
-class AcoesPilha
+class AcoesPilha : public QObject
 {
+    Q_OBJECT
 private:
     QList<Acao *> pilhaDeAcoes;
     int posAtual;
-
-    AcoesPilha();
-    AcoesPilha(AcoesPilha const&);     // Nao implementar
-    void operator=(AcoesPilha const&); // Nao implementar
+    bool _changed;
+    void setChanged();
 
 public:
+    AcoesPilha();
+
+/*
+    AcoesPilha(AcoesPilha const&); // Nao implementar
+    void operator=(AcoesPilha const&); // Nao implementar
     static AcoesPilha * instanciaUnica() // Singleton
     {
         static AcoesPilha instance;
         return &instance;
     }
+*/
 
     Acao * getTopCommand();
     void addAcao(Acao * command);
@@ -34,6 +39,11 @@ public:
     bool desfazer();
     bool refazer();
     void limpar();
+    void setUnchaged() { _changed = false; }
+    bool hasChanged() { return _changed; }
+
+signals:
+    void changed();
 };
 
 #endif // ACOESPILHA_H
