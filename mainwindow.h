@@ -42,6 +42,8 @@ private slots:
     void abrirArquivoRecente();
     void fecharDiagrama();
     void houveModificacao();
+protected:
+    virtual void closeEvent(QCloseEvent *);
 
 private:
     void createActions();

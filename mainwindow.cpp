@@ -168,8 +168,13 @@ void MainWindow::refazer()
 
 void MainWindow::novaJanela()
 {
-    MainWindow *novaJanela = new MainWindow;
-    novaJanela->show();
+    if (!scene)
+        criarScene();
+    else
+    {
+        MainWindow *novaJanela = new MainWindow;
+        novaJanela->show();
+    }
 }
 
 void MainWindow::salvarArquivo(const QString nomeArquivo)
@@ -1033,4 +1038,13 @@ void MainWindow::houveModificacao()
 {
     if(!windowTitle().startsWith("(*) "))
         setWindowTitle( "(*) " + windowTitle());
+}
+
+void MainWindow::closeEvent(QCloseEvent * event)
+{
+    if(!questionarSalvar()) {
+        event->ignore();
+        return;
+    }
+    QMainWindow::closeEvent(event);
 }
