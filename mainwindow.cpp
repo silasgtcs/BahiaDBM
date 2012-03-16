@@ -10,10 +10,22 @@ MainWindow::MainWindow(QWidget *parent) :
     createActions();
     createMenu();
     createToolBar();
+    resetWindowState();
 }
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::resetWindowState() {
+
+    if(scroolZoom && view) {
+        connect(scroolZoom, SIGNAL(valueChanged(int)), view, SLOT(setarZoom(int)));
+        scroolZoom->setValue(100);
+
+        //Associa scrool ao graphicView(assim wheel do mouse pode ser redirecionado para o scroll)
+        view->setScrool(scroolZoom);
+    }
 }
 
 void MainWindow::criarScene()
@@ -39,8 +51,8 @@ void MainWindow::deletarScene()
 {
     pilhaDeAcoes->limpar();
     pilhaDeAcoes->setUnchaged();
-    delete scene;
-    delete view;
+    scene->deleteLater();
+    view->deleteLater();
     scene = NULL;
     view = NULL;
     setArquivoAtualTitulo("");
@@ -429,6 +441,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
     QDataStream in(&file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
     criarScene();
+    resetWindowState();
 
     Poligono *abrirPoligono;
     Atributo *abrirAtributo;
@@ -952,10 +965,6 @@ void MainWindow::createToolBar()
     scroolZoom->setMaximum(500);
     scroolZoom->setMinimum(10);
     scroolZoom->setValue(100);
-    connect(scroolZoom, SIGNAL(valueChanged(int)), view, SLOT(setarZoom(int)));
-
-    //Associa scrool ao graphicView(assim wheel do mouse pode ser redirecionado para o scroll)
-    view->setScrool(scroolZoom);
 
     exibicaoToolBar->addWidget(scroolZoom);
 }

@@ -59,6 +59,7 @@ private:
     void criarScene();
     void deletarScene();
     bool questionarSalvar();
+    void resetWindowState();
 
     AcoesPilha * pilhaDeAcoes;
 
