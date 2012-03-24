@@ -70,6 +70,7 @@ void AcoesPilha::limpar()
         //pilhaDeAcoes.at(i)->dispose();
         pilhaDeAcoes.at(i)->deleteLater();
     }
+    posAtual = -1;
     pilhaDeAcoes.clear();
     setChanged();
 }
