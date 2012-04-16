@@ -42,6 +42,7 @@ private slots:
     void abrirArquivoRecente();
     void fecharDiagrama();
     void houveModificacao();
+    void abaAlterada(int index);
 protected:
     virtual void closeEvent(QCloseEvent *);
 
@@ -65,8 +66,12 @@ private:
 
     AcoesPilha * pilhaDeAcoes;
 
-    Diagrama *scene;
-    DiagramaView *view;
+    Diagrama *sceneConceitual;
+    Diagrama *sceneLogico;
+    Diagrama *sceneFisico;
+    DiagramaView *viewConceitual;
+    DiagramaView *viewLogico;
+    DiagramaView *viewFisico;
     Poligono *cast_poligono;
 
     QAction *sairAction;
@@ -113,6 +118,8 @@ private:
     QSpinBox * scroolZoom;
 
     QString nomeArquivoAtual;
+
+    QTabWidget *tabWidget;
 };
 
 #endif // MAINWINDOW_H

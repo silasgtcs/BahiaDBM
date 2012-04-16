@@ -6,11 +6,13 @@ MainWindow::MainWindow(QWidget *parent) :
     pilhaDeAcoes = new AcoesPilha();
     connect(pilhaDeAcoes, SIGNAL(changed()), this, SLOT(houveModificacao()));
 
-    criarScene();
     createActions();
     createMenu();
     createToolBar();
+    criarScene();
     resetWindowState();
+
+    statusBar()->showMessage(tr("Bahia Database Modeler"), 2000);
 }
 
 MainWindow::~MainWindow()
@@ -19,49 +21,89 @@ MainWindow::~MainWindow()
 
 void MainWindow::resetWindowState() {
 
-    if(scroolZoom && view) {
-        connect(scroolZoom, SIGNAL(valueChanged(int)), view, SLOT(setarZoom(int)));
+    if(scroolZoom && viewConceitual) {
+        connect(scroolZoom, SIGNAL(valueChanged(int)), viewConceitual, SLOT(setarZoom(int)));
         scroolZoom->setValue(100);
 
         //Associa scrool ao graphicView(assim wheel do mouse pode ser redirecionado para o scroll)
-        view->setScrool(scroolZoom);
+        viewConceitual->setScrool(scroolZoom);
     }
 }
 
 void MainWindow::criarScene()
 {
-    scene = new Diagrama(this, pilhaDeAcoes);
+    //Cria diagrama conceitual
+    sceneConceitual = new Diagrama(this, pilhaDeAcoes);
     pilhaDeAcoes->setUnchaged();
-    scene->setSceneRect(QRectF(0, 0, 5000, 5000));
-    connect(scene, SIGNAL(itemInserido()),
+    sceneConceitual->setSceneRect(QRectF(0, 0, 5000, 5000));
+    connect(sceneConceitual, SIGNAL(itemInserido()),
             this, SLOT(itemInserido()));
-    scene->setTipoER(Diagrama::TipoER(7));
-    view = new DiagramaView(scene);
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(view);
+    sceneConceitual->setTipoER(Diagrama::TipoER(7));
+    viewConceitual = new DiagramaView(sceneConceitual);
 
-    QWidget *widget = new QWidget;
-    widget->setLayout(layout);
+    //Cria diagrama lógico
+    sceneLogico = new Diagrama(this, pilhaDeAcoes);
+    pilhaDeAcoes->setUnchaged();
+    sceneLogico->setSceneRect(QRectF(0, 0, 5000, 5000));
+    sceneLogico->setTipoER(Diagrama::TipoER(7));
+    viewLogico = new DiagramaView(sceneLogico);
 
-    setCentralWidget(widget);
+    //Cria diagrama físico
+    sceneFisico = new Diagrama(this, pilhaDeAcoes);
+    pilhaDeAcoes->setUnchaged();
+    sceneFisico->setSceneRect(QRectF(0, 0, 5000, 5000));
+    sceneFisico->setTipoER(Diagrama::TipoER(7));
+    viewFisico = new DiagramaView(sceneFisico);
+
+//    QHBoxLayout *layout = new QHBoxLayout;
+//    layout->addWidget(view);
+
+//    QWidget *widget = new QWidget;
+//    widget->setLayout(layout);
+
+    tabWidget = new QTabWidget;
+    tabWidget->addTab(viewConceitual, tr("Conceitual"));
+    tabWidget->addTab(viewLogico, tr("  Logico  "));
+    tabWidget->addTab(viewFisico, tr("  Fisico  "));
+    connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(abaAlterada(const int)));
+
+    setCentralWidget(tabWidget);
     setWindowTitle("BahiaDBM");
+
+    manipulacoes->setEnabled(true);
+    mouseLinha->setEnabled(true);
+    formas->setEnabled(true);
+    exibicaoToolBar->setEnabled(true);
 }
 
 void MainWindow::deletarScene()
 {
     pilhaDeAcoes->limpar();
     pilhaDeAcoes->setUnchaged();
-    scene->deleteLater();
-    view->deleteLater();
-    scene = NULL;
-    view = NULL;
+    sceneConceitual->deleteLater();
+    viewConceitual->deleteLater();
+    sceneConceitual = NULL;
+    viewConceitual = NULL;
+    sceneLogico->deleteLater();
+    viewLogico->deleteLater();
+    sceneLogico = NULL;
+    viewLogico = NULL;
+    sceneFisico->deleteLater();
+    viewFisico->deleteLater();
+    sceneFisico = NULL;
+    viewFisico = NULL;
     setArquivoAtualTitulo("");
+
+    manipulacoes->setEnabled(false);
+    mouseLinha->setEnabled(false);
+    formas->setEnabled(false);
+    exibicaoToolBar->setEnabled(false);
 }
 
 void MainWindow::itemInserido()
 {
-    botoesER->button(int(scene->getTipoER()))->setChecked(false);
-    scene->setTipoER(Diagrama::TipoER(7)); //Tipo(7) = nenhum
+    botoesER->button(int(sceneConceitual->getTipoER()))->setChecked(false);
+    sceneConceitual->setTipoER(Diagrama::TipoER(7)); //Tipo(7) = nenhum
     botoesML->button(0)->setChecked(true);
     botoesML->button(1)->setChecked(false);
 }
@@ -73,15 +115,15 @@ void MainWindow::botoesERClicked(int id)
         if ( botoesER->button(id) != botao )
             botao->setChecked(false);
 
-    scene->setTipoER(Diagrama::TipoER(id));
+    sceneConceitual->setTipoER(Diagrama::TipoER(id));
 
     /*Inicialmente verifica se botão clicado é o "EF". Caso afirmativo, verifica se existe alguma linha selecionada, e então aumenta
       a sua espessura.*/
     if ( id == 6 )
     {
-        scene->setTipoER(Diagrama::TipoER(7));
+        sceneConceitual->setTipoER(Diagrama::TipoER(7));
 
-        QList<QGraphicsItem *> entidade = scene->selectedItems();
+        QList<QGraphicsItem *> entidade = sceneConceitual->selectedItems();
 
         if ((entidade.length() > 0) && ( entidade[0]->type() == Ligacao::Type ))
         {
@@ -97,7 +139,7 @@ void MainWindow::botoesManipClicked(int id)
 
     if(id == 0 || id == 1)
     {
-        QList<QGraphicsItem *> itens = scene->selectedItems();
+        QList<QGraphicsItem *> itens = sceneConceitual->selectedItems();
         for ( int i=0; i<itens.size(); i++ )
         {
             if(itens[i]->type() == Poligono::Type || itens[i]->type() == Atributo::Type || itens[i]->type() == Texto::Type)
@@ -131,7 +173,7 @@ void MainWindow::botoesManipClicked(int id)
 
 void MainWindow::organizarEntidades(int direcao) // 0 = Hor, 1 = Vert
 {
-    QList<QGraphicsItem*> itemsSelecionados = scene->selectedItems();
+    QList<QGraphicsItem*> itemsSelecionados = sceneConceitual->selectedItems();
     QGraphicsItem* item;
     QGraphicsItem* lastItem = NULL;
     QGraphicsItem* firstItem = NULL;
@@ -180,7 +222,7 @@ void MainWindow::refazer()
 
 void MainWindow::novaJanela()
 {
-    if (!scene)
+    if (!sceneConceitual)
         criarScene();
     else
     {
@@ -230,7 +272,7 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
     //Retorna todos os objetos do diagrama para serializá-los.
-    QList<QGraphicsItem *> obj = scene->items();
+    QList<QGraphicsItem *> obj = sceneConceitual->items();
     for ( int i=0; i<obj.size(); i++ )
     {
         if(obj.at(i)->type() == Poligono::Type)
@@ -440,7 +482,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
         return;
     }
 
-    if ( scene )
+    if ( sceneConceitual )
         deletarScene();
 
     QDataStream in(&file);
@@ -461,10 +503,10 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
         in >> head;
         if ( head == "|_entidade_|" )
         {
-            abrirPoligono = new Poligono(Poligono::entidade,true,0,scene);
+            abrirPoligono = new Poligono(Poligono::entidade,true,0,sceneConceitual);
             abrirTexto = new Texto();
             abrirTexto->setTextInteractionFlags(Qt::TextEditorInteraction);
-            scene->addItem(abrirTexto);
+            sceneConceitual->addItem(abrirTexto);
             abrirTexto->setFocus();
             abrirTexto->setParentItem(abrirPoligono);
             float x, y, s;
@@ -480,10 +522,10 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
         else if ( head == "|_relacionamento_|" )
         {
-            abrirPoligono = new Poligono(Poligono::relacionamento,true,0,scene);
+            abrirPoligono = new Poligono(Poligono::relacionamento,true,0,sceneConceitual);
             abrirTexto = new Texto();
             abrirTexto->setTextInteractionFlags(Qt::TextEditorInteraction);
-            scene->addItem(abrirTexto);
+            sceneConceitual->addItem(abrirTexto);
             abrirTexto->setFocus();
             abrirTexto->setParentItem(abrirPoligono);
             float x, y, s;
@@ -506,8 +548,8 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
                 abrirAutoRelacionamento2 = new Texto();
                 abrirAutoRelacionamento1->setTextInteractionFlags(Qt::TextEditorInteraction);
                 abrirAutoRelacionamento2->setTextInteractionFlags(Qt::TextEditorInteraction);
-                scene->addItem(abrirAutoRelacionamento1);
-                scene->addItem(abrirAutoRelacionamento2);
+                sceneConceitual->addItem(abrirAutoRelacionamento1);
+                sceneConceitual->addItem(abrirAutoRelacionamento2);
                 abrirAutoRelacionamento1->setParentItem(abrirPoligono);
                 abrirAutoRelacionamento2->setParentItem(abrirPoligono);
                 abrirAutoRelacionamento1->setPos(x1, y1);
@@ -521,12 +563,12 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
         else if ( head == "|_generalizacao_especializacao_|" )
         {
-            abrirPoligono = new Poligono(Poligono::gen_esp,true,0,scene);
+            abrirPoligono = new Poligono(Poligono::gen_esp,true,0,sceneConceitual);
             abrirTexto = new Texto();
             abrirTexto->setFlag(QGraphicsItem::ItemIsMovable, false);
             abrirTexto->setFlag(QGraphicsItem::ItemIsSelectable, false);
             abrirTexto->setCursor(Qt::PointingHandCursor);
-            scene->addItem(abrirTexto);
+            sceneConceitual->addItem(abrirTexto);
             abrirTexto->setFocus();
             abrirTexto->setParentItem(abrirPoligono);
             abrirTexto->setGenEspAtiva(true);
@@ -551,16 +593,16 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
             QPointF posicao;
             posicao.setX(x);
             posicao.setY(y);
-            AcaoCriarPoligono *acao = new AcaoCriarPoligono(scene, Poligono::ent_associativa, txt, posicao);
+            AcaoCriarPoligono *acao = new AcaoCriarPoligono(sceneConceitual, Poligono::ent_associativa, txt, posicao);
             acao->fazerAcao();
             acao->getPoligono()->setScale(s);
         }
 
         else if ( head == "|_atributo_|" )
         {
-            abrirAtributo = new Atributo(Atributo::atributo,0,scene);
+            abrirAtributo = new Atributo(Atributo::atributo,0,sceneConceitual);
             abrirTexto = new Texto();
-            scene->addItem(abrirTexto);
+            sceneConceitual->addItem(abrirTexto);
             abrirTexto->setFocus();
             abrirTexto->setParentItem(abrirAtributo);
             float x, y, s;
@@ -576,9 +618,9 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
         else if ( head == "|_atributo_identificador_|" )
         {
-            abrirAtributo = new Atributo(Atributo::atributo_identif,0,scene);
+            abrirAtributo = new Atributo(Atributo::atributo_identif,0,sceneConceitual);
             abrirTexto = new Texto();
-            scene->addItem(abrirTexto);
+            sceneConceitual->addItem(abrirTexto);
             abrirTexto->setFocus();
             abrirTexto->setParentItem(abrirAtributo);
             float x, y, s;
@@ -599,7 +641,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
             QGraphicsItem *item[2];
             int count = 0;
 
-            QList<QGraphicsItem *> obj = scene->items();
+            QList<QGraphicsItem *> obj = sceneConceitual->items();
             for ( int i=0; i<obj.size(); i++ )
             {
                 if(obj.at(i)->type() == Poligono::Type)
@@ -613,7 +655,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
             Ligacao *ligacao = new Ligacao( item[0], item[1] );
             ligacao->setZValue(-1000.0);
-            scene->addItem(ligacao);
+            sceneConceitual->addItem(ligacao);
 
             bool entidadeFraca;
             QString card;
@@ -638,7 +680,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
             abrirCardinalidade->addPoligonoAssociado(castPoligono);
             abrirCardinalidade->addPoligonoAssociado(castPoligono2);
 
-            scene->addItem(abrirCardinalidade);
+            sceneConceitual->addItem(abrirCardinalidade);
 
             item[0]->setPos(item[0]->x()+0.1, item[0]->y()+0.1);
             item[0]->setPos(item[0]->x()-0.1, item[0]->y()-0.1);
@@ -655,7 +697,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
             if ( nome == "|_com_atributo_|" )
             {
-                QList<QGraphicsItem *> obj = scene->items();
+                QList<QGraphicsItem *> obj = sceneConceitual->items();
                 for ( int i=0; i<obj.size(); i++ )
                 {
                     if((obj.at(i)->type() == Poligono::Type) || (obj.at(i)->type() == Atributo::Type))
@@ -669,7 +711,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
             }
             else
             {
-                QList<QGraphicsItem *> obj = scene->items();
+                QList<QGraphicsItem *> obj = sceneConceitual->items();
                 for ( int i=0; i<obj.size(); i++ )
                 {
                     if(obj.at(i)->type() == Poligono::Type)
@@ -684,7 +726,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
             Ligacao *ligacao = new Ligacao( item[0], item[1] );
             ligacao->setZValue(-1000.0);
-            scene->addItem(ligacao);
+            sceneConceitual->addItem(ligacao);
 
             bool entidadeFraca;
             in >> entidadeFraca;
@@ -744,18 +786,18 @@ void MainWindow::botoesMLClicked(int id)
             botao->setChecked(false);
 
     if ( id == 0 ) //Mouse
-        scene->setTipoER(Diagrama::TipoER(7));
+        sceneConceitual->setTipoER(Diagrama::TipoER(7));
     else if ( id == 1 ) //Linha
-        scene->setTipoER(Diagrama::TipoER(6));
+        sceneConceitual->setTipoER(Diagrama::TipoER(6));
     else //Remover
         deletarSelecionados();
 }
 
 void MainWindow::deletarSelecionados() {
-    if(scene->selectedItems().size() <= 0)
+    if(sceneConceitual->selectedItems().size() <= 0)
         return;
 
-    AcaoDeletar * deletar = new AcaoDeletar(this->scene, this->scene->selectedItems());
+    AcaoDeletar * deletar = new AcaoDeletar(this->sceneConceitual, this->sceneConceitual->selectedItems());
     pilhaDeAcoes->addAcao(deletar, true);
 }
 
@@ -1036,7 +1078,7 @@ bool MainWindow::questionarSalvar(){
 
 void MainWindow::fecharDiagrama()
 {
-    if (scene) {
+    if (sceneConceitual) {
         if(!questionarSalvar())
             return;
         deletarScene();
@@ -1056,4 +1098,28 @@ void MainWindow::closeEvent(QCloseEvent * event)
         return;
     }
     QMainWindow::closeEvent(event);
+}
+
+void MainWindow::abaAlterada(int index)
+{
+    //Aba "Conceitual"
+    if ( index == 0 )
+    {
+        if ( sceneConceitual != NULL )
+            formas->setEnabled(true);
+    }
+
+    //Aba "Logico"
+    else if ( index == 1 )
+    {
+        if ( sceneLogico != NULL )
+            formas->setEnabled(false);
+    }
+
+    //Aba "Fisico"
+    else if ( index == 2 )
+    {
+        if ( sceneFisico != NULL )
+            formas->setEnabled(false);
+    }
 }
