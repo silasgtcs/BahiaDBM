@@ -48,6 +48,8 @@ void MainWindow::criarScene()
     sceneLogico->setTipoER(Diagrama::TipoER(7));
     viewLogico = new DiagramaView(sceneLogico);
 
+    Tabela *t = new Tabela(NULL, sceneLogico);
+
     //Cria diagrama físico
     sceneFisico = new Diagrama(this, pilhaDeAcoes);
     pilhaDeAcoes->setUnchaged();
@@ -62,9 +64,9 @@ void MainWindow::criarScene()
 //    widget->setLayout(layout);
 
     tabWidget = new QTabWidget;
-    tabWidget->addTab(viewConceitual, tr("Conceitual"));
-    tabWidget->addTab(viewLogico, tr("  Logico  "));
-    tabWidget->addTab(viewFisico, tr("  Fisico  "));
+    tabWidget->addTab(viewConceitual, trUtf8("Conceitual"));
+    tabWidget->addTab(viewLogico, trUtf8("  Lógico  "));
+    tabWidget->addTab(viewFisico, trUtf8("  Físico  "));
     connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(abaAlterada(const int)));
 
     setCentralWidget(tabWidget);
@@ -263,8 +265,8 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
 
     if ( !file.open(QIODevice::WriteOnly) )
     {
-        QMessageBox::warning(this, tr("Erro"),
-                             tr("Erro ao salvar arquivo"));
+        QMessageBox::warning(this, trUtf8("Erro"),
+                             trUtf8("Erro ao salvar arquivo"));
         return;
     }
 
@@ -460,7 +462,7 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
     setArquivoAtualTitulo(diminuirNome(nomeArquivo));
     QApplication::restoreOverrideCursor();
 
-    statusBar()->showMessage(tr("Arquivo salvo com sucesso!"), 2000);
+    statusBar()->showMessage(trUtf8("Arquivo salvo com sucesso!"), 2000);
 }
 
 void MainWindow::salvar()
@@ -477,8 +479,8 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
     if ( !file.open( QIODevice::ReadOnly) )
     {
-        QMessageBox::warning(this, tr("Erro"),
-                             tr("Erro ao abrir arquivo"));
+        QMessageBox::warning(this, trUtf8("Erro"),
+                             trUtf8("Erro ao abrir arquivo"));
         return;
     }
 
@@ -745,7 +747,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
     setArquivoAtual(nomeArquivo);
     pilhaDeAcoes->setUnchaged();
-    statusBar()->showMessage(tr("Arquivo aberto com sucesso!"), 2000);
+    statusBar()->showMessage(trUtf8("Arquivo aberto com sucesso!"), 2000);
 }
 
 void MainWindow::abrirArquivoRecente()
@@ -761,17 +763,17 @@ void MainWindow::abrir()
 {
     if(!questionarSalvar())
         return;
-    QString nomeArquivo = QFileDialog::getOpenFileName(this, tr("Abrir..."), "",
-                                                       tr("BahiaDBM (*.bdm)"));
+    QString nomeArquivo = QFileDialog::getOpenFileName(this, trUtf8("Abrir..."), "",
+                                                       trUtf8("BahiaDBM (*.bdm)"));
     if (!nomeArquivo.isEmpty())
         abrirArquivo(nomeArquivo);
 }
 
 void MainWindow::salvarComo()
 {
-    QString nomeArquivo = QFileDialog::getSaveFileName(this,tr("Save File"),
+    QString nomeArquivo = QFileDialog::getSaveFileName(this,trUtf8("Save File"),
                                                        "meudiagrama.bdm",
-                                                       tr("BahiaDBM (*.bdm)"));
+                                                       trUtf8("BahiaDBM (*.bdm)"));
     if (nomeArquivo.isEmpty())
         return;
 
@@ -803,33 +805,33 @@ void MainWindow::deletarSelecionados() {
 
 void MainWindow::sobre()
 {
-    QMessageBox::about(this, tr("Sobre BahiaDBM"), tr("Bahia Database Modeler"));
+    QMessageBox::about(this, trUtf8("Sobre BahiaDBM"), trUtf8("Bahia Database Modeler"));
 }
 
 void MainWindow::createActions()
 {
-    novaAction = new QAction(tr("&Novo"), this);
+    novaAction = new QAction(trUtf8("&Novo"), this);
     novaAction->setShortcuts(QKeySequence::New);
-    novaAction->setStatusTip(tr("Abrir uma nova janela"));
+    novaAction->setStatusTip(trUtf8("Abrir uma nova janela"));
     connect(novaAction, SIGNAL(triggered()), this, SLOT(novaJanela()));
 
-    abrirAction = new QAction(tr("&Abrir..."), this);
+    abrirAction = new QAction(trUtf8("&Abrir..."), this);
     abrirAction->setShortcut(QKeySequence::Open);
     abrirAction->setStatusTip("Abrir um arquivo .bdm");
     connect(abrirAction, SIGNAL(triggered()), this, SLOT(abrir()));
 
-    salvarAction = new QAction(tr("&Salvar"), this);
+    salvarAction = new QAction(trUtf8("&Salvar"), this);
     salvarAction->setShortcut(QKeySequence::Save);
     salvarAction->setStatusTip("Salvar alterações do projeto atual");
     connect(salvarAction, SIGNAL(triggered()), this, SLOT(salvar()));
 
-    salvarComoAction = new QAction(tr("&Salvar como..."), this);
+    salvarComoAction = new QAction(trUtf8("&Salvar como..."), this);
     salvarComoAction->setShortcut(QKeySequence::SaveAs);
     salvarComoAction->setStatusTip("Salvar projeto atual");
     connect(salvarComoAction, SIGNAL(triggered()), this, SLOT(salvarComo()));
 
-    fecharDiagramaAtual = new QAction(tr("&Fechar Diagrama"), this);
-    fecharDiagramaAtual->setShortcut(tr("Ctrl+D"));
+    fecharDiagramaAtual = new QAction(trUtf8("&Fechar Diagrama"), this);
+    fecharDiagramaAtual->setShortcut(trUtf8("Ctrl+D"));
     fecharDiagramaAtual->setStatusTip("Fechar diagrama atual");
     connect(fecharDiagramaAtual, SIGNAL(triggered()), this, SLOT(fecharDiagrama()));
 
@@ -840,30 +842,30 @@ void MainWindow::createActions()
         connect(arquivosRecentes[i], SIGNAL(triggered()), this, SLOT(abrirArquivoRecente()));
     }
 
-    sairAction = new QAction(tr("&Sair"), this);
+    sairAction = new QAction(trUtf8("&Sair"), this);
     sairAction->setShortcut(QKeySequence::Quit);
-    sairAction->setStatusTip(tr("Sair do BahiaDBM"));
+    sairAction->setStatusTip(trUtf8("Sair do BahiaDBM"));
     connect(sairAction, SIGNAL(triggered()), this, SLOT(close()));
 
-    desfazerAction = new QAction(tr("&Desfazer"), this);
-    desfazerAction->setShortcut(tr("Ctrl+Z"));
-    desfazerAction->setStatusTip(tr("Desfazer"));
+    desfazerAction = new QAction(trUtf8("&Desfazer"), this);
+    desfazerAction->setShortcut(trUtf8("Ctrl+Z"));
+    desfazerAction->setStatusTip(trUtf8("Desfazer"));
     connect(desfazerAction, SIGNAL(triggered()), this, SLOT(desfazer()));
 
-    refazerAction = new QAction(tr("&Refazer"), this);
-    refazerAction->setShortcut(tr("Ctrl+R"));
-    refazerAction->setStatusTip(tr("Refazer"));
+    refazerAction = new QAction(trUtf8("&Refazer"), this);
+    refazerAction->setShortcut(trUtf8("Ctrl+R"));
+    refazerAction->setStatusTip(trUtf8("Refazer"));
     connect(refazerAction, SIGNAL(triggered()), this, SLOT(refazer()));
 
-    ajudaAction = new QAction(tr("&Sobre"), this);
-    ajudaAction->setShortcut(tr("Ctrl+H"));
-    ajudaAction->setStatusTip(tr("Sobre BahiaDBM"));
+    ajudaAction = new QAction(trUtf8("&Sobre"), this);
+    ajudaAction->setShortcut(trUtf8("Ctrl+H"));
+    ajudaAction->setStatusTip(trUtf8("Sobre BahiaDBM"));
     connect(ajudaAction, SIGNAL(triggered()), this, SLOT(sobre()));
 }
 
 void MainWindow::createMenu()
 {
-    arquivoMenu = menuBar()->addMenu(tr("&Arquivo"));
+    arquivoMenu = menuBar()->addMenu(trUtf8("&Arquivo"));
     arquivoMenu->addAction(novaAction);
     arquivoMenu->addAction(abrirAction);
     arquivoMenu->addAction(salvarAction);
@@ -877,11 +879,11 @@ void MainWindow::createMenu()
     arquivoMenu->addAction(sairAction);
     atualizarAcaoArquivosRecentes();
 
-    editarMenu = menuBar()->addMenu(tr("&Editar"));
+    editarMenu = menuBar()->addMenu(trUtf8("&Editar"));
     editarMenu->addAction(desfazerAction);
     editarMenu->addAction(refazerAction);
 
-    ajudaMenu = menuBar()->addMenu(tr("&Ajuda"));
+    ajudaMenu = menuBar()->addMenu(trUtf8("&Ajuda"));
     ajudaMenu->addAction(ajudaAction);
 }
 
@@ -901,20 +903,27 @@ void MainWindow::createToolBar()
     entid_associativa->setCheckable(true);
     atributo->setCheckable(true);
     atributo_identif->setCheckable(true);
+    atributo->setToolTip("Atributo");
     entidade->setIcon(QIcon(":/imagens/entidade.png"));
-    entidade->setStatusTip(tr("Entidade"));
+    entidade->setStatusTip(trUtf8("Entidade"));
+    entidade->setToolTip("Entidade");
     relacionamento->setIcon(QIcon(":/imagens/relacionamento.png"));
-    relacionamento->setStatusTip(tr("Relacionamento"));
+    relacionamento->setStatusTip(trUtf8("Relacionamento"));
+    relacionamento->setToolTip("Relacionamento");
     gen_esp->setIcon(QIcon(":/imagens/gen_especializacao.png"));
-    gen_esp->setStatusTip(tr("Generalizacao/Especializacao"));
+    gen_esp->setStatusTip(trUtf8("Generalização/Especialização"));
+    gen_esp->setToolTip(trUtf8("Generalização Especialização"));
     entid_associativa->setIcon(QIcon(":/imagens/ent_associativa.png"));
-    entid_associativa->setStatusTip(tr("Entidade Associativa"));
+    entid_associativa->setStatusTip(trUtf8("Entidade Associativa"));
+    entid_associativa->setToolTip(trUtf8("Entidade Associativa"));
     atributo->setIcon(QIcon(":/imagens/atributo.png"));
-    atributo->setStatusTip(tr("Atributo"));
+    atributo->setStatusTip(trUtf8("Atributo"));
     atributo_identif->setIcon(QIcon(":/imagens/atributo_identif.png"));
-    atributo_identif->setStatusTip(tr("Atributo Identificador"));
+    atributo_identif->setStatusTip(trUtf8("Atributo Identificador"));
+    atributo_identif->setToolTip(trUtf8("Atributo Identificador"));
     entidadeFraca->setText("EF");
-    entidadeFraca->setStatusTip(tr("Entidade Fraca"));
+    entidadeFraca->setStatusTip(trUtf8("Entidade Fraca"));
+    entidadeFraca->setToolTip(trUtf8("Entidade Fraca"));
 
 
     botoesER = new QButtonGroup(this);
@@ -929,7 +938,7 @@ void MainWindow::createToolBar()
     connect(botoesER, SIGNAL(buttonClicked(int)),
             this, SLOT(botoesERClicked(int)));
 
-    formas = addToolBar(tr("&Formas"));
+    formas = addToolBar(trUtf8("&Formas"));
     formas->addWidget(entidade);
     formas->addWidget(relacionamento);
     formas->addWidget(gen_esp);
@@ -941,13 +950,15 @@ void MainWindow::createToolBar()
     //Cria botões de manipulação das figuras geométricas
     ampliar = new QToolButton();
     ampliar->setCheckable(true);
-    ampliar->setStatusTip(tr("Ampliar"));
+    ampliar->setStatusTip(trUtf8("Ampliar"));
     ampliar->setIcon(QIcon(":/imagens/ampliar.png"));
+    ampliar->setToolTip(trUtf8("Ampliar"));
 
     reduzir = new QToolButton();
     reduzir->setCheckable(true);
-    reduzir->setStatusTip(tr("Reduzir"));
+    reduzir->setStatusTip(trUtf8("Reduzir"));
     reduzir->setIcon(QIcon(":/imagens/reduzir.png"));
+    reduzir->setToolTip(trUtf8("Reduzir"));
 
     //    organizarHor = new QToolButton();
     //    organizarHor->setCheckable(true);
@@ -970,7 +981,7 @@ void MainWindow::createToolBar()
     connect(botoesManip, SIGNAL(buttonClicked(int)),
             this, SLOT(botoesManipClicked(int)));
 
-    manipulacoes = addToolBar(tr("&Manipulacoes"));
+    manipulacoes = addToolBar(trUtf8("&Manipulações"));
     manipulacoes->addWidget(ampliar);
     manipulacoes->addWidget(reduzir);
     //    manipulacoes->addWidget(organizarHor);
@@ -982,11 +993,15 @@ void MainWindow::createToolBar()
     deletar = new QToolButton();
     mouse->setCheckable(true);
     mouse->setChecked(true);
+    mouse->setToolTip("Mouse");
     linhas->setCheckable(true);
     deletar->setCheckable(false);
-    mouse->setStatusTip(tr("Mouse"));
-    linhas->setStatusTip(tr("Linha"));
-    deletar->setStatusTip(tr("Deletar"));
+    mouse->setStatusTip(trUtf8("Mouse"));
+    linhas->setStatusTip(trUtf8("Linha"));
+    linhas->setToolTip(trUtf8("Linha"));
+    deletar->setStatusTip(trUtf8("Deletar"));
+    deletar->setShortcut(Qt::Key_Delete);
+    deletar->setToolTip(trUtf8("Deletar"));
     mouse->setIcon(QIcon(":/imagens/mouse.png"));
     linhas->setIcon(QIcon(":/imagens/linha.png"));
     deletar->setIcon(QIcon(":/imagens/deletar.png"));
@@ -999,21 +1014,32 @@ void MainWindow::createToolBar()
     connect(botoesML, SIGNAL(buttonClicked(int)),
             this, SLOT(botoesMLClicked(int)));
 
-    mouseLinha = addToolBar(tr("&MouseLinha"));
+    mouseLinha = addToolBar(trUtf8("&MouseLinha"));
     mouseLinha->addWidget(mouse);
     mouseLinha->addWidget(linhas);
     mouseLinha->addWidget(deletar);
 
     //Criando toolbar de exibicao(zoom, fit-to-all)
-    exibicaoToolBar = addToolBar(tr("&Exibicao"));
+    exibicaoToolBar = addToolBar(trUtf8("&Zoom"));
 
     scroolZoom = new QSpinBox(exibicaoToolBar);
     scroolZoom->setFixedWidth(50);
     scroolZoom->setMaximum(500);
     scroolZoom->setMinimum(10);
     scroolZoom->setValue(100);
+    scroolZoom->setToolTip(trUtf8("Zoom"));
+
+    barraZoom = new QSlider(exibicaoToolBar);
+    barraZoom->setFixedWidth(200);
+    barraZoom->setMinimum(10);
+    barraZoom->setMaximum(100);
+    barraZoom->setToolTip(trUtf8("Zoom"));
+    barraZoom->setOrientation(Qt::Horizontal);
 
     exibicaoToolBar->addWidget(scroolZoom);
+    label = new QLabel("   ");
+    exibicaoToolBar->addWidget(label);
+    exibicaoToolBar->addWidget(barraZoom);
 }
 
 void MainWindow::setArquivoAtual(const QString nome)

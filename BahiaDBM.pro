@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     acoes/acao_criar_poligono.cpp \
     acoes/acao_criar_atributo.cpp \
     acoes/acao_criar_ligacao.cpp \
-    acoes/acao_deletar.cpp
+    acoes/acao_deletar.cpp \
+    tabela.cpp
 
 HEADERS  += mainwindow.h \
     diagrama.h \
@@ -43,7 +44,8 @@ HEADERS  += mainwindow.h \
     acoes/acao_criar_atributo.h \
     acoes/acao_criar_ligacao.h \
     acoes/acao_deletar.h \
-    objetoremovivel.h
+    objetoremovivel.h \
+    tabela.h
 
 FORMS    +=
 
@@ -61,24 +63,3 @@ OTHER_FILES += \
 
 RESOURCES += \
     resources.qrc
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

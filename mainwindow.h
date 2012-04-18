@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #define MAXARQRECENTES 5
 
+#include "qtextcodec.h"
 #include "ligacao.h"
 #include "diagrama.h"
 #include "diagramaview.h"
@@ -9,6 +10,7 @@
 #include "cardinalidade.h"
 #include "poligono.h"
 #include "texto.h"
+#include "tabela.h"
 
 #include <QMainWindow>
 #include <QtGui>
@@ -114,8 +116,10 @@ private:
     QButtonGroup *botoesManip;
     QButtonGroup *botoesML;    
 
-    QToolBar * exibicaoToolBar;
-    QSpinBox * scroolZoom;
+    QToolBar *exibicaoToolBar;
+    QSpinBox *scroolZoom;
+    QSlider *barraZoom;
+    QLabel *label;
 
     QString nomeArquivoAtual;
 
