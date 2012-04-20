@@ -7,13 +7,15 @@
 ACAO_CRIAR_ATRIBUTO_H	acoes/acao_criar_atributo.h	2;"	d
 ACAO_CRIAR_LIGACAO_H	acoes/acao_criar_ligacao.h	2;"	d
 ACAO_CRIAR_POLIGONO_H	acoes/acao_criar_poligono.h	2;"	d
+ACAO_DELETAR_H	acoes/acao_deletar.h	2;"	d
 ACAO_MOVER_H	acoes/acao_mover.h	2;"	d
 ACOESPILHA_H	acoespilha.h	4;"	d
 ACOES_H	acao.h	4;"	d
 Acao	acao.cpp	/^Acao::Acao()$/;"	f	class:Acao	signature:()
-Acao	acao.h	/^class Acao \/\/ Interface para as acoes$/;"	c
+Acao	acao.h	/^class Acao : public QObject \/\/ Interface para as acoes$/;"	c	inherits:QObject
 Acao::Acao	acao.cpp	/^Acao::Acao()$/;"	f	class:Acao	signature:()
 Acao::desfazerAcao	acao.h	/^    virtual void desfazerAcao() = 0;$/;"	p	class:Acao	access:public	signature:()
+Acao::dispose	acao.h	/^    virtual void dispose() = 0;$/;"	p	class:Acao	access:public	signature:()
 Acao::fazerAcao	acao.h	/^    virtual void fazerAcao() = 0;$/;"	p	class:Acao	access:public	signature:()
 Acao::podeDesfazer	acao.h	/^    virtual bool podeDesfazer() = 0;$/;"	p	class:Acao	access:public	signature:()
 Acao::~Acao	acao.h	/^    virtual ~Acao() {}$/;"	f	class:Acao	access:public	signature:()
@@ -25,6 +27,8 @@ AcaoCriarAtributo::AcaoCriarAtributo	acoes/acao_criar_atributo.h	/^    AcaoCriar
 AcaoCriarAtributo::atributo	acoes/acao_criar_atributo.h	/^    Atributo * atributo;$/;"	m	class:AcaoCriarAtributo	access:private
 AcaoCriarAtributo::desfazerAcao	acoes/acao_criar_atributo.cpp	/^void AcaoCriarAtributo::desfazerAcao()$/;"	f	class:AcaoCriarAtributo	signature:()
 AcaoCriarAtributo::desfazerAcao	acoes/acao_criar_atributo.h	/^    virtual void desfazerAcao();$/;"	p	class:AcaoCriarAtributo	access:public	signature:()
+AcaoCriarAtributo::dispose	acoes/acao_criar_atributo.cpp	/^void AcaoCriarAtributo::dispose()$/;"	f	class:AcaoCriarAtributo	signature:()
+AcaoCriarAtributo::dispose	acoes/acao_criar_atributo.h	/^    virtual void dispose();$/;"	p	class:AcaoCriarAtributo	access:public	signature:()
 AcaoCriarAtributo::fazerAcao	acoes/acao_criar_atributo.cpp	/^void AcaoCriarAtributo::fazerAcao()$/;"	f	class:AcaoCriarAtributo	signature:()
 AcaoCriarAtributo::fazerAcao	acoes/acao_criar_atributo.h	/^    virtual void fazerAcao();$/;"	p	class:AcaoCriarAtributo	access:public	signature:()
 AcaoCriarAtributo::podeDesfazer	acoes/acao_criar_atributo.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoCriarAtributo	access:public	signature:()
@@ -40,14 +44,14 @@ AcaoCriarLigacao::cast1P	acoes/acao_criar_ligacao.h	/^    Poligono *cast1P, *cas
 AcaoCriarLigacao::cast2P	acoes/acao_criar_ligacao.h	/^    Poligono *cast1P, *cast2P;$/;"	m	class:AcaoCriarLigacao	access:private
 AcaoCriarLigacao::desfazerAcao	acoes/acao_criar_ligacao.cpp	/^void AcaoCriarLigacao::desfazerAcao()$/;"	f	class:AcaoCriarLigacao	signature:()
 AcaoCriarLigacao::desfazerAcao	acoes/acao_criar_ligacao.h	/^    virtual void desfazerAcao();$/;"	p	class:AcaoCriarLigacao	access:public	signature:()
+AcaoCriarLigacao::dispose	acoes/acao_criar_ligacao.cpp	/^void AcaoCriarLigacao::dispose()$/;"	f	class:AcaoCriarLigacao	signature:()
+AcaoCriarLigacao::dispose	acoes/acao_criar_ligacao.h	/^    virtual void dispose();$/;"	p	class:AcaoCriarLigacao	access:public	signature:()
 AcaoCriarLigacao::fazerAcao	acoes/acao_criar_ligacao.cpp	/^void AcaoCriarLigacao::fazerAcao()$/;"	f	class:AcaoCriarLigacao	signature:()
 AcaoCriarLigacao::fazerAcao	acoes/acao_criar_ligacao.h	/^    virtual void fazerAcao();$/;"	p	class:AcaoCriarLigacao	access:public	signature:()
 AcaoCriarLigacao::getLigacao	acoes/acao_criar_ligacao.h	/^    Ligacao *getLigacao() { return this->ligacao; }$/;"	f	class:AcaoCriarLigacao	access:public	signature:()
 AcaoCriarLigacao::item1	acoes/acao_criar_ligacao.h	/^    QGraphicsItem * item1, * item2;$/;"	m	class:AcaoCriarLigacao	access:private
 AcaoCriarLigacao::item2	acoes/acao_criar_ligacao.h	/^    QGraphicsItem * item1, * item2;$/;"	m	class:AcaoCriarLigacao	access:private
 AcaoCriarLigacao::ligacao	acoes/acao_criar_ligacao.h	/^    Ligacao * ligacao;$/;"	m	class:AcaoCriarLigacao	access:private
-AcaoCriarLigacao::nomeLigacao1	acoes/acao_criar_ligacao.h	/^    Texto * nomeLigacao1, * nomeLigacao2;$/;"	m	class:AcaoCriarLigacao	access:private
-AcaoCriarLigacao::nomeLigacao2	acoes/acao_criar_ligacao.h	/^    Texto * nomeLigacao1, * nomeLigacao2;$/;"	m	class:AcaoCriarLigacao	access:private
 AcaoCriarLigacao::podeDesfazer	acoes/acao_criar_ligacao.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoCriarLigacao	access:public	signature:()
 AcaoCriarLigacao::scene	acoes/acao_criar_ligacao.h	/^    QGraphicsScene * scene;$/;"	m	class:AcaoCriarLigacao	access:private
 AcaoCriarPoligono	acoes/acao_criar_poligono.cpp	/^AcaoCriarPoligono::AcaoCriarPoligono(QGraphicsScene * scene, Poligono::Tipo tipo, QString nome, QPointF posicao)$/;"	f	class:AcaoCriarPoligono	signature:(QGraphicsScene * scene, Poligono::Tipo tipo, QString nome, QPointF posicao)
@@ -58,13 +62,32 @@ AcaoCriarPoligono::AcaoCriarPoligono	acoes/acao_criar_poligono.h	/^    AcaoCriar
 AcaoCriarPoligono::childPol	acoes/acao_criar_poligono.h	/^    Poligono * childPol;$/;"	m	class:AcaoCriarPoligono	access:private
 AcaoCriarPoligono::desfazerAcao	acoes/acao_criar_poligono.cpp	/^void AcaoCriarPoligono::desfazerAcao()$/;"	f	class:AcaoCriarPoligono	signature:()
 AcaoCriarPoligono::desfazerAcao	acoes/acao_criar_poligono.h	/^    virtual void desfazerAcao();$/;"	p	class:AcaoCriarPoligono	access:public	signature:()
+AcaoCriarPoligono::dispose	acoes/acao_criar_poligono.cpp	/^void AcaoCriarPoligono::dispose()$/;"	f	class:AcaoCriarPoligono	signature:()
+AcaoCriarPoligono::dispose	acoes/acao_criar_poligono.h	/^    virtual void dispose();$/;"	p	class:AcaoCriarPoligono	access:public	signature:()
 AcaoCriarPoligono::fazerAcao	acoes/acao_criar_poligono.cpp	/^void AcaoCriarPoligono::fazerAcao()$/;"	f	class:AcaoCriarPoligono	signature:()
 AcaoCriarPoligono::fazerAcao	acoes/acao_criar_poligono.h	/^    virtual void fazerAcao();$/;"	p	class:AcaoCriarPoligono	access:public	signature:()
 AcaoCriarPoligono::getPoligono	acoes/acao_criar_poligono.h	/^    Poligono * getPoligono() { return this->mainPol; }$/;"	f	class:AcaoCriarPoligono	access:public	signature:()
 AcaoCriarPoligono::mainPol	acoes/acao_criar_poligono.h	/^    Poligono * mainPol;$/;"	m	class:AcaoCriarPoligono	access:private
+AcaoCriarPoligono::nomeEntidade	acoes/acao_criar_poligono.h	/^    Texto * nomeEntidade;$/;"	m	class:AcaoCriarPoligono	access:private
 AcaoCriarPoligono::podeDesfazer	acoes/acao_criar_poligono.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoCriarPoligono	access:public	signature:()
 AcaoCriarPoligono::posicao	acoes/acao_criar_poligono.h	/^    QPointF posicao;$/;"	m	class:AcaoCriarPoligono	access:private
 AcaoCriarPoligono::scene	acoes/acao_criar_poligono.h	/^    QGraphicsScene * scene;$/;"	m	class:AcaoCriarPoligono	access:private
+AcaoDeletar	acoes/acao_deletar.cpp	/^AcaoDeletar::AcaoDeletar(QGraphicsScene * scene, QList<QGraphicsItem *> selecionados)$/;"	f	class:AcaoDeletar	signature:(QGraphicsScene * scene, QList<QGraphicsItem *> selecionados)
+AcaoDeletar	acoes/acao_deletar.h	/^    AcaoDeletar(QGraphicsScene * scene, QList<QGraphicsItem *> selecionados);$/;"	p	class:AcaoDeletar	access:public	signature:(QGraphicsScene * scene, QList<QGraphicsItem *> selecionados)
+AcaoDeletar	acoes/acao_deletar.h	/^class AcaoDeletar : public Acao$/;"	c	inherits:Acao
+AcaoDeletar::AcaoDeletar	acoes/acao_deletar.cpp	/^AcaoDeletar::AcaoDeletar(QGraphicsScene * scene, QList<QGraphicsItem *> selecionados)$/;"	f	class:AcaoDeletar	signature:(QGraphicsScene * scene, QList<QGraphicsItem *> selecionados)
+AcaoDeletar::AcaoDeletar	acoes/acao_deletar.h	/^    AcaoDeletar(QGraphicsScene * scene, QList<QGraphicsItem *> selecionados);$/;"	p	class:AcaoDeletar	access:public	signature:(QGraphicsScene * scene, QList<QGraphicsItem *> selecionados)
+AcaoDeletar::deleted	acoes/acao_deletar.h	/^    bool deleted;$/;"	m	class:AcaoDeletar	access:private
+AcaoDeletar::desfazerAcao	acoes/acao_deletar.cpp	/^void AcaoDeletar::desfazerAcao()$/;"	f	class:AcaoDeletar	signature:()
+AcaoDeletar::desfazerAcao	acoes/acao_deletar.h	/^    virtual void desfazerAcao();$/;"	p	class:AcaoDeletar	access:public	signature:()
+AcaoDeletar::dispose	acoes/acao_deletar.cpp	/^void AcaoDeletar::dispose()$/;"	f	class:AcaoDeletar	signature:()
+AcaoDeletar::dispose	acoes/acao_deletar.h	/^    virtual void dispose();$/;"	p	class:AcaoDeletar	access:public	signature:()
+AcaoDeletar::fazerAcao	acoes/acao_deletar.cpp	/^void AcaoDeletar::fazerAcao()$/;"	f	class:AcaoDeletar	signature:()
+AcaoDeletar::fazerAcao	acoes/acao_deletar.h	/^    virtual void fazerAcao();$/;"	p	class:AcaoDeletar	access:public	signature:()
+AcaoDeletar::items	acoes/acao_deletar.h	/^    QList<QGraphicsItem *> items;$/;"	m	class:AcaoDeletar	access:private
+AcaoDeletar::podeDesfazer	acoes/acao_deletar.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoDeletar	access:public	signature:()
+AcaoDeletar::removidos	acoes/acao_deletar.h	/^    QList<QGraphicsItem *> removidos;$/;"	m	class:AcaoDeletar	access:private
+AcaoDeletar::scene	acoes/acao_deletar.h	/^    QGraphicsScene * scene;$/;"	m	class:AcaoDeletar	access:private
 AcaoMover	acoes/acao_mover.cpp	/^AcaoMover::AcaoMover(QList<QGraphicsItem *> selecionados, QPointF deslocamento)$/;"	f	class:AcaoMover	signature:(QList<QGraphicsItem *> selecionados, QPointF deslocamento)
 AcaoMover	acoes/acao_mover.h	/^    AcaoMover(QList<QGraphicsItem *> selecionados, QPointF deslocamento);$/;"	p	class:AcaoMover	access:public	signature:(QList<QGraphicsItem *> selecionados, QPointF deslocamento)
 AcaoMover	acoes/acao_mover.h	/^class AcaoMover : public Acao$/;"	c	inherits:Acao
@@ -74,63 +97,68 @@ AcaoMover::_deslocamento	acoes/acao_mover.h	/^    QPointF _deslocamento;$/;"	m	c
 AcaoMover::_items	acoes/acao_mover.h	/^    QList<QGraphicsItem *> _items;$/;"	m	class:AcaoMover	access:private
 AcaoMover::desfazerAcao	acoes/acao_mover.cpp	/^void AcaoMover::desfazerAcao()$/;"	f	class:AcaoMover	signature:()
 AcaoMover::desfazerAcao	acoes/acao_mover.h	/^    virtual void desfazerAcao();$/;"	p	class:AcaoMover	access:public	signature:()
+AcaoMover::dispose	acoes/acao_mover.h	/^    virtual void dispose() {}$/;"	f	class:AcaoMover	access:public	signature:()
 AcaoMover::fazerAcao	acoes/acao_mover.cpp	/^void AcaoMover::fazerAcao()$/;"	f	class:AcaoMover	signature:()
 AcaoMover::fazerAcao	acoes/acao_mover.h	/^    virtual void fazerAcao();$/;"	p	class:AcaoMover	access:public	signature:()
 AcaoMover::podeDesfazer	acoes/acao_mover.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoMover	access:public	signature:()
-AcoesPilha	acoespilha.cpp	/^AcoesPilha::AcoesPilha() : posAtual(-1)$/;"	f	class:AcoesPilha	signature:()
-AcoesPilha	acoespilha.h	/^    AcoesPilha();$/;"	p	class:AcoesPilha	access:private	signature:()
-AcoesPilha	acoespilha.h	/^    AcoesPilha(AcoesPilha const&);     \/\/ Nao implementar$/;"	p	class:AcoesPilha	access:private	signature:(AcoesPilha const&)
-AcoesPilha	acoespilha.h	/^class AcoesPilha$/;"	c
-AcoesPilha::AcoesPilha	acoespilha.cpp	/^AcoesPilha::AcoesPilha() : posAtual(-1)$/;"	f	class:AcoesPilha	signature:()
-AcoesPilha::AcoesPilha	acoespilha.h	/^    AcoesPilha();$/;"	p	class:AcoesPilha	access:private	signature:()
-AcoesPilha::AcoesPilha	acoespilha.h	/^    AcoesPilha(AcoesPilha const&);     \/\/ Nao implementar$/;"	p	class:AcoesPilha	access:private	signature:(AcoesPilha const&)
-AcoesPilha::addAcao	acoespilha.cpp	/^void AcoesPilha::addAcao(Acao *acao)$/;"	f	class:AcoesPilha	signature:(Acao *acao)
+AcoesPilha	acoespilha.cpp	/^AcoesPilha::AcoesPilha() : posAtual(-1), _changed(false)$/;"	f	class:AcoesPilha	signature:()
+AcoesPilha	acoespilha.h	/^    AcoesPilha();$/;"	p	class:AcoesPilha	access:public	signature:()
+AcoesPilha	acoespilha.h	/^class AcoesPilha : public QObject$/;"	c	inherits:QObject
+AcoesPilha::AcoesPilha	acoespilha.cpp	/^AcoesPilha::AcoesPilha() : posAtual(-1), _changed(false)$/;"	f	class:AcoesPilha	signature:()
+AcoesPilha::AcoesPilha	acoespilha.h	/^    AcoesPilha();$/;"	p	class:AcoesPilha	access:public	signature:()
+AcoesPilha::_changed	acoespilha.h	/^    bool _changed;$/;"	m	class:AcoesPilha	access:private
+AcoesPilha::addAcao	acoespilha.cpp	/^void AcoesPilha::addAcao(Acao *acao, bool run)$/;"	f	class:AcoesPilha	signature:(Acao *acao, bool run)
+AcoesPilha::addAcao	acoespilha.cpp	/^void AcoesPilha::addAcao(Acao *command) {$/;"	f	class:AcoesPilha	signature:(Acao *command)
 AcoesPilha::addAcao	acoespilha.h	/^    void addAcao(Acao * command);$/;"	p	class:AcoesPilha	access:public	signature:(Acao * command)
+AcoesPilha::addAcao	acoespilha.h	/^    void addAcao(Acao * command, bool run);$/;"	p	class:AcoesPilha	access:public	signature:(Acao * command, bool run)
+AcoesPilha::changed	acoespilha.h	/^    void changed();$/;"	p	class:AcoesPilha	access:public	signature:()
 AcoesPilha::desfazer	acoespilha.cpp	/^bool AcoesPilha::desfazer()$/;"	f	class:AcoesPilha	signature:()
 AcoesPilha::desfazer	acoespilha.h	/^    bool desfazer();$/;"	p	class:AcoesPilha	access:public	signature:()
 AcoesPilha::getTopCommand	acoespilha.cpp	/^Acao * AcoesPilha::getTopCommand()$/;"	f	class:AcoesPilha	signature:()
 AcoesPilha::getTopCommand	acoespilha.h	/^    Acao * getTopCommand();$/;"	p	class:AcoesPilha	access:public	signature:()
-AcoesPilha::instanciaUnica	acoespilha.h	/^    static AcoesPilha * instanciaUnica()$/;"	f	class:AcoesPilha	access:public	signature:()
-AcoesPilha::operator =	acoespilha.h	/^    void operator=(AcoesPilha const&); \/\/ Nao implementar$/;"	p	class:AcoesPilha	access:private	signature:(AcoesPilha const&)
+AcoesPilha::hasChanged	acoespilha.h	/^    bool hasChanged() { return _changed; }$/;"	f	class:AcoesPilha	access:public	signature:()
+AcoesPilha::limpar	acoespilha.cpp	/^void AcoesPilha::limpar()$/;"	f	class:AcoesPilha	signature:()
+AcoesPilha::limpar	acoespilha.h	/^    void limpar();$/;"	p	class:AcoesPilha	access:public	signature:()
 AcoesPilha::pilhaDeAcoes	acoespilha.h	/^    QList<Acao *> pilhaDeAcoes;$/;"	m	class:AcoesPilha	access:private
 AcoesPilha::posAtual	acoespilha.h	/^    int posAtual;$/;"	m	class:AcoesPilha	access:private
 AcoesPilha::refazer	acoespilha.cpp	/^bool AcoesPilha::refazer()$/;"	f	class:AcoesPilha	signature:()
 AcoesPilha::refazer	acoespilha.h	/^    bool refazer();$/;"	p	class:AcoesPilha	access:public	signature:()
+AcoesPilha::setChanged	acoespilha.cpp	/^void AcoesPilha::setChanged()$/;"	f	class:AcoesPilha	signature:()
+AcoesPilha::setChanged	acoespilha.h	/^    void setChanged();$/;"	p	class:AcoesPilha	access:private	signature:()
+AcoesPilha::setUnchaged	acoespilha.h	/^    void setUnchaged() { _changed = false; }$/;"	f	class:AcoesPilha	access:public	signature:()
 Atributo	atributo.cpp	/^Atributo::Atributo( Tipo tipo, QGraphicsItem *parent, QGraphicsScene *scene ) : QGraphicsEllipseItem( parent, scene )$/;"	f	class:Atributo	signature:( Tipo tipo, QGraphicsItem *parent, QGraphicsScene *scene )
 Atributo	atributo.h	/^    Atributo(Tipo tipo, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);$/;"	p	class:Atributo	access:public	signature:(Tipo tipo, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0)
-Atributo	atributo.h	/^class Atributo : public QObject, public QGraphicsEllipseItem$/;"	c	inherits:QObject,QGraphicsEllipseItem
+Atributo	atributo.h	/^class Atributo : public QObject, public QGraphicsEllipseItem, public ObjetoRemovivel$/;"	c	inherits:QObject,QGraphicsEllipseItem,ObjetoRemovivel
 Atributo::Atributo	atributo.cpp	/^Atributo::Atributo( Tipo tipo, QGraphicsItem *parent, QGraphicsScene *scene ) : QGraphicsEllipseItem( parent, scene )$/;"	f	class:Atributo	signature:( Tipo tipo, QGraphicsItem *parent, QGraphicsScene *scene )
 Atributo::Atributo	atributo.h	/^    Atributo(Tipo tipo, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);$/;"	p	class:Atributo	access:public	signature:(Tipo tipo, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0)
-Atributo::RemoveTodasEntidadesAssociadas	atributo.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Atributo	access:public	signature:()
-Atributo::RemoveTodasEntidadesAssociativasAssociadas	atributo.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.erase(this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end()); }$/;"	f	class:Atributo	access:public	signature:()
-Atributo::RemoveTodasLinhasAssociadas	atributo.h	/^    void RemoveTodasLinhasAssociadas() { this->linhaAssociada.erase(this->linhaAssociada.begin(), this->linhaAssociada.end()); }$/;"	f	class:Atributo	access:public	signature:()
-Atributo::RemoveTodosRelacionamentosAssociados	atributo.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Atributo	access:public	signature:()
 Atributo::Tipo	atributo.h	/^    enum Tipo { atributo, atributo_identif };$/;"	g	class:Atributo	access:public
 Atributo::Type	atributo.h	/^    enum { Type = UserType + 3 };$/;"	e	enum:Atributo::__anon2
+Atributo::addLinhaAssociada	atributo.h	/^    void addLinhaAssociada( Ligacao *la ) { this->linhaAssociada.insert(la); }$/;"	f	class:Atributo	access:public	signature:( Ligacao *la )
+Atributo::addPoligonoAssociado	atributo.h	/^    void addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Atributo	access:public	signature:(Poligono * pol)
 Atributo::atributo	atributo.h	/^    enum Tipo { atributo, atributo_identif };$/;"	e	enum:Atributo::Tipo
 Atributo::atributo_identif	atributo.h	/^    enum Tipo { atributo, atributo_identif };$/;"	e	enum:Atributo::Tipo
 Atributo::circ	atributo.h	/^    QRectF *circ;$/;"	m	class:Atributo	access:private
 Atributo::conectado	atributo.h	/^    bool conectado;$/;"	m	class:Atributo	access:private
-Atributo::entidades_associadas	atributo.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Atributo	access:private
-Atributo::entidades_associativas_associadas	atributo.h	/^    QList < Poligono *> entidades_associativas_associadas;$/;"	m	class:Atributo	access:private
+Atributo::doRemove	atributo.cpp	/^void Atributo::doRemove(bool value)$/;"	f	class:Atributo	signature:(bool value)
+Atributo::doRemove	atributo.h	/^    virtual void doRemove(bool value);$/;"	p	class:Atributo	access:public	signature:(bool value)
 Atributo::getConectado	atributo.h	/^    bool getConectado() { return conectado; }$/;"	f	class:Atributo	access:public	signature:()
-Atributo::getEntidades_Associadas	atributo.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Atributo	access:public	signature:()
-Atributo::getEntidades_Associativas_Associadas	atributo.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Atributo	access:public	signature:()
-Atributo::getLinhaAssociada	atributo.h	/^    QList< QGraphicsLineItem *> getLinhaAssociada() { return linhaAssociada; }$/;"	f	class:Atributo	access:public	signature:()
-Atributo::getRelacionamentos_Associados	atributo.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Atributo	access:public	signature:()
+Atributo::getLinhasAssociadas	atributo.h	/^    QList< Ligacao *> getLinhasAssociadas() { return linhaAssociada.toList(); }$/;"	f	class:Atributo	access:public	signature:()
+Atributo::getPoligonosAssociadoOfType	atributo.h	/^    QList<Poligono *> getPoligonosAssociadoOfType() {$/;"	f	class:Atributo	access:public	signature:()
 Atributo::getTipo	atributo.h	/^    Tipo getTipo() { return tipo; }$/;"	f	class:Atributo	access:public	signature:()
+Atributo::getToDelete	atributo.cpp	/^QList<QGraphicsItem *> Atributo::getToDelete()$/;"	f	class:Atributo	signature:()
+Atributo::getToDelete	atributo.h	/^    virtual QList<QGraphicsItem *> getToDelete();$/;"	p	class:Atributo	access:public	signature:()
 Atributo::itemChange	atributo.cpp	/^QVariant Atributo::itemChange(GraphicsItemChange change, const QVariant &value)$/;"	f	class:Atributo	signature:(GraphicsItemChange change, const QVariant &value)
 Atributo::itemChange	atributo.h	/^    QVariant itemChange(GraphicsItemChange change, const QVariant &value);$/;"	p	class:Atributo	access:protected	signature:(GraphicsItemChange change, const QVariant &value)
-Atributo::linhaAssociada	atributo.h	/^    QList< QGraphicsLineItem * > linhaAssociada;$/;"	m	class:Atributo	access:private
-Atributo::paint	atributo.cpp	/^void Atributo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)$/;"	f	class:Atributo	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+Atributo::limparLinhasAssociadas	atributo.h	/^    void limparLinhasAssociadas() { this->linhaAssociada.clear(); }$/;"	f	class:Atributo	access:public	signature:()
+Atributo::limparPoligonosOfType	atributo.h	/^    void limparPoligonosOfType() {$/;"	f	class:Atributo	access:public	signature:()
+Atributo::linhaAssociada	atributo.h	/^    QSet< Ligacao * > linhaAssociada;$/;"	m	class:Atributo	access:private
+Atributo::paint	atributo.cpp	/^void Atributo::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)$/;"	f	class:Atributo	signature:(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 Atributo::paint	atributo.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);$/;"	p	class:Atributo	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+Atributo::poligonosAssociados	atributo.h	/^    QMap<Poligono::Tipo, QSet< Poligono * > > poligonosAssociados;$/;"	m	class:Atributo	access:private
 Atributo::posicaoAlterada	atributo.h	/^    void posicaoAlterada();$/;"	p	class:Atributo	access:protected	signature:()
-Atributo::relacionamentos_associados	atributo.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Atributo	access:private
+Atributo::removerLinhaAssociada	atributo.h	/^    void removerLinhaAssociada(Ligacao * it) { linhaAssociada.remove(it); }$/;"	f	class:Atributo	access:public	signature:(Ligacao * it)
+Atributo::removerPoligonoAssociado	atributo.h	/^    void removerPoligonoAssociado(Poligono * poligono) {$/;"	f	class:Atributo	access:public	signature:(Poligono * poligono)
 Atributo::setConectado	atributo.h	/^    void setConectado( bool c ) { this->conectado = c; }$/;"	f	class:Atributo	access:public	signature:( bool c )
-Atributo::setEntidades_Associadas	atributo.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Atributo	access:public	signature:( Poligono *ea )
-Atributo::setEntidades_Associativas_Associadas	atributo.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Atributo	access:public	signature:( Poligono *eaa )
-Atributo::setLinhaAssociada	atributo.h	/^    void setLinhaAssociada( QGraphicsLineItem *la ) { this->linhaAssociada.push_back(la); }$/;"	f	class:Atributo	access:public	signature:( QGraphicsLineItem *la )
-Atributo::setRelacionamentos_Associados	atributo.h	/^    void setRelacionamentos_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Atributo	access:public	signature:( Poligono *ra )
 Atributo::setTipo	atributo.h	/^    void setTipo(Tipo tipo) { this->tipo = tipo; }$/;"	f	class:Atributo	access:public	signature:(Tipo tipo)
 Atributo::tipo	atributo.h	/^    Tipo tipo;$/;"	m	class:Atributo	access:private
 Atributo::type	atributo.h	/^    int type() const$/;"	f	class:Atributo	access:public	signature:() const
@@ -140,72 +168,50 @@ Cardinalidade	cardinalidade.h	/^    Cardinalidade(Poligono *item1, Poligono *ite
 Cardinalidade	cardinalidade.h	/^class Cardinalidade : public QGraphicsTextItem$/;"	c	inherits:QGraphicsTextItem
 Cardinalidade::Cardinalidade	cardinalidade.cpp	/^Cardinalidade::Cardinalidade(Poligono *item1, Poligono *item2, Ligacao *linha, QGraphicsItem *parent) : QGraphicsTextItem(parent)$/;"	f	class:Cardinalidade	signature:(Poligono *item1, Poligono *item2, Ligacao *linha, QGraphicsItem *parent)
 Cardinalidade::Cardinalidade	cardinalidade.h	/^    Cardinalidade(Poligono *item1, Poligono *item2, Ligacao *linha, QGraphicsItem *parent = 0);$/;"	p	class:Cardinalidade	access:public	signature:(Poligono *item1, Poligono *item2, Ligacao *linha, QGraphicsItem *parent = 0)
-Cardinalidade::RemoveTodasEntidadesAssociadas	cardinalidade.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Cardinalidade	access:public	signature:()
-Cardinalidade::RemoveTodasEntidadesAssociativasAssociadas	cardinalidade.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.erase(this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end()); }$/;"	f	class:Cardinalidade	access:public	signature:()
-Cardinalidade::RemoveTodosRelacionamentosAssociados	cardinalidade.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Cardinalidade	access:public	signature:()
-Cardinalidade::Remove_Entidade_Associada	cardinalidade.h	/^    void Remove_Entidade_Associada( int index ) { this->entidades_associadas.removeAt(index); }$/;"	f	class:Cardinalidade	access:public	signature:( int index )
-Cardinalidade::Remove_Entidade_Associativa_Associada	cardinalidade.h	/^    void Remove_Entidade_Associativa_Associada( int index ) { this->entidades_associativas_associadas.removeAt(index); }$/;"	f	class:Cardinalidade	access:public	signature:( int index )
-Cardinalidade::Remove_Relacionamento_Associado	cardinalidade.h	/^    void Remove_Relacionamento_Associado( int index ) { this->relacionamentos_associados.removeAt(index); }$/;"	f	class:Cardinalidade	access:public	signature:( int index )
+Cardinalidade::Type	cardinalidade.h	/^    enum { Type = UserType + 4 };$/;"	e	enum:Cardinalidade::__anon4
+Cardinalidade::addPoligonoAssociado	cardinalidade.h	/^    void addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Cardinalidade	access:public	signature:(Poligono * pol)
 Cardinalidade::atualCardinalidade	cardinalidade.h	/^    QString atualCardinalidade;$/;"	m	class:Cardinalidade	access:private
 Cardinalidade::atualizaPos	cardinalidade.cpp	/^void Cardinalidade::atualizaPos()$/;"	f	class:Cardinalidade	signature:()
 Cardinalidade::atualizaPos	cardinalidade.h	/^    void atualizaPos();$/;"	p	class:Cardinalidade	access:public	signature:()
 Cardinalidade::chamarTelaCardinalidade	cardinalidade.h	/^    Dialog chamarTelaCardinalidade;$/;"	m	class:Cardinalidade	access:private
-Cardinalidade::entidades_associadas	cardinalidade.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Cardinalidade	access:private
-Cardinalidade::entidades_associativas_associadas	cardinalidade.h	/^    QList< Poligono * > entidades_associativas_associadas;$/;"	m	class:Cardinalidade	access:private
-Cardinalidade::getAtualCardinalidade	cardinalidade.h	/^    QString getAtualCardinalidade() { return this->atualCardinalidade; }$/;"	f	class:Cardinalidade	access:public	signature:()
-Cardinalidade::getEntidades_Associadas	cardinalidade.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Cardinalidade	access:public	signature:()
-Cardinalidade::getEntidades_Associativas_Associadas	cardinalidade.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Cardinalidade	access:public	signature:()
-Cardinalidade::getRelacionamentos_Associados	cardinalidade.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Cardinalidade	access:public	signature:()
+Cardinalidade::getCardinalidadeAtual	cardinalidade.h	/^    QString getCardinalidadeAtual() { return this->atualCardinalidade; }$/;"	f	class:Cardinalidade	access:public	signature:()
+Cardinalidade::getPoligonosAssociadoOfType	cardinalidade.h	/^    QList<Poligono *> getPoligonosAssociadoOfType() {$/;"	f	class:Cardinalidade	access:public	signature:()
 Cardinalidade::itemA	cardinalidade.h	/^    Poligono *itemA;$/;"	m	class:Cardinalidade	access:private
 Cardinalidade::itemB	cardinalidade.h	/^    Poligono *itemB;$/;"	m	class:Cardinalidade	access:private
+Cardinalidade::limparPoligonosOfType	cardinalidade.h	/^    void limparPoligonosOfType() {$/;"	f	class:Cardinalidade	access:public	signature:()
 Cardinalidade::linha_atual	cardinalidade.h	/^    Ligacao *linha_atual;$/;"	m	class:Cardinalidade	access:private
 Cardinalidade::mouseReleaseEvent	cardinalidade.cpp	/^void Cardinalidade::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)$/;"	f	class:Cardinalidade	signature:(QGraphicsSceneMouseEvent *event)
 Cardinalidade::mouseReleaseEvent	cardinalidade.h	/^    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);$/;"	p	class:Cardinalidade	access:protected	signature:(QGraphicsSceneMouseEvent *event)
-Cardinalidade::relacionamentos_associados	cardinalidade.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Cardinalidade	access:private
-Cardinalidade::setAtualCardinalidade	cardinalidade.h	/^    void setAtualCardinalidade( QString c ) { this->atualCardinalidade = c; }$/;"	f	class:Cardinalidade	access:public	signature:( QString c )
-Cardinalidade::setEntidades_Associadas	cardinalidade.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *ea )
-Cardinalidade::setEntidades_Associativas_Associadas	cardinalidade.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *eaa )
+Cardinalidade::poligonosAssociados	cardinalidade.h	/^    QMap<Poligono::Tipo, QSet<Poligono *> > poligonosAssociados;$/;"	m	class:Cardinalidade	access:private
+Cardinalidade::removerPoligonoAssociado	cardinalidade.h	/^    void removerPoligonoAssociado(Poligono * poligono) {$/;"	f	class:Cardinalidade	access:public	signature:(Poligono * poligono)
+Cardinalidade::setCardinalidadeAtual	cardinalidade.h	/^    void setCardinalidadeAtual( QString c ) { this->atualCardinalidade = c; }$/;"	f	class:Cardinalidade	access:public	signature:( QString c )
 Cardinalidade::setItemA	cardinalidade.h	/^    void setItemA ( Poligono *item ) { this->itemA = item; }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *item )
 Cardinalidade::setItemB	cardinalidade.h	/^    void setItemB ( Poligono *item ) { this->itemB = item; }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *item )
-Cardinalidade::setLinha_Atual	cardinalidade.h	/^    void setLinha_Atual ( Ligacao *linha ) { this->linha_atual = linha; }$/;"	f	class:Cardinalidade	access:public	signature:( Ligacao *linha )
-Cardinalidade::setRelacionamento_Associados	cardinalidade.h	/^    void setRelacionamento_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *ra )
+Cardinalidade::setLinhaAtual	cardinalidade.h	/^    void setLinhaAtual ( Ligacao *linha ) { this->linha_atual = linha; }$/;"	f	class:Cardinalidade	access:public	signature:( Ligacao *linha )
+Cardinalidade::type	cardinalidade.h	/^    int type() const {$/;"	f	class:Cardinalidade	access:public	signature:() const
 DIAGRAMAVIEW_H	diagramaview.h	5;"	d
 DIALOG_H	dialog.h	5;"	d
 DSCENE_H	diagrama.h	5;"	d
-Diagrama	diagrama.cpp	/^Diagrama::Diagrama( QObject *parent ) : QGraphicsScene(parent)$/;"	f	class:Diagrama	signature:( QObject *parent )
-Diagrama	diagrama.h	/^    Diagrama(QObject *parent = 0);$/;"	p	class:Diagrama	access:public	signature:(QObject *parent = 0)
+Diagrama	diagrama.cpp	/^Diagrama::Diagrama( QObject *parent, AcoesPilha * pilhaDeAcoes ) : QGraphicsScene(parent)$/;"	f	class:Diagrama	signature:( QObject *parent, AcoesPilha * pilhaDeAcoes )
+Diagrama	diagrama.h	/^    Diagrama(QObject *parent, AcoesPilha * pilhaDeAcoes);$/;"	p	class:Diagrama	access:public	signature:(QObject *parent, AcoesPilha * pilhaDeAcoes)
 Diagrama	diagrama.h	/^class Diagrama : public QGraphicsScene$/;"	c	inherits:QGraphicsScene
-Diagrama::Diagrama	diagrama.cpp	/^Diagrama::Diagrama( QObject *parent ) : QGraphicsScene(parent)$/;"	f	class:Diagrama	signature:( QObject *parent )
-Diagrama::Diagrama	diagrama.h	/^    Diagrama(QObject *parent = 0);$/;"	p	class:Diagrama	access:public	signature:(QObject *parent = 0)
-Diagrama::Lselecionar	diagrama.h	/^    QGraphicsLineItem *Lselecionar;$/;"	m	class:Diagrama	access:private
-Diagrama::Rselecionar	diagrama.h	/^    QGraphicsRectItem *Rselecionar;$/;"	m	class:Diagrama	access:private
+Diagrama::Diagrama	diagrama.cpp	/^Diagrama::Diagrama( QObject *parent, AcoesPilha * pilhaDeAcoes ) : QGraphicsScene(parent)$/;"	f	class:Diagrama	signature:( QObject *parent, AcoesPilha * pilhaDeAcoes )
+Diagrama::Diagrama	diagrama.h	/^    Diagrama(QObject *parent, AcoesPilha * pilhaDeAcoes);$/;"	p	class:Diagrama	access:public	signature:(QObject *parent, AcoesPilha * pilhaDeAcoes)
 Diagrama::TipoER	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	g	class:Diagrama	access:public
 Diagrama::ativaMover	diagrama.h	/^    bool ativaMover;$/;"	m	class:Diagrama	access:private
 Diagrama::ativaSelecao	diagrama.h	/^    bool ativaSelecao;$/;"	m	class:Diagrama	access:private
-Diagrama::atr	diagrama.h	/^    Atributo *atr;$/;"	m	class:Diagrama	access:private
 Diagrama::atributo	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 Diagrama::atributo_ident	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
-Diagrama::card	diagrama.h	/^    Texto *card;$/;"	m	class:Diagrama	access:private
-Diagrama::cast1P	diagrama.h	/^    Poligono *cast1P;$/;"	m	class:Diagrama	access:private
-Diagrama::cast2P	diagrama.h	/^    Poligono *cast2P;$/;"	m	class:Diagrama	access:private
-Diagrama::castA	diagrama.h	/^    Atributo *castA;$/;"	m	class:Diagrama	access:private
-Diagrama::cast_linha	diagrama.h	/^    Ligacao *cast_linha;$/;"	m	class:Diagrama	access:private
 Diagrama::countAtributo	diagrama.h	/^    int countAtributo;$/;"	m	class:Diagrama	access:private
 Diagrama::countAtributoIdentificador	diagrama.h	/^    int countAtributoIdentificador;$/;"	m	class:Diagrama	access:private
 Diagrama::countEntidade	diagrama.h	/^    int countEntidade;$/;"	m	class:Diagrama	access:private
 Diagrama::countEntidadeAssociativa	diagrama.h	/^    int countEntidadeAssociativa;$/;"	m	class:Diagrama	access:private
 Diagrama::countRelacionamento	diagrama.h	/^    int countRelacionamento;$/;"	m	class:Diagrama	access:private
-Diagrama::desfazerItem	diagrama.h	/^    QStack<QGraphicsItem*> desfazerItem;$/;"	m	class:Diagrama	access:private
 Diagrama::ent_associativa	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 Diagrama::entidade	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 Diagrama::gen_esp	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
-Diagrama::getDesfazerItem	diagrama.h	/^    QStack<QGraphicsItem*> getDesfazerItem() { return this->desfazerItem; }$/;"	f	class:Diagrama	access:public	signature:()
 Diagrama::getTipoER	diagrama.h	/^    TipoER getTipoER() { return tipoER; }$/;"	f	class:Diagrama	access:public	signature:()
-Diagrama::insereCardinalidade	diagrama.h	/^    Cardinalidade *insereCardinalidade;$/;"	m	class:Diagrama	access:private
-Diagrama::item1	diagrama.h	/^    QGraphicsItem *item1;$/;"	m	class:Diagrama	access:private
-Diagrama::item2	diagrama.h	/^    QGraphicsItem *item2;$/;"	m	class:Diagrama	access:private
 Diagrama::itemInserido	diagrama.h	/^    void itemInserido();$/;"	p	class:Diagrama	access:public	signature:()
-Diagrama::lig	diagrama.h	/^    Ligacao *lig;$/;"	m	class:Diagrama	access:private
 Diagrama::linha	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 Diagrama::mouse	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 Diagrama::mouseMoveEvent	diagrama.cpp	/^void Diagrama::mouseMoveEvent(QGraphicsSceneMouseEvent *event)$/;"	f	class:Diagrama	signature:(QGraphicsSceneMouseEvent *event)
@@ -214,27 +220,13 @@ Diagrama::mousePressEvent	diagrama.cpp	/^void Diagrama::mousePressEvent(QGraphic
 Diagrama::mousePressEvent	diagrama.h	/^    void mousePressEvent(QGraphicsSceneMouseEvent *event);$/;"	p	class:Diagrama	access:protected	signature:(QGraphicsSceneMouseEvent *event)
 Diagrama::mouseReleaseEvent	diagrama.cpp	/^void Diagrama::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)$/;"	f	class:Diagrama	signature:(QGraphicsSceneMouseEvent *event)
 Diagrama::mouseReleaseEvent	diagrama.h	/^    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);$/;"	p	class:Diagrama	access:protected	signature:(QGraphicsSceneMouseEvent *event)
-Diagrama::nomeAtributo	diagrama.h	/^    Texto *nomeAtributo;$/;"	m	class:Diagrama	access:private
-Diagrama::nomeAtributoIdentificador	diagrama.h	/^    Texto *nomeAtributoIdentificador;$/;"	m	class:Diagrama	access:private
-Diagrama::nomeEntidade	diagrama.h	/^    Texto *nomeEntidade;$/;"	m	class:Diagrama	access:private
-Diagrama::nomeEntidadeAssociativa	diagrama.h	/^    Texto *nomeEntidadeAssociativa;$/;"	m	class:Diagrama	access:private
-Diagrama::nomeLigacao1	diagrama.h	/^    Texto *nomeLigacao1;$/;"	m	class:Diagrama	access:private
-Diagrama::nomeLigacao2	diagrama.h	/^    Texto *nomeLigacao2;$/;"	m	class:Diagrama	access:private
-Diagrama::nomeRelacionamento	diagrama.h	/^    Texto *nomeRelacionamento;$/;"	m	class:Diagrama	access:private
 Diagrama::novaLinha	diagrama.h	/^    QGraphicsLineItem *novaLinha;$/;"	m	class:Diagrama	access:private
 Diagrama::pilhaDeAcoes	diagrama.h	/^    AcoesPilha * pilhaDeAcoes;$/;"	m	class:Diagrama	access:private
-Diagrama::poli	diagrama.h	/^    Poligono *poli;$/;"	m	class:Diagrama	access:private
-Diagrama::poli2	diagrama.h	/^    Poligono *poli2;$/;"	m	class:Diagrama	access:private
 Diagrama::pontoInicial	diagrama.h	/^    QPointF pontoInicial;$/;"	m	class:Diagrama	access:private
-Diagrama::popDesfazerItem	diagrama.h	/^    void popDesfazerItem() { this->desfazerItem.pop(); }$/;"	f	class:Diagrama	access:public	signature:()
-Diagrama::popRefazerItem	diagrama.h	/^    void popRefazerItem() { this->refazerItem.pop(); }$/;"	f	class:Diagrama	access:public	signature:()
-Diagrama::refazerItem	diagrama.h	/^    QStack<QGraphicsItem*> refazerItem;$/;"	m	class:Diagrama	access:private
 Diagrama::relacionamento	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
-Diagrama::setDesfazer	diagrama.cpp	/^void Diagrama::setDesfazer(QGraphicsItem *item)$/;"	f	class:Diagrama	signature:(QGraphicsItem *item)
-Diagrama::setDesfazer	diagrama.h	/^    void setDesfazer( QGraphicsItem *item );$/;"	p	class:Diagrama	access:public	signature:( QGraphicsItem *item )
+Diagrama::selecionarBox	diagrama.h	/^    QGraphicsRectItem * selecionarBox;$/;"	m	class:Diagrama	access:private
 Diagrama::setTipoER	diagrama.h	/^    void setTipoER( TipoER tipo ) { this->tipoER = tipo; }$/;"	f	class:Diagrama	access:public	signature:( TipoER tipo )
 Diagrama::tipoER	diagrama.h	/^    TipoER tipoER;$/;"	m	class:Diagrama	access:private
-Diagrama::tipoGenEsp	diagrama.h	/^    Texto *tipoGenEsp;$/;"	m	class:Diagrama	access:private
 DiagramaView	diagramaview.cpp	/^DiagramaView::DiagramaView(QGraphicsScene * scene, QWidget *parent) : QGraphicsView(scene, parent), antigoZoom(100.0)$/;"	f	class:DiagramaView	signature:(QGraphicsScene * scene, QWidget *parent)
 DiagramaView	diagramaview.cpp	/^DiagramaView::DiagramaView(QWidget *parent) :$/;"	f	class:DiagramaView	signature:(QWidget *parent)
 DiagramaView	diagramaview.h	/^    explicit DiagramaView(QGraphicsScene * scene = 0, QWidget *parent = 0);$/;"	p	class:DiagramaView	access:public	signature:(QGraphicsScene * scene = 0, QWidget *parent = 0)
@@ -265,58 +257,59 @@ Dialog::mostrarTipoGenEsp	dialog.h	/^    QString mostrarTipoGenEsp();$/;"	p	clas
 LIGACOES_H	ligacao.h	4;"	d
 Ligacao	ligacao.cpp	/^Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent ) : QGraphicsLineItem(parent)$/;"	f	class:Ligacao	signature:(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent )
 Ligacao	ligacao.h	/^    Ligacao( QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent = 0 );$/;"	p	class:Ligacao	access:public	signature:( QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent = 0 )
-Ligacao	ligacao.h	/^class Ligacao : public QObject, public QGraphicsLineItem$/;"	c	inherits:QObject,QGraphicsLineItem
+Ligacao	ligacao.h	/^class Ligacao : public QObject, public QGraphicsLineItem, public ObjetoRemovivel$/;"	c	inherits:QObject,QGraphicsLineItem,ObjetoRemovivel
 Ligacao::Ligacao	ligacao.cpp	/^Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent ) : QGraphicsLineItem(parent)$/;"	f	class:Ligacao	signature:(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent )
 Ligacao::Ligacao	ligacao.h	/^    Ligacao( QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent = 0 );$/;"	p	class:Ligacao	access:public	signature:( QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *parent = 0 )
-Ligacao::RemoveAtributoAssociado	ligacao.h	/^    void RemoveAtributoAssociado( int index ) { this->atributo_associado.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Ligacao::RemoveTodasCardinalidadesAssociadas	ligacao.h	/^    void RemoveTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::RemoveTodosAtributosAssociados	ligacao.h	/^    void RemoveTodosAtributosAssociados() { this->atributo_associado.erase(this->atributo_associado.begin(), this->atributo_associado.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::Remove_Cardinalidade_Associada	ligacao.h	/^    void Remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
 Ligacao::Type	ligacao.h	/^    enum { Type = UserType + 2 };$/;"	e	enum:Ligacao::__anon1
-Ligacao::addPoligonoAssociado	ligacao.h	/^    public addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Ligacao	access:public	signature:(Poligono * pol)
-Ligacao::atributo_associado	ligacao.h	/^    QList< Atributo * > atributo_associado;$/;"	m	class:Ligacao	access:private
+Ligacao::addAtributoAssociado	ligacao.h	/^    void addAtributoAssociado( Atributo *aa ) { this->atributo_associado.insert(aa); }$/;"	f	class:Ligacao	access:public	signature:( Atributo *aa )
+Ligacao::addCardinalidadeAssociada	ligacao.h	/^    void addCardinalidadeAssociada( Cardinalidade *ca ) { this->cardinalidades_associadas.insert(ca); }$/;"	f	class:Ligacao	access:public	signature:( Cardinalidade *ca )
+Ligacao::addPoligonoAssociado	ligacao.h	/^    void addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Ligacao	access:public	signature:(Poligono * pol)
+Ligacao::atributo_associado	ligacao.h	/^    QSet< Atributo * > atributo_associado;$/;"	m	class:Ligacao	access:private
 Ligacao::atualizaPos	ligacao.cpp	/^void Ligacao::atualizaPos()$/;"	f	class:Ligacao	signature:()
 Ligacao::atualizaPos	ligacao.h	/^    void atualizaPos();$/;"	p	class:Ligacao	access:public	signature:()
-Ligacao::atualizaPos2	ligacao.cpp	/^void Ligacao::atualizaPos2()$/;"	f	class:Ligacao	signature:()
-Ligacao::atualizaPos2	ligacao.h	/^    void atualizaPos2();$/;"	p	class:Ligacao	access:public	signature:()
+Ligacao::atualizaPosAutoRelacionamento	ligacao.cpp	/^void Ligacao::atualizaPosAutoRelacionamento()$/;"	f	class:Ligacao	signature:()
+Ligacao::atualizaPosAutoRelacionamento	ligacao.h	/^    void atualizaPosAutoRelacionamento();$/;"	p	class:Ligacao	access:public	signature:()
 Ligacao::cardItem	ligacao.h	/^    Cardinalidade *cardItem;$/;"	m	class:Ligacao	access:private
-Ligacao::cardinalidades_associadas	ligacao.h	/^    QList< Cardinalidade * > cardinalidades_associadas;$/;"	m	class:Ligacao	access:private
+Ligacao::cardinalidades_associadas	ligacao.h	/^    QSet< Cardinalidade * > cardinalidades_associadas;$/;"	m	class:Ligacao	access:private
 Ligacao::castItem1P	ligacao.h	/^    Poligono *castItem1P;$/;"	m	class:Ligacao	access:private
 Ligacao::castItem2P	ligacao.h	/^    Poligono *castItem2P;$/;"	m	class:Ligacao	access:private
 Ligacao::castItemA	ligacao.h	/^    Atributo *castItemA;$/;"	m	class:Ligacao	access:private
+Ligacao::conectarObjetos	ligacao.cpp	/^void Ligacao::conectarObjetos(){$/;"	f	class:Ligacao	signature:()
+Ligacao::conectarObjetos	ligacao.h	/^    void conectarObjetos();$/;"	p	class:Ligacao	access:public	signature:()
+Ligacao::desconectarObjetos	ligacao.cpp	/^void Ligacao::desconectarObjetos(){$/;"	f	class:Ligacao	signature:()
+Ligacao::desconectarObjetos	ligacao.h	/^    void desconectarObjetos();$/;"	p	class:Ligacao	access:public	signature:()
+Ligacao::doRemove	ligacao.cpp	/^void Ligacao::doRemove(bool value)$/;"	f	class:Ligacao	signature:(bool value)
+Ligacao::doRemove	ligacao.h	/^    virtual void doRemove(bool value);$/;"	p	class:Ligacao	access:public	signature:(bool value)
 Ligacao::entidadeFracaAtiva	ligacao.h	/^    bool entidadeFracaAtiva;$/;"	m	class:Ligacao	access:private
-Ligacao::entidades_associadas	ligacao.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Ligacao	access:private
-Ligacao::entidades_associativas_associadas	ligacao.h	/^    QList < Poligono * > entidades_associativas_associadas;$/;"	m	class:Ligacao	access:private
-Ligacao::generalizacao_especializacao_associada	ligacao.h	/^    QList< Poligono * > generalizacao_especializacao_associada;$/;"	m	class:Ligacao	access:private
-Ligacao::getAtributoAssociado	ligacao.h	/^    QList< Atributo *> getAtributoAssociado() { return atributo_associado; }$/;"	f	class:Ligacao	access:public	signature:()
+Ligacao::getAtributoAssociado	ligacao.h	/^    QList< Atributo *> getAtributoAssociado() { return atributo_associado.toList(); }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::getCardItem	ligacao.h	/^    Cardinalidade * getCardItem() { return this->cardItem; }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::getCardinalidades_Associadas	ligacao.h	/^    QList< Cardinalidade *> getCardinalidades_Associadas() { return cardinalidades_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
+Ligacao::getCardinalidades_Associadas	ligacao.h	/^    QList< Cardinalidade *> getCardinalidades_Associadas() { return cardinalidades_associadas.toList(); }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::getCastItem1P	ligacao.h	/^    Poligono * getCastItem1P() { return this->castItem1P; }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::getCastItem2P	ligacao.h	/^    Poligono * getCastItem2P() { return this->castItem2P; }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::getCastItemA	ligacao.h	/^    Atributo * getCastItemA() { return this->castItemA; }$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::getEntidadeFracaAtiva	ligacao.h	/^    bool getEntidadeFracaAtiva () { return this->entidadeFracaAtiva; }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::getEntidades_Associadas	ligacao.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::getEntidades_Associativas_Associadas	ligacao.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::getPoligonosAssociadoOfType	ligacao.h	/^    public getPoligonosAssociadoOfType() {$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::getRelacionamentos_Associados	ligacao.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Ligacao	access:public	signature:()
+Ligacao::getPoligonosAssociadoOfType	ligacao.h	/^    QList<Poligono *> getPoligonosAssociadoOfType() {$/;"	f	class:Ligacao	access:public	signature:()
+Ligacao::getToDelete	ligacao.cpp	/^QList<QGraphicsItem *> Ligacao::getToDelete()$/;"	f	class:Ligacao	signature:()
+Ligacao::getToDelete	ligacao.h	/^    virtual QList<QGraphicsItem *> getToDelete();$/;"	p	class:Ligacao	access:public	signature:()
+Ligacao::limparAtributosAssociados	ligacao.h	/^    void limparAtributosAssociados() { this->atributo_associado.clear(); }$/;"	f	class:Ligacao	access:public	signature:()
+Ligacao::limparCardinalidadesAssociadas	ligacao.h	/^    void limparCardinalidadesAssociadas() { this->cardinalidades_associadas.clear(); }$/;"	f	class:Ligacao	access:public	signature:()
+Ligacao::limparPoligonosOfType	ligacao.h	/^    void limparPoligonosOfType() {$/;"	f	class:Ligacao	access:public	signature:()
 Ligacao::linhaAlterada	ligacao.h	/^    void linhaAlterada( QLineF nova_linha );$/;"	p	class:Ligacao	access:private	signature:( QLineF nova_linha )
 Ligacao::nomeLigacao1	ligacao.h	/^    Texto *nomeLigacao1, *nomeLigacao2;$/;"	m	class:Ligacao	access:private
 Ligacao::nomeLigacao2	ligacao.h	/^    Texto *nomeLigacao1, *nomeLigacao2;$/;"	m	class:Ligacao	access:private
-Ligacao::paint	ligacao.cpp	/^void Ligacao::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)$/;"	f	class:Ligacao	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-Ligacao::paint	ligacao.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);$/;"	p	class:Ligacao	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-Ligacao::poligonos_associados	ligacao.h	/^    QMap<Poligono::Tipo, QList<Poligono *> > poligonos_associados;$/;"	m	class:Ligacao	access:private
-Ligacao::relacionamentos_associados	ligacao.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Ligacao	access:private
-Ligacao::removePoligonoAssociadoAt	ligacao.h	/^    public removePoligonoAssociadoAt(int index) {$/;"	f	class:Ligacao	access:public	signature:(int index)
-Ligacao::removeTodosPoligonosOfType	ligacao.h	/^    public removeTodosPoligonosOfType() {$/;"	f	class:Ligacao	access:public	signature:()
-Ligacao::setAtributoAssociado	ligacao.h	/^    void setAtributoAssociado( Atributo *aa ) { this->atributo_associado.push_back(aa); }$/;"	f	class:Ligacao	access:public	signature:( Atributo *aa )
-Ligacao::setCardinalidades_Associadas	ligacao.h	/^    void setCardinalidades_Associadas( Cardinalidade *ca ) { this->cardinalidades_associadas.push_back(ca); }$/;"	f	class:Ligacao	access:public	signature:( Cardinalidade *ca )
+Ligacao::paint	ligacao.cpp	/^void Ligacao::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)$/;"	f	class:Ligacao	signature:(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+Ligacao::paint	ligacao.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);$/;"	p	class:Ligacao	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+Ligacao::poligonosAssociados	ligacao.h	/^    QMap<Poligono::Tipo, QSet<Poligono *> > poligonosAssociados;$/;"	m	class:Ligacao	access:private
+Ligacao::removerAtributoAssociado	ligacao.h	/^    void removerAtributoAssociado(Atributo * it) { atributo_associado.remove(it); }$/;"	f	class:Ligacao	access:public	signature:(Atributo * it)
+Ligacao::removerCardinalidadeAssociada	ligacao.h	/^    void removerCardinalidadeAssociada(Cardinalidade * it) { cardinalidades_associadas.remove(it); }$/;"	f	class:Ligacao	access:public	signature:(Cardinalidade * it)
+Ligacao::removerPoligonoAssociado	ligacao.h	/^    void removerPoligonoAssociado(Poligono * poligono) {$/;"	f	class:Ligacao	access:public	signature:(Poligono * poligono)
 Ligacao::setEntidadeFracaAtiva	ligacao.h	/^    void setEntidadeFracaAtiva( bool set ) { this->entidadeFracaAtiva = set; }$/;"	f	class:Ligacao	access:public	signature:( bool set )
 Ligacao::shape	ligacao.cpp	/^QPainterPath Ligacao::shape() const$/;"	f	class:Ligacao	signature:() const
 Ligacao::shape	ligacao.h	/^    QPainterPath shape() const;$/;"	p	class:Ligacao	access:public	signature:() const
 Ligacao::temp	ligacao.h	/^    QPointF temp;$/;"	m	class:Ligacao	access:private
 Ligacao::type	ligacao.h	/^    int type() const$/;"	f	class:Ligacao	access:public	signature:() const
-Lselecionar	diagrama.h	/^    QGraphicsLineItem *Lselecionar;$/;"	m	class:Diagrama	access:private
 MAINWINDOW_H	mainwindow.h	2;"	d
+MAXARQRECENTES	mainwindow.h	3;"	d
 MainWindow	mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent) :$/;"	f	class:MainWindow	signature:(QWidget *parent)
 MainWindow	mainwindow.h	/^    explicit MainWindow(QWidget *parent = 0);$/;"	p	class:MainWindow	access:public	signature:(QWidget *parent = 0)
 MainWindow	mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c	inherits:QMainWindow
@@ -327,19 +320,17 @@ MainWindow::abrir	mainwindow.h	/^    void abrir();$/;"	p	class:MainWindow	access
 MainWindow::abrirAction	mainwindow.h	/^    QAction *abrirAction;$/;"	m	class:MainWindow	access:private
 MainWindow::abrirArquivo	mainwindow.cpp	/^void MainWindow::abrirArquivo(const QString nomeArquivo)$/;"	f	class:MainWindow	signature:(const QString nomeArquivo)
 MainWindow::abrirArquivo	mainwindow.h	/^    void abrirArquivo(const QString nomeArquivo);$/;"	p	class:MainWindow	access:private	signature:(const QString nomeArquivo)
-MainWindow::abrirAtributo	mainwindow.h	/^    Atributo *abrirAtributo;$/;"	m	class:MainWindow	access:private
-MainWindow::abrirAutoRelacionamento1	mainwindow.h	/^    Texto *abrirAutoRelacionamento1;$/;"	m	class:MainWindow	access:private
-MainWindow::abrirAutoRelacionamento2	mainwindow.h	/^    Texto *abrirAutoRelacionamento2;$/;"	m	class:MainWindow	access:private
-MainWindow::abrirCardinalidade	mainwindow.h	/^    Cardinalidade *abrirCardinalidade;$/;"	m	class:MainWindow	access:private
-MainWindow::abrirPoligono	mainwindow.h	/^    Poligono *abrirPoligono;$/;"	m	class:MainWindow	access:private
-MainWindow::abrirPoligono2	mainwindow.h	/^    Poligono *abrirPoligono2;$/;"	m	class:MainWindow	access:private
-MainWindow::abrirTexto	mainwindow.h	/^    Texto *abrirTexto;$/;"	m	class:MainWindow	access:private
+MainWindow::abrirArquivoRecente	mainwindow.cpp	/^void MainWindow::abrirArquivoRecente()$/;"	f	class:MainWindow	signature:()
+MainWindow::abrirArquivoRecente	mainwindow.h	/^    void abrirArquivoRecente();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::ajudaAction	mainwindow.h	/^    QAction *ajudaAction;$/;"	m	class:MainWindow	access:private
 MainWindow::ajudaMenu	mainwindow.h	/^    QMenu *ajudaMenu;$/;"	m	class:MainWindow	access:private
 MainWindow::ampliar	mainwindow.h	/^    QToolButton *ampliar;$/;"	m	class:MainWindow	access:private
 MainWindow::arquivoMenu	mainwindow.h	/^    QMenu *arquivoMenu;$/;"	m	class:MainWindow	access:private
+MainWindow::arquivosRecentes	mainwindow.h	/^    QAction *arquivosRecentes[MAXARQRECENTES];$/;"	m	class:MainWindow	access:private
 MainWindow::atributo	mainwindow.h	/^    QToolButton *atributo;$/;"	m	class:MainWindow	access:private
 MainWindow::atributo_identif	mainwindow.h	/^    QToolButton *atributo_identif;$/;"	m	class:MainWindow	access:private
+MainWindow::atualizarAcaoArquivosRecentes	mainwindow.cpp	/^void MainWindow::atualizarAcaoArquivosRecentes()$/;"	f	class:MainWindow	signature:()
+MainWindow::atualizarAcaoArquivosRecentes	mainwindow.h	/^    void atualizarAcaoArquivosRecentes();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::botoesER	mainwindow.h	/^    QButtonGroup *botoesER;$/;"	m	class:MainWindow	access:private
 MainWindow::botoesERClicked	mainwindow.cpp	/^void MainWindow::botoesERClicked(int id)$/;"	f	class:MainWindow	signature:(int id)
 MainWindow::botoesERClicked	mainwindow.h	/^    void botoesERClicked(int id);$/;"	p	class:MainWindow	access:private	signature:(int id)
@@ -349,14 +340,6 @@ MainWindow::botoesMLClicked	mainwindow.h	/^    void botoesMLClicked(int id);$/;"
 MainWindow::botoesManip	mainwindow.h	/^    QButtonGroup *botoesManip;$/;"	m	class:MainWindow	access:private
 MainWindow::botoesManipClicked	mainwindow.cpp	/^void MainWindow::botoesManipClicked(int id)$/;"	f	class:MainWindow	signature:(int id)
 MainWindow::botoesManipClicked	mainwindow.h	/^    void botoesManipClicked(int id);$/;"	p	class:MainWindow	access:private	signature:(int id)
-MainWindow::castAtributo	mainwindow.h	/^    Atributo *castAtributo;$/;"	m	class:MainWindow	access:private
-MainWindow::castAtributo2	mainwindow.h	/^    Atributo *castAtributo2;$/;"	m	class:MainWindow	access:private
-MainWindow::castCardinalidade	mainwindow.h	/^    Cardinalidade *castCardinalidade;$/;"	m	class:MainWindow	access:private
-MainWindow::castEntidade	mainwindow.h	/^    Poligono *castEntidade;$/;"	m	class:MainWindow	access:private
-MainWindow::castLigacao	mainwindow.h	/^    Ligacao *castLigacao;$/;"	m	class:MainWindow	access:private
-MainWindow::castLinha	mainwindow.h	/^    Ligacao *castLinha;$/;"	m	class:MainWindow	access:private
-MainWindow::castPoligono	mainwindow.h	/^    Poligono *castPoligono;$/;"	m	class:MainWindow	access:private
-MainWindow::castPoligono2	mainwindow.h	/^    Poligono *castPoligono2;$/;"	m	class:MainWindow	access:private
 MainWindow::cast_poligono	mainwindow.h	/^    Poligono *cast_poligono;$/;"	m	class:MainWindow	access:private
 MainWindow::createActions	mainwindow.cpp	/^void MainWindow::createActions()$/;"	f	class:MainWindow	signature:()
 MainWindow::createActions	mainwindow.h	/^    void createActions();$/;"	p	class:MainWindow	access:private	signature:()
@@ -364,27 +347,37 @@ MainWindow::createMenu	mainwindow.cpp	/^void MainWindow::createMenu()$/;"	f	clas
 MainWindow::createMenu	mainwindow.h	/^    void createMenu();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::createToolBar	mainwindow.cpp	/^void MainWindow::createToolBar()$/;"	f	class:MainWindow	signature:()
 MainWindow::createToolBar	mainwindow.h	/^    void createToolBar();$/;"	p	class:MainWindow	access:private	signature:()
+MainWindow::criarScene	mainwindow.cpp	/^void MainWindow::criarScene()$/;"	f	class:MainWindow	signature:()
+MainWindow::criarScene	mainwindow.h	/^    void criarScene();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::deletar	mainwindow.h	/^    QToolButton *deletar;$/;"	m	class:MainWindow	access:private
-MainWindow::deletarSelecionado	mainwindow.cpp	/^void MainWindow::deletarSelecionado() {$/;"	f	class:MainWindow	signature:()
-MainWindow::deletarSelecionado	mainwindow.h	/^    void deletarSelecionado();$/;"	p	class:MainWindow	access:private	signature:()
+MainWindow::deletarScene	mainwindow.cpp	/^void MainWindow::deletarScene()$/;"	f	class:MainWindow	signature:()
+MainWindow::deletarScene	mainwindow.h	/^    void deletarScene();$/;"	p	class:MainWindow	access:private	signature:()
+MainWindow::deletarSelecionados	mainwindow.cpp	/^void MainWindow::deletarSelecionados() {$/;"	f	class:MainWindow	signature:()
+MainWindow::deletarSelecionados	mainwindow.h	/^    void deletarSelecionados();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::desfazer	mainwindow.cpp	/^void MainWindow::desfazer()$/;"	f	class:MainWindow	signature:()
 MainWindow::desfazer	mainwindow.h	/^    void desfazer();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::desfazerAction	mainwindow.h	/^    QAction *desfazerAction;$/;"	m	class:MainWindow	access:private
+MainWindow::diminuirNome	mainwindow.cpp	/^QString MainWindow::diminuirNome(const QString nomeCompleto)$/;"	f	class:MainWindow	signature:(const QString nomeCompleto)
+MainWindow::diminuirNome	mainwindow.h	/^    QString diminuirNome(const QString nomeCompleto);$/;"	p	class:MainWindow	access:private	signature:(const QString nomeCompleto)
 MainWindow::editarMenu	mainwindow.h	/^    QMenu *editarMenu;$/;"	m	class:MainWindow	access:private
 MainWindow::entid_associativa	mainwindow.h	/^    QToolButton *entid_associativa;$/;"	m	class:MainWindow	access:private
 MainWindow::entidade	mainwindow.h	/^    QToolButton *entidade;$/;"	m	class:MainWindow	access:private
 MainWindow::entidadeFraca	mainwindow.h	/^    QToolButton *entidadeFraca;$/;"	m	class:MainWindow	access:private
 MainWindow::exibicaoToolBar	mainwindow.h	/^    QToolBar * exibicaoToolBar;$/;"	m	class:MainWindow	access:private
+MainWindow::fecharDiagrama	mainwindow.cpp	/^void MainWindow::fecharDiagrama()$/;"	f	class:MainWindow	signature:()
+MainWindow::fecharDiagrama	mainwindow.h	/^    void fecharDiagrama();$/;"	p	class:MainWindow	access:private	signature:()
+MainWindow::fecharDiagramaAtual	mainwindow.h	/^    QAction *fecharDiagramaAtual;$/;"	m	class:MainWindow	access:private
 MainWindow::formas	mainwindow.h	/^    QToolBar *formas;$/;"	m	class:MainWindow	access:private
 MainWindow::gen_esp	mainwindow.h	/^    QToolButton *gen_esp;$/;"	m	class:MainWindow	access:private
+MainWindow::houveModificacao	mainwindow.cpp	/^void MainWindow::houveModificacao()$/;"	f	class:MainWindow	signature:()
+MainWindow::houveModificacao	mainwindow.h	/^    void houveModificacao();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::itemInserido	mainwindow.cpp	/^void MainWindow::itemInserido()$/;"	f	class:MainWindow	signature:()
 MainWindow::itemInserido	mainwindow.h	/^    void itemInserido();$/;"	p	class:MainWindow	access:private	signature:()
-MainWindow::lig	mainwindow.h	/^    Ligacao *lig;$/;"	m	class:MainWindow	access:private
 MainWindow::linhas	mainwindow.h	/^    QToolButton *linhas;$/;"	m	class:MainWindow	access:private
-MainWindow::lixo	mainwindow.h	/^    QList<QGraphicsItem *> lixo;$/;"	m	class:MainWindow	access:private
 MainWindow::manipulacoes	mainwindow.h	/^    QToolBar *manipulacoes;$/;"	m	class:MainWindow	access:private
 MainWindow::mouse	mainwindow.h	/^    QToolButton *mouse;$/;"	m	class:MainWindow	access:private
 MainWindow::mouseLinha	mainwindow.h	/^    QToolBar *mouseLinha;$/;"	m	class:MainWindow	access:private
+MainWindow::nomeArquivoAtual	mainwindow.h	/^    QString nomeArquivoAtual;$/;"	m	class:MainWindow	access:private
 MainWindow::novaAction	mainwindow.h	/^    QAction *novaAction;$/;"	m	class:MainWindow	access:private
 MainWindow::novaJanela	mainwindow.cpp	/^void MainWindow::novaJanela()$/;"	f	class:MainWindow	signature:()
 MainWindow::novaJanela	mainwindow.h	/^    void novaJanela();$/;"	p	class:MainWindow	access:private	signature:()
@@ -393,101 +386,108 @@ MainWindow::organizarEntidades	mainwindow.h	/^    void organizarEntidades(int di
 MainWindow::organizarHor	mainwindow.h	/^    QToolButton *organizarHor;$/;"	m	class:MainWindow	access:private
 MainWindow::organizarVer	mainwindow.h	/^    QToolButton *organizarVer;$/;"	m	class:MainWindow	access:private
 MainWindow::pilhaDeAcoes	mainwindow.h	/^    AcoesPilha * pilhaDeAcoes;$/;"	m	class:MainWindow	access:private
+MainWindow::questionarSalvar	mainwindow.cpp	/^bool MainWindow::questionarSalvar(){$/;"	f	class:MainWindow	signature:()
+MainWindow::questionarSalvar	mainwindow.h	/^    bool questionarSalvar();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::reduzir	mainwindow.h	/^    QToolButton *reduzir;$/;"	m	class:MainWindow	access:private
 MainWindow::refazer	mainwindow.cpp	/^void MainWindow::refazer()$/;"	f	class:MainWindow	signature:()
 MainWindow::refazer	mainwindow.h	/^    void refazer();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::refazerAction	mainwindow.h	/^    QAction *refazerAction;$/;"	m	class:MainWindow	access:private
 MainWindow::relacionamento	mainwindow.h	/^    QToolButton *relacionamento;$/;"	m	class:MainWindow	access:private
+MainWindow::resetWindowState	mainwindow.cpp	/^void MainWindow::resetWindowState() {$/;"	f	class:MainWindow	signature:()
+MainWindow::resetWindowState	mainwindow.h	/^    void resetWindowState();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::sairAction	mainwindow.h	/^    QAction *sairAction;$/;"	m	class:MainWindow	access:private
+MainWindow::salvar	mainwindow.cpp	/^void MainWindow::salvar()$/;"	f	class:MainWindow	signature:()
+MainWindow::salvar	mainwindow.h	/^    void salvar();$/;"	p	class:MainWindow	access:private	signature:()
 MainWindow::salvarAction	mainwindow.h	/^    QAction *salvarAction;$/;"	m	class:MainWindow	access:private
 MainWindow::salvarArquivo	mainwindow.cpp	/^void MainWindow::salvarArquivo(const QString nomeArquivo)$/;"	f	class:MainWindow	signature:(const QString nomeArquivo)
 MainWindow::salvarArquivo	mainwindow.h	/^    void salvarArquivo(const QString nomeArquivo);$/;"	p	class:MainWindow	access:private	signature:(const QString nomeArquivo)
 MainWindow::salvarComo	mainwindow.cpp	/^void MainWindow::salvarComo()$/;"	f	class:MainWindow	signature:()
 MainWindow::salvarComo	mainwindow.h	/^    void salvarComo();$/;"	p	class:MainWindow	access:private	signature:()
+MainWindow::salvarComoAction	mainwindow.h	/^    QAction *salvarComoAction;$/;"	m	class:MainWindow	access:private
 MainWindow::scene	mainwindow.h	/^    Diagrama *scene;$/;"	m	class:MainWindow	access:private
 MainWindow::scroolZoom	mainwindow.h	/^    QSpinBox * scroolZoom;$/;"	m	class:MainWindow	access:private
+MainWindow::setArquivoAtual	mainwindow.cpp	/^void MainWindow::setArquivoAtual(const QString nome)$/;"	f	class:MainWindow	signature:(const QString nome)
+MainWindow::setArquivoAtual	mainwindow.h	/^    void setArquivoAtual(const QString nomeArquivo);$/;"	p	class:MainWindow	access:private	signature:(const QString nomeArquivo)
+MainWindow::setArquivoAtualTitulo	mainwindow.cpp	/^void MainWindow::setArquivoAtualTitulo(const QString nome)$/;"	f	class:MainWindow	signature:(const QString nome)
+MainWindow::setArquivoAtualTitulo	mainwindow.h	/^    void setArquivoAtualTitulo(const QString nome);$/;"	p	class:MainWindow	access:private	signature:(const QString nome)
+MainWindow::setNomeArquivoAtual	mainwindow.h	/^    void setNomeArquivoAtual(QString nome) { this->nomeArquivoAtual = nome; }$/;"	f	class:MainWindow	access:private	signature:(QString nome)
 MainWindow::sobre	mainwindow.cpp	/^void MainWindow::sobre()$/;"	f	class:MainWindow	signature:()
 MainWindow::sobre	mainwindow.h	/^    void sobre();$/;"	p	class:MainWindow	access:private	signature:()
-MainWindow::ui	mainwindow.h	/^    Ui::MainWindow *ui;$/;"	m	class:MainWindow	access:private
 MainWindow::view	mainwindow.h	/^    DiagramaView *view;$/;"	m	class:MainWindow	access:private
 MainWindow::~MainWindow	mainwindow.cpp	/^MainWindow::~MainWindow()$/;"	f	class:MainWindow	signature:()
 MainWindow::~MainWindow	mainwindow.h	/^    ~MainWindow();$/;"	p	class:MainWindow	access:public	signature:()
+OBJETOREMOVIVEL_H	objetoremovivel.h	2;"	d
+ObjetoRemovivel	objetoremovivel.h	/^class ObjetoRemovivel$/;"	c
+ObjetoRemovivel::doRemove	objetoremovivel.h	/^    virtual void doRemove(bool value) = 0;$/;"	p	class:ObjetoRemovivel	access:public	signature:(bool value)
+ObjetoRemovivel::getToDelete	objetoremovivel.h	/^    virtual QList<QGraphicsItem *> getToDelete() = 0;$/;"	p	class:ObjetoRemovivel	access:public	signature:()
 Poligono	poligono.cpp	/^Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *scene )$/;"	f	class:Poligono	signature:(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *scene )
 Poligono	poligono.h	/^    Poligono(Tipo tipo, bool pai, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);$/;"	p	class:Poligono	access:public	signature:(Tipo tipo, bool pai, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0)
-Poligono	poligono.h	/^class Poligono : public QObject, public QGraphicsPolygonItem$/;"	c	inherits:QObject,QGraphicsPolygonItem
+Poligono	poligono.h	/^class Poligono : public QObject, public QGraphicsPolygonItem, public ObjetoRemovivel$/;"	c	inherits:QObject,QGraphicsPolygonItem,ObjetoRemovivel
 Poligono::Poligono	poligono.cpp	/^Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *scene )$/;"	f	class:Poligono	signature:(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *scene )
 Poligono::Poligono	poligono.h	/^    Poligono(Tipo tipo, bool pai, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);$/;"	p	class:Poligono	access:public	signature:(Tipo tipo, bool pai, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0)
 Poligono::Tipo	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	g	class:Poligono	access:public
 Poligono::Type	poligono.h	/^    enum { Type = UserType + 1 };$/;"	e	enum:Poligono::__anon3
 Poligono::acompanharObjeto	poligono.cpp	/^void Poligono::acompanharObjeto(const QPointF objNewPos)$/;"	f	class:Poligono	signature:(const QPointF objNewPos)
 Poligono::acompanharObjeto	poligono.h	/^    void acompanharObjeto(const QPointF objNewPos);$/;"	p	class:Poligono	access:public	signature:(const QPointF objNewPos)
-Poligono::addPoligonosAssociado	poligono.h	/^    void addPoligonosAssociado(Poligono * pol) {$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
-Poligono::atributosAssociados	poligono.h	/^    QList< Atributo * > atributosAssociados;$/;"	m	class:Poligono	access:private
+Poligono::addAtributosAssociados	poligono.h	/^    void addAtributosAssociados( Atributo *aa ) { this->atributosAssociados.insert(aa); }$/;"	f	class:Poligono	access:public	signature:( Atributo *aa )
+Poligono::addCardinalidadesAssociadas	poligono.h	/^    void addCardinalidadesAssociadas( Cardinalidade *ca ) { this->cardinalidades_associadas.insert(ca); }$/;"	f	class:Poligono	access:public	signature:( Cardinalidade *ca )
+Poligono::addLinhasAssociadas	poligono.h	/^    void addLinhasAssociadas( Ligacao *la ) { this->linhas_associadas.insert(la); }$/;"	f	class:Poligono	access:public	signature:( Ligacao *la )
+Poligono::addPoligonoAssociado	poligono.h	/^    void addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
+Poligono::atributosAssociados	poligono.h	/^    QSet< Atributo * > atributosAssociados;$/;"	m	class:Poligono	access:private
 Poligono::atualizaItem	poligono.cpp	/^void Poligono::atualizaItem()$/;"	f	class:Poligono	signature:()
 Poligono::atualizaItem	poligono.h	/^    void atualizaItem();$/;"	p	class:Poligono	access:public	signature:()
 Poligono::autoRelacionamento	poligono.h	/^    bool autoRelacionamento;$/;"	m	class:Poligono	access:private
-Poligono::cardinalidades_associadas	poligono.h	/^    QList< Cardinalidade * > cardinalidades_associadas;$/;"	m	class:Poligono	access:private
+Poligono::cardinalidades_associadas	poligono.h	/^    QSet< Cardinalidade * > cardinalidades_associadas;$/;"	m	class:Poligono	access:private
 Poligono::conectado	poligono.h	/^    bool conectado;$/;"	m	class:Poligono	access:private
+Poligono::doRemove	poligono.cpp	/^void Poligono::doRemove(bool value)$/;"	f	class:Poligono	signature:(bool value)
+Poligono::doRemove	poligono.h	/^    virtual void doRemove(bool value);$/;"	p	class:Poligono	access:public	signature:(bool value)
 Poligono::ent_associativa	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
 Poligono::entidade	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
 Poligono::gen_esp	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
-Poligono::getAtributosAssociados	poligono.h	/^    QList<Atributo *> getAtributosAssociados() { return atributosAssociados; }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::getAtributosAssociados	poligono.h	/^    QList<Atributo *> getAtributosAssociados() { return atributosAssociados.toList(); }$/;"	f	class:Poligono	access:public	signature:()
 Poligono::getAutoRelacionamento	poligono.h	/^    bool getAutoRelacionamento() { return this->autoRelacionamento; }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::getCardinalidades_Associadas	poligono.h	/^    QList< Cardinalidade *> getCardinalidades_Associadas() { return cardinalidades_associadas; }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::getCardinalidadesAssociadas	poligono.h	/^    QList< Cardinalidade *> getCardinalidadesAssociadas() { return cardinalidades_associadas.toList(); }$/;"	f	class:Poligono	access:public	signature:()
 Poligono::getConectado	poligono.h	/^    bool getConectado() { return this->conectado; }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::getLinhas_Associadas	poligono.h	/^    QList< Ligacao *> getLinhas_Associadas() { return linhas_associadas; }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::getPoligonoAssociado	poligono.h	/^    Poligono * getPoligonoAssociado() { return polig_associado; }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::getPoligonoAssociados	poligono.h	/^    QList<Poligono *> getPoligonoAssociados() {$/;"	f	class:Poligono	access:public	signature:()
+Poligono::getLinhasAssociadas	poligono.h	/^    QList< Ligacao *> getLinhasAssociadas() { return linhas_associadas.toList(); }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::getPoligonoFilho	poligono.h	/^    Poligono * getPoligonoFilho() { return poligonoFilho; }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::getPoligonoPai	poligono.h	/^    Poligono * getPoligonoPai() { return poligonoPai; }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::getPoligonosAssociadoOfType	poligono.h	/^    QList<Poligono *> getPoligonosAssociadoOfType() {$/;"	f	class:Poligono	access:public	signature:()
 Poligono::getTipo	poligono.h	/^    Tipo getTipo() { return tipo; }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::getToDelete	poligono.cpp	/^QList<QGraphicsItem *> Poligono::getToDelete()$/;"	f	class:Poligono	signature:()
+Poligono::getToDelete	poligono.h	/^    virtual QList<QGraphicsItem *> getToDelete();$/;"	p	class:Poligono	access:public	signature:()
 Poligono::itemChange	poligono.cpp	/^QVariant Poligono::itemChange(GraphicsItemChange change, const QVariant &value)$/;"	f	class:Poligono	signature:(GraphicsItemChange change, const QVariant &value)
 Poligono::itemChange	poligono.h	/^    QVariant itemChange(GraphicsItemChange change, const QVariant &value);$/;"	p	class:Poligono	access:protected	signature:(GraphicsItemChange change, const QVariant &value)
 Poligono::itemRemovido	poligono.cpp	/^void Poligono::itemRemovido()$/;"	f	class:Poligono	signature:()
 Poligono::itemRemovido	poligono.h	/^    void itemRemovido();$/;"	p	class:Poligono	access:public	signature:()
-Poligono::linhas_associadas	poligono.h	/^    QList< Ligacao * > linhas_associadas;$/;"	m	class:Poligono	access:private
-Poligono::paint	poligono.cpp	/^void Poligono::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)$/;"	f	class:Poligono	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+Poligono::limparAtributosAssociados	poligono.h	/^    void limparAtributosAssociados() {this->atributosAssociados.clear(); }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::limparCardinalidadesAssociadas	poligono.h	/^    void limparCardinalidadesAssociadas() { this->cardinalidades_associadas.clear(); }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::limparLinhasAssociadas	poligono.h	/^    void limparLinhasAssociadas() { this->linhas_associadas.clear(); }$/;"	f	class:Poligono	access:public	signature:()
+Poligono::limparPoligonosOfType	poligono.h	/^    void limparPoligonosOfType() {$/;"	f	class:Poligono	access:public	signature:()
+Poligono::linhas_associadas	poligono.h	/^    QSet< Ligacao * > linhas_associadas;$/;"	m	class:Poligono	access:private
+Poligono::paint	poligono.cpp	/^void Poligono::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)$/;"	f	class:Poligono	signature:(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 Poligono::paint	poligono.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);$/;"	p	class:Poligono	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-Poligono::polig_associado	poligono.h	/^    Poligono * polig_associado;$/;"	m	class:Poligono	access:private
 Poligono::poligono	poligono.h	/^    QPolygonF poligono;$/;"	m	class:Poligono	access:private
-Poligono::poligonosAssociados	poligono.h	/^    QMap<Tipo, QList<Poligono *> > poligonosAssociados;$/;"	m	class:Poligono	access:private
+Poligono::poligonoFilho	poligono.h	/^    Poligono * poligonoFilho;$/;"	m	class:Poligono	access:private
+Poligono::poligonoPai	poligono.h	/^    Poligono * poligonoPai;$/;"	m	class:Poligono	access:private
+Poligono::poligonosAssociados	poligono.h	/^    QMap<Tipo, QSet<Poligono *> > poligonosAssociados;$/;"	m	class:Poligono	access:private
 Poligono::posicaoAlterada	poligono.h	/^    void posicaoAlterada();$/;"	p	class:Poligono	access:protected	signature:()
 Poligono::posicaoAlterada	poligono.h	/^    void posicaoAlterada(const QPointF newPos);$/;"	p	class:Poligono	access:protected	signature:(const QPointF newPos)
 Poligono::relacionamento	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
-Poligono::removeAtributoAssociado	poligono.h	/^    void removeAtributoAssociado( int index ) { this->atributosAssociados.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Poligono::removePoligonosAssociadoAt	poligono.h	/^    void removePoligonosAssociadoAt(int index) {$/;"	f	class:Poligono	access:public	signature:(int index)
-Poligono::removeTodasCardinalidadesAssociadas	poligono.h	/^    void removeTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::removeTodasLinhasAssociadas	poligono.h	/^    void removeTodasLinhasAssociadas() { this->linhas_associadas.erase(this->linhas_associadas.begin(), this->linhas_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::removeTodosAtributosAssociados	poligono.h	/^    void removeTodosAtributosAssociados() {this->atributosAssociados.erase( this->atributosAssociados.begin(), this->atributosAssociados.end()); }$/;"	f	class:Poligono	access:public	signature:()
-Poligono::removeTodosPoligonosAssociados	poligono.h	/^    void removeTodosPoligonosAssociados() {$/;"	f	class:Poligono	access:public	signature:()
-Poligono::remove_Cardinalidade_Associada	poligono.h	/^    void remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-Poligono::remove_Linha_Associada	poligono.h	/^    void remove_Linha_Associada( int index ) { this->linhas_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
 Poligono::remover	poligono.cpp	/^void Poligono::remover()$/;"	f	class:Poligono	signature:()
 Poligono::remover	poligono.h	/^    void remover();$/;"	p	class:Poligono	access:public	signature:()
+Poligono::removerAtributoAssociada	poligono.h	/^    void removerAtributoAssociada(Atributo * it) { atributosAssociados.remove(it); }$/;"	f	class:Poligono	access:public	signature:(Atributo * it)
+Poligono::removerCardinalidadeAssociada	poligono.h	/^    void removerCardinalidadeAssociada(Cardinalidade * it) { cardinalidades_associadas.remove(it); }$/;"	f	class:Poligono	access:public	signature:(Cardinalidade * it)
+Poligono::removerLinhaAssociada	poligono.h	/^    void removerLinhaAssociada(Ligacao * it) { linhas_associadas.remove(it); }$/;"	f	class:Poligono	access:public	signature:(Ligacao * it)
+Poligono::removerPoligonoAssociado	poligono.h	/^    void removerPoligonoAssociado(Poligono * poligono) {$/;"	f	class:Poligono	access:public	signature:(Poligono * poligono)
 Poligono::removido	poligono.h	/^    void removido();$/;"	p	class:Poligono	access:protected	signature:()
-Poligono::setAtributosAssociados	poligono.h	/^    void setAtributosAssociados( Atributo *aa ) { this->atributosAssociados.push_back(aa); }$/;"	f	class:Poligono	access:public	signature:( Atributo *aa )
 Poligono::setAutoRelacionamento	poligono.h	/^    void setAutoRelacionamento( bool a ) { this->autoRelacionamento = a; }$/;"	f	class:Poligono	access:public	signature:( bool a )
-Poligono::setCardinalidades_Associadas	poligono.h	/^    void setCardinalidades_Associadas( Cardinalidade *ca ) { this->cardinalidades_associadas.push_back(ca); }$/;"	f	class:Poligono	access:public	signature:( Cardinalidade *ca )
 Poligono::setConectado	poligono.h	/^    void setConectado( bool c ) { this->conectado = c; }$/;"	f	class:Poligono	access:public	signature:( bool c )
-Poligono::setLinhas_Associadas	poligono.h	/^    void setLinhas_Associadas( Ligacao *la ) { this->linhas_associadas.push_back(la); }$/;"	f	class:Poligono	access:public	signature:( Ligacao *la )
-Poligono::setPoligonoAssociado	poligono.h	/^    void setPoligonoAssociado(Poligono * pol) { polig_associado = pol; }$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
+Poligono::setPoligonoFilho	poligono.h	/^    void setPoligonoFilho(Poligono * filho) { poligonoFilho = filho; }$/;"	f	class:Poligono	access:public	signature:(Poligono * filho)
+Poligono::setPoligonoPai	poligono.h	/^    void setPoligonoPai(Poligono * pol) { poligonoPai = pol; }$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
 Poligono::setTipo	poligono.h	/^    void setTipo(Tipo tipo) { this->tipo = tipo; }$/;"	f	class:Poligono	access:public	signature:(Tipo tipo)
 Poligono::tipo	poligono.h	/^    Tipo tipo;$/;"	m	class:Poligono	access:private
 Poligono::type	poligono.h	/^    int type() const$/;"	f	class:Poligono	access:public	signature:() const
 RELACIONAMENTO_H	poligono.h	4;"	d
-RemoveAtributoAssociado	ligacao.h	/^    void RemoveAtributoAssociado( int index ) { this->atributo_associado.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-RemoveTodasCardinalidadesAssociadas	ligacao.h	/^    void RemoveTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-RemoveTodasEntidadesAssociadas	atributo.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Atributo	access:public	signature:()
-RemoveTodasEntidadesAssociadas	cardinalidade.h	/^    void RemoveTodasEntidadesAssociadas() { this->entidades_associadas.erase(this->entidades_associadas.begin(), this->entidades_associadas.end()); }$/;"	f	class:Cardinalidade	access:public	signature:()
-RemoveTodasEntidadesAssociativasAssociadas	atributo.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.erase(this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end()); }$/;"	f	class:Atributo	access:public	signature:()
-RemoveTodasEntidadesAssociativasAssociadas	cardinalidade.h	/^    void RemoveTodasEntidadesAssociativasAssociadas() { this->entidades_associativas_associadas.erase(this->entidades_associativas_associadas.begin(), this->entidades_associativas_associadas.end()); }$/;"	f	class:Cardinalidade	access:public	signature:()
-RemoveTodasLinhasAssociadas	atributo.h	/^    void RemoveTodasLinhasAssociadas() { this->linhaAssociada.erase(this->linhaAssociada.begin(), this->linhaAssociada.end()); }$/;"	f	class:Atributo	access:public	signature:()
-RemoveTodosAtributosAssociados	ligacao.h	/^    void RemoveTodosAtributosAssociados() { this->atributo_associado.erase(this->atributo_associado.begin(), this->atributo_associado.end()); }$/;"	f	class:Ligacao	access:public	signature:()
-RemoveTodosRelacionamentosAssociados	atributo.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Atributo	access:public	signature:()
-RemoveTodosRelacionamentosAssociados	cardinalidade.h	/^    void RemoveTodosRelacionamentosAssociados() { this->relacionamentos_associados.erase(this->relacionamentos_associados.begin(), this->relacionamentos_associados.end()); }$/;"	f	class:Cardinalidade	access:public	signature:()
-Remove_Cardinalidade_Associada	ligacao.h	/^    void Remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Ligacao	access:public	signature:( int index )
-Remove_Entidade_Associada	cardinalidade.h	/^    void Remove_Entidade_Associada( int index ) { this->entidades_associadas.removeAt(index); }$/;"	f	class:Cardinalidade	access:public	signature:( int index )
-Remove_Entidade_Associativa_Associada	cardinalidade.h	/^    void Remove_Entidade_Associativa_Associada( int index ) { this->entidades_associativas_associadas.removeAt(index); }$/;"	f	class:Cardinalidade	access:public	signature:( int index )
-Remove_Relacionamento_Associado	cardinalidade.h	/^    void Remove_Relacionamento_Associado( int index ) { this->relacionamentos_associados.removeAt(index); }$/;"	f	class:Cardinalidade	access:public	signature:( int index )
-Rselecionar	diagrama.h	/^    QGraphicsRectItem *Rselecionar;$/;"	m	class:Diagrama	access:private
 TEXTO_H	texto.h	5;"	d
 Texto	texto.cpp	/^Texto::Texto(QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsTextItem(parent, scene)$/;"	f	class:Texto	signature:(QGraphicsItem *parent, QGraphicsScene *scene)
 Texto	texto.h	/^    Texto(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);$/;"	p	class:Texto	access:public	signature:(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0)
@@ -516,10 +516,11 @@ Tipo	atributo.h	/^    enum Tipo { atributo, atributo_identif };$/;"	g	class:Atri
 Tipo	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	g	class:Poligono	access:public
 TipoER	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	g	class:Diagrama	access:public
 Type	atributo.h	/^    enum { Type = UserType + 3 };$/;"	e	enum:Atributo::__anon2
+Type	cardinalidade.h	/^    enum { Type = UserType + 4 };$/;"	e	enum:Cardinalidade::__anon4
 Type	ligacao.h	/^    enum { Type = UserType + 2 };$/;"	e	enum:Ligacao::__anon1
 Type	poligono.h	/^    enum { Type = UserType + 1 };$/;"	e	enum:Poligono::__anon3
-Ui	mainwindow.h	/^namespace Ui {$/;"	n
 VERTICES_H	atributo.h	4;"	d
+_changed	acoespilha.h	/^    bool _changed;$/;"	m	class:AcoesPilha	access:private
 _deslocamento	acoes/acao_mover.h	/^    QPointF _deslocamento;$/;"	m	class:AcaoMover	access:private
 _items	acoes/acao_mover.h	/^    QList<QGraphicsItem *> _items;$/;"	m	class:AcaoMover	access:private
 abrir	mainwindow.cpp	/^void MainWindow::abrir()$/;"	f	class:MainWindow	signature:()
@@ -527,36 +528,41 @@ abrir	mainwindow.h	/^    void abrir();$/;"	p	class:MainWindow	access:private	sig
 abrirAction	mainwindow.h	/^    QAction *abrirAction;$/;"	m	class:MainWindow	access:private
 abrirArquivo	mainwindow.cpp	/^void MainWindow::abrirArquivo(const QString nomeArquivo)$/;"	f	class:MainWindow	signature:(const QString nomeArquivo)
 abrirArquivo	mainwindow.h	/^    void abrirArquivo(const QString nomeArquivo);$/;"	p	class:MainWindow	access:private	signature:(const QString nomeArquivo)
-abrirAtributo	mainwindow.h	/^    Atributo *abrirAtributo;$/;"	m	class:MainWindow	access:private
-abrirAutoRelacionamento1	mainwindow.h	/^    Texto *abrirAutoRelacionamento1;$/;"	m	class:MainWindow	access:private
-abrirAutoRelacionamento2	mainwindow.h	/^    Texto *abrirAutoRelacionamento2;$/;"	m	class:MainWindow	access:private
-abrirCardinalidade	mainwindow.h	/^    Cardinalidade *abrirCardinalidade;$/;"	m	class:MainWindow	access:private
-abrirPoligono	mainwindow.h	/^    Poligono *abrirPoligono;$/;"	m	class:MainWindow	access:private
-abrirPoligono2	mainwindow.h	/^    Poligono *abrirPoligono2;$/;"	m	class:MainWindow	access:private
-abrirTexto	mainwindow.h	/^    Texto *abrirTexto;$/;"	m	class:MainWindow	access:private
+abrirArquivoRecente	mainwindow.cpp	/^void MainWindow::abrirArquivoRecente()$/;"	f	class:MainWindow	signature:()
+abrirArquivoRecente	mainwindow.h	/^    void abrirArquivoRecente();$/;"	p	class:MainWindow	access:private	signature:()
 acompanharObjeto	poligono.cpp	/^void Poligono::acompanharObjeto(const QPointF objNewPos)$/;"	f	class:Poligono	signature:(const QPointF objNewPos)
 acompanharObjeto	poligono.h	/^    void acompanharObjeto(const QPointF objNewPos);$/;"	p	class:Poligono	access:public	signature:(const QPointF objNewPos)
-addAcao	acoespilha.cpp	/^void AcoesPilha::addAcao(Acao *acao)$/;"	f	class:AcoesPilha	signature:(Acao *acao)
+addAcao	acoespilha.cpp	/^void AcoesPilha::addAcao(Acao *acao, bool run)$/;"	f	class:AcoesPilha	signature:(Acao *acao, bool run)
+addAcao	acoespilha.cpp	/^void AcoesPilha::addAcao(Acao *command) {$/;"	f	class:AcoesPilha	signature:(Acao *command)
 addAcao	acoespilha.h	/^    void addAcao(Acao * command);$/;"	p	class:AcoesPilha	access:public	signature:(Acao * command)
-addPoligonoAssociado	ligacao.h	/^    public addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Ligacao	access:public	signature:(Poligono * pol)
-addPoligonosAssociado	poligono.h	/^    void addPoligonosAssociado(Poligono * pol) {$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
+addAcao	acoespilha.h	/^    void addAcao(Acao * command, bool run);$/;"	p	class:AcoesPilha	access:public	signature:(Acao * command, bool run)
+addAtributoAssociado	ligacao.h	/^    void addAtributoAssociado( Atributo *aa ) { this->atributo_associado.insert(aa); }$/;"	f	class:Ligacao	access:public	signature:( Atributo *aa )
+addAtributosAssociados	poligono.h	/^    void addAtributosAssociados( Atributo *aa ) { this->atributosAssociados.insert(aa); }$/;"	f	class:Poligono	access:public	signature:( Atributo *aa )
+addCardinalidadeAssociada	ligacao.h	/^    void addCardinalidadeAssociada( Cardinalidade *ca ) { this->cardinalidades_associadas.insert(ca); }$/;"	f	class:Ligacao	access:public	signature:( Cardinalidade *ca )
+addCardinalidadesAssociadas	poligono.h	/^    void addCardinalidadesAssociadas( Cardinalidade *ca ) { this->cardinalidades_associadas.insert(ca); }$/;"	f	class:Poligono	access:public	signature:( Cardinalidade *ca )
+addLinhaAssociada	atributo.h	/^    void addLinhaAssociada( Ligacao *la ) { this->linhaAssociada.insert(la); }$/;"	f	class:Atributo	access:public	signature:( Ligacao *la )
+addLinhasAssociadas	poligono.h	/^    void addLinhasAssociadas( Ligacao *la ) { this->linhas_associadas.insert(la); }$/;"	f	class:Poligono	access:public	signature:( Ligacao *la )
+addPoligonoAssociado	atributo.h	/^    void addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Atributo	access:public	signature:(Poligono * pol)
+addPoligonoAssociado	cardinalidade.h	/^    void addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Cardinalidade	access:public	signature:(Poligono * pol)
+addPoligonoAssociado	ligacao.h	/^    void addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Ligacao	access:public	signature:(Poligono * pol)
+addPoligonoAssociado	poligono.h	/^    void addPoligonoAssociado(Poligono * pol) {$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
 ajudaAction	mainwindow.h	/^    QAction *ajudaAction;$/;"	m	class:MainWindow	access:private
 ajudaMenu	mainwindow.h	/^    QMenu *ajudaMenu;$/;"	m	class:MainWindow	access:private
 ampliar	mainwindow.h	/^    QToolButton *ampliar;$/;"	m	class:MainWindow	access:private
 antigoZoom	diagramaview.h	/^    qreal antigoZoom;$/;"	m	class:DiagramaView	access:private
 arquivoMenu	mainwindow.h	/^    QMenu *arquivoMenu;$/;"	m	class:MainWindow	access:private
+arquivosRecentes	mainwindow.h	/^    QAction *arquivosRecentes[MAXARQRECENTES];$/;"	m	class:MainWindow	access:private
 ativaMover	diagrama.h	/^    bool ativaMover;$/;"	m	class:Diagrama	access:private
 ativaSelecao	diagrama.h	/^    bool ativaSelecao;$/;"	m	class:Diagrama	access:private
-atr	diagrama.h	/^    Atributo *atr;$/;"	m	class:Diagrama	access:private
 atributo	acoes/acao_criar_atributo.h	/^    Atributo * atributo;$/;"	m	class:AcaoCriarAtributo	access:private
 atributo	atributo.h	/^    enum Tipo { atributo, atributo_identif };$/;"	e	enum:Atributo::Tipo
 atributo	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 atributo	mainwindow.h	/^    QToolButton *atributo;$/;"	m	class:MainWindow	access:private
-atributo_associado	ligacao.h	/^    QList< Atributo * > atributo_associado;$/;"	m	class:Ligacao	access:private
+atributo_associado	ligacao.h	/^    QSet< Atributo * > atributo_associado;$/;"	m	class:Ligacao	access:private
 atributo_ident	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 atributo_identif	atributo.h	/^    enum Tipo { atributo, atributo_identif };$/;"	e	enum:Atributo::Tipo
 atributo_identif	mainwindow.h	/^    QToolButton *atributo_identif;$/;"	m	class:MainWindow	access:private
-atributosAssociados	poligono.h	/^    QList< Atributo * > atributosAssociados;$/;"	m	class:Poligono	access:private
+atributosAssociados	poligono.h	/^    QSet< Atributo * > atributosAssociados;$/;"	m	class:Poligono	access:private
 atualCardinalidade	cardinalidade.h	/^    QString atualCardinalidade;$/;"	m	class:Cardinalidade	access:private
 atualizaItem	poligono.cpp	/^void Poligono::atualizaItem()$/;"	f	class:Poligono	signature:()
 atualizaItem	poligono.h	/^    void atualizaItem();$/;"	p	class:Poligono	access:public	signature:()
@@ -564,8 +570,10 @@ atualizaPos	cardinalidade.cpp	/^void Cardinalidade::atualizaPos()$/;"	f	class:Ca
 atualizaPos	cardinalidade.h	/^    void atualizaPos();$/;"	p	class:Cardinalidade	access:public	signature:()
 atualizaPos	ligacao.cpp	/^void Ligacao::atualizaPos()$/;"	f	class:Ligacao	signature:()
 atualizaPos	ligacao.h	/^    void atualizaPos();$/;"	p	class:Ligacao	access:public	signature:()
-atualizaPos2	ligacao.cpp	/^void Ligacao::atualizaPos2()$/;"	f	class:Ligacao	signature:()
-atualizaPos2	ligacao.h	/^    void atualizaPos2();$/;"	p	class:Ligacao	access:public	signature:()
+atualizaPosAutoRelacionamento	ligacao.cpp	/^void Ligacao::atualizaPosAutoRelacionamento()$/;"	f	class:Ligacao	signature:()
+atualizaPosAutoRelacionamento	ligacao.h	/^    void atualizaPosAutoRelacionamento();$/;"	p	class:Ligacao	access:public	signature:()
+atualizarAcaoArquivosRecentes	mainwindow.cpp	/^void MainWindow::atualizarAcaoArquivosRecentes()$/;"	f	class:MainWindow	signature:()
+atualizarAcaoArquivosRecentes	mainwindow.h	/^    void atualizarAcaoArquivosRecentes();$/;"	p	class:MainWindow	access:private	signature:()
 autoRelacionamento	poligono.h	/^    bool autoRelacionamento;$/;"	m	class:Poligono	access:private
 botoesER	mainwindow.h	/^    QButtonGroup *botoesER;$/;"	m	class:MainWindow	access:private
 botoesERClicked	mainwindow.cpp	/^void MainWindow::botoesERClicked(int id)$/;"	f	class:MainWindow	signature:(int id)
@@ -576,35 +584,25 @@ botoesMLClicked	mainwindow.h	/^    void botoesMLClicked(int id);$/;"	p	class:Mai
 botoesManip	mainwindow.h	/^    QButtonGroup *botoesManip;$/;"	m	class:MainWindow	access:private
 botoesManipClicked	mainwindow.cpp	/^void MainWindow::botoesManipClicked(int id)$/;"	f	class:MainWindow	signature:(int id)
 botoesManipClicked	mainwindow.h	/^    void botoesManipClicked(int id);$/;"	p	class:MainWindow	access:private	signature:(int id)
-card	diagrama.h	/^    Texto *card;$/;"	m	class:Diagrama	access:private
 cardItem	ligacao.h	/^    Cardinalidade *cardItem;$/;"	m	class:Ligacao	access:private
 cardinalidade	acoes/acao_criar_ligacao.h	/^    Cardinalidade * cardinalidade;$/;"	m	class:AcaoCriarLigacao	access:private
-cardinalidades_associadas	ligacao.h	/^    QList< Cardinalidade * > cardinalidades_associadas;$/;"	m	class:Ligacao	access:private
-cardinalidades_associadas	poligono.h	/^    QList< Cardinalidade * > cardinalidades_associadas;$/;"	m	class:Poligono	access:private
+cardinalidades_associadas	ligacao.h	/^    QSet< Cardinalidade * > cardinalidades_associadas;$/;"	m	class:Ligacao	access:private
+cardinalidades_associadas	poligono.h	/^    QSet< Cardinalidade * > cardinalidades_associadas;$/;"	m	class:Poligono	access:private
 cast1P	acoes/acao_criar_ligacao.h	/^    Poligono *cast1P, *cast2P;$/;"	m	class:AcaoCriarLigacao	access:private
-cast1P	diagrama.h	/^    Poligono *cast1P;$/;"	m	class:Diagrama	access:private
 cast2P	acoes/acao_criar_ligacao.h	/^    Poligono *cast1P, *cast2P;$/;"	m	class:AcaoCriarLigacao	access:private
-cast2P	diagrama.h	/^    Poligono *cast2P;$/;"	m	class:Diagrama	access:private
-castA	diagrama.h	/^    Atributo *castA;$/;"	m	class:Diagrama	access:private
-castAtributo	mainwindow.h	/^    Atributo *castAtributo;$/;"	m	class:MainWindow	access:private
-castAtributo2	mainwindow.h	/^    Atributo *castAtributo2;$/;"	m	class:MainWindow	access:private
-castCardinalidade	mainwindow.h	/^    Cardinalidade *castCardinalidade;$/;"	m	class:MainWindow	access:private
-castEntidade	mainwindow.h	/^    Poligono *castEntidade;$/;"	m	class:MainWindow	access:private
 castItem1P	ligacao.h	/^    Poligono *castItem1P;$/;"	m	class:Ligacao	access:private
 castItem2P	ligacao.h	/^    Poligono *castItem2P;$/;"	m	class:Ligacao	access:private
 castItemA	ligacao.h	/^    Atributo *castItemA;$/;"	m	class:Ligacao	access:private
-castLigacao	mainwindow.h	/^    Ligacao *castLigacao;$/;"	m	class:MainWindow	access:private
-castLinha	mainwindow.h	/^    Ligacao *castLinha;$/;"	m	class:MainWindow	access:private
-castPoligono	mainwindow.h	/^    Poligono *castPoligono;$/;"	m	class:MainWindow	access:private
-castPoligono2	mainwindow.h	/^    Poligono *castPoligono2;$/;"	m	class:MainWindow	access:private
-cast_linha	diagrama.h	/^    Ligacao *cast_linha;$/;"	m	class:Diagrama	access:private
 cast_poligono	mainwindow.h	/^    Poligono *cast_poligono;$/;"	m	class:MainWindow	access:private
 chamarTelaCardinalidade	cardinalidade.h	/^    Dialog chamarTelaCardinalidade;$/;"	m	class:Cardinalidade	access:private
 chamarTelaTipoGenEsp	texto.h	/^    Dialog chamarTelaTipoGenEsp;$/;"	m	class:Texto	access:private
+changed	acoespilha.h	/^    void changed();$/;"	p	class:AcoesPilha	access:public	signature:()
 childPol	acoes/acao_criar_poligono.h	/^    Poligono * childPol;$/;"	m	class:AcaoCriarPoligono	access:private
 circ	atributo.h	/^    QRectF *circ;$/;"	m	class:Atributo	access:private
 conectado	atributo.h	/^    bool conectado;$/;"	m	class:Atributo	access:private
 conectado	poligono.h	/^    bool conectado;$/;"	m	class:Poligono	access:private
+conectarObjetos	ligacao.cpp	/^void Ligacao::conectarObjetos(){$/;"	f	class:Ligacao	signature:()
+conectarObjetos	ligacao.h	/^    void conectarObjetos();$/;"	p	class:Ligacao	access:public	signature:()
 count	texto.h	/^    int count;$/;"	m	class:Texto	access:private
 countAtributo	diagrama.h	/^    int countAtributo;$/;"	m	class:Diagrama	access:private
 countAtributoIdentificador	diagrama.h	/^    int countAtributoIdentificador;$/;"	m	class:Diagrama	access:private
@@ -617,9 +615,16 @@ createMenu	mainwindow.cpp	/^void MainWindow::createMenu()$/;"	f	class:MainWindow
 createMenu	mainwindow.h	/^    void createMenu();$/;"	p	class:MainWindow	access:private	signature:()
 createToolBar	mainwindow.cpp	/^void MainWindow::createToolBar()$/;"	f	class:MainWindow	signature:()
 createToolBar	mainwindow.h	/^    void createToolBar();$/;"	p	class:MainWindow	access:private	signature:()
+criarScene	mainwindow.cpp	/^void MainWindow::criarScene()$/;"	f	class:MainWindow	signature:()
+criarScene	mainwindow.h	/^    void criarScene();$/;"	p	class:MainWindow	access:private	signature:()
 deletar	mainwindow.h	/^    QToolButton *deletar;$/;"	m	class:MainWindow	access:private
-deletarSelecionado	mainwindow.cpp	/^void MainWindow::deletarSelecionado() {$/;"	f	class:MainWindow	signature:()
-deletarSelecionado	mainwindow.h	/^    void deletarSelecionado();$/;"	p	class:MainWindow	access:private	signature:()
+deletarScene	mainwindow.cpp	/^void MainWindow::deletarScene()$/;"	f	class:MainWindow	signature:()
+deletarScene	mainwindow.h	/^    void deletarScene();$/;"	p	class:MainWindow	access:private	signature:()
+deletarSelecionados	mainwindow.cpp	/^void MainWindow::deletarSelecionados() {$/;"	f	class:MainWindow	signature:()
+deletarSelecionados	mainwindow.h	/^    void deletarSelecionados();$/;"	p	class:MainWindow	access:private	signature:()
+deleted	acoes/acao_deletar.h	/^    bool deleted;$/;"	m	class:AcaoDeletar	access:private
+desconectarObjetos	ligacao.cpp	/^void Ligacao::desconectarObjetos(){$/;"	f	class:Ligacao	signature:()
+desconectarObjetos	ligacao.h	/^    void desconectarObjetos();$/;"	p	class:Ligacao	access:public	signature:()
 desfazer	acoespilha.cpp	/^bool AcoesPilha::desfazer()$/;"	f	class:AcoesPilha	signature:()
 desfazer	acoespilha.h	/^    bool desfazer();$/;"	p	class:AcoesPilha	access:public	signature:()
 desfazer	mainwindow.cpp	/^void MainWindow::desfazer()$/;"	f	class:MainWindow	signature:()
@@ -631,10 +636,30 @@ desfazerAcao	acoes/acao_criar_ligacao.cpp	/^void AcaoCriarLigacao::desfazerAcao(
 desfazerAcao	acoes/acao_criar_ligacao.h	/^    virtual void desfazerAcao();$/;"	p	class:AcaoCriarLigacao	access:public	signature:()
 desfazerAcao	acoes/acao_criar_poligono.cpp	/^void AcaoCriarPoligono::desfazerAcao()$/;"	f	class:AcaoCriarPoligono	signature:()
 desfazerAcao	acoes/acao_criar_poligono.h	/^    virtual void desfazerAcao();$/;"	p	class:AcaoCriarPoligono	access:public	signature:()
+desfazerAcao	acoes/acao_deletar.cpp	/^void AcaoDeletar::desfazerAcao()$/;"	f	class:AcaoDeletar	signature:()
+desfazerAcao	acoes/acao_deletar.h	/^    virtual void desfazerAcao();$/;"	p	class:AcaoDeletar	access:public	signature:()
 desfazerAcao	acoes/acao_mover.cpp	/^void AcaoMover::desfazerAcao()$/;"	f	class:AcaoMover	signature:()
 desfazerAcao	acoes/acao_mover.h	/^    virtual void desfazerAcao();$/;"	p	class:AcaoMover	access:public	signature:()
 desfazerAction	mainwindow.h	/^    QAction *desfazerAction;$/;"	m	class:MainWindow	access:private
-desfazerItem	diagrama.h	/^    QStack<QGraphicsItem*> desfazerItem;$/;"	m	class:Diagrama	access:private
+diminuirNome	mainwindow.cpp	/^QString MainWindow::diminuirNome(const QString nomeCompleto)$/;"	f	class:MainWindow	signature:(const QString nomeCompleto)
+diminuirNome	mainwindow.h	/^    QString diminuirNome(const QString nomeCompleto);$/;"	p	class:MainWindow	access:private	signature:(const QString nomeCompleto)
+dispose	acao.h	/^    virtual void dispose() = 0;$/;"	p	class:Acao	access:public	signature:()
+dispose	acoes/acao_criar_atributo.cpp	/^void AcaoCriarAtributo::dispose()$/;"	f	class:AcaoCriarAtributo	signature:()
+dispose	acoes/acao_criar_atributo.h	/^    virtual void dispose();$/;"	p	class:AcaoCriarAtributo	access:public	signature:()
+dispose	acoes/acao_criar_ligacao.cpp	/^void AcaoCriarLigacao::dispose()$/;"	f	class:AcaoCriarLigacao	signature:()
+dispose	acoes/acao_criar_ligacao.h	/^    virtual void dispose();$/;"	p	class:AcaoCriarLigacao	access:public	signature:()
+dispose	acoes/acao_criar_poligono.cpp	/^void AcaoCriarPoligono::dispose()$/;"	f	class:AcaoCriarPoligono	signature:()
+dispose	acoes/acao_criar_poligono.h	/^    virtual void dispose();$/;"	p	class:AcaoCriarPoligono	access:public	signature:()
+dispose	acoes/acao_deletar.cpp	/^void AcaoDeletar::dispose()$/;"	f	class:AcaoDeletar	signature:()
+dispose	acoes/acao_deletar.h	/^    virtual void dispose();$/;"	p	class:AcaoDeletar	access:public	signature:()
+dispose	acoes/acao_mover.h	/^    virtual void dispose() {}$/;"	f	class:AcaoMover	access:public	signature:()
+doRemove	atributo.cpp	/^void Atributo::doRemove(bool value)$/;"	f	class:Atributo	signature:(bool value)
+doRemove	atributo.h	/^    virtual void doRemove(bool value);$/;"	p	class:Atributo	access:public	signature:(bool value)
+doRemove	ligacao.cpp	/^void Ligacao::doRemove(bool value)$/;"	f	class:Ligacao	signature:(bool value)
+doRemove	ligacao.h	/^    virtual void doRemove(bool value);$/;"	p	class:Ligacao	access:public	signature:(bool value)
+doRemove	objetoremovivel.h	/^    virtual void doRemove(bool value) = 0;$/;"	p	class:ObjetoRemovivel	access:public	signature:(bool value)
+doRemove	poligono.cpp	/^void Poligono::doRemove(bool value)$/;"	f	class:Poligono	signature:(bool value)
+doRemove	poligono.h	/^    virtual void doRemove(bool value);$/;"	p	class:Poligono	access:public	signature:(bool value)
 editarMenu	mainwindow.h	/^    QMenu *editarMenu;$/;"	m	class:MainWindow	access:private
 ent_associativa	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 ent_associativa	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
@@ -644,12 +669,6 @@ entidade	mainwindow.h	/^    QToolButton *entidade;$/;"	m	class:MainWindow	access
 entidade	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
 entidadeFraca	mainwindow.h	/^    QToolButton *entidadeFraca;$/;"	m	class:MainWindow	access:private
 entidadeFracaAtiva	ligacao.h	/^    bool entidadeFracaAtiva;$/;"	m	class:Ligacao	access:private
-entidades_associadas	atributo.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Atributo	access:private
-entidades_associadas	cardinalidade.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Cardinalidade	access:private
-entidades_associadas	ligacao.h	/^    QList< Poligono * > entidades_associadas;$/;"	m	class:Ligacao	access:private
-entidades_associativas_associadas	atributo.h	/^    QList < Poligono *> entidades_associativas_associadas;$/;"	m	class:Atributo	access:private
-entidades_associativas_associadas	cardinalidade.h	/^    QList< Poligono * > entidades_associativas_associadas;$/;"	m	class:Cardinalidade	access:private
-entidades_associativas_associadas	ligacao.h	/^    QList < Poligono * > entidades_associativas_associadas;$/;"	m	class:Ligacao	access:private
 exibicaoToolBar	mainwindow.h	/^    QToolBar * exibicaoToolBar;$/;"	m	class:MainWindow	access:private
 fazerAcao	acao.h	/^    virtual void fazerAcao() = 0;$/;"	p	class:Acao	access:public	signature:()
 fazerAcao	acoes/acao_criar_atributo.cpp	/^void AcaoCriarAtributo::fazerAcao()$/;"	f	class:AcaoCriarAtributo	signature:()
@@ -658,8 +677,13 @@ fazerAcao	acoes/acao_criar_ligacao.cpp	/^void AcaoCriarLigacao::fazerAcao()$/;"	
 fazerAcao	acoes/acao_criar_ligacao.h	/^    virtual void fazerAcao();$/;"	p	class:AcaoCriarLigacao	access:public	signature:()
 fazerAcao	acoes/acao_criar_poligono.cpp	/^void AcaoCriarPoligono::fazerAcao()$/;"	f	class:AcaoCriarPoligono	signature:()
 fazerAcao	acoes/acao_criar_poligono.h	/^    virtual void fazerAcao();$/;"	p	class:AcaoCriarPoligono	access:public	signature:()
+fazerAcao	acoes/acao_deletar.cpp	/^void AcaoDeletar::fazerAcao()$/;"	f	class:AcaoDeletar	signature:()
+fazerAcao	acoes/acao_deletar.h	/^    virtual void fazerAcao();$/;"	p	class:AcaoDeletar	access:public	signature:()
 fazerAcao	acoes/acao_mover.cpp	/^void AcaoMover::fazerAcao()$/;"	f	class:AcaoMover	signature:()
 fazerAcao	acoes/acao_mover.h	/^    virtual void fazerAcao();$/;"	p	class:AcaoMover	access:public	signature:()
+fecharDiagrama	mainwindow.cpp	/^void MainWindow::fecharDiagrama()$/;"	f	class:MainWindow	signature:()
+fecharDiagrama	mainwindow.h	/^    void fecharDiagrama();$/;"	p	class:MainWindow	access:private	signature:()
+fecharDiagramaAtual	mainwindow.h	/^    QAction *fecharDiagramaAtual;$/;"	m	class:MainWindow	access:private
 focusOutEvent	texto.cpp	/^void Texto::focusOutEvent(QFocusEvent *event)$/;"	f	class:Texto	signature:(QFocusEvent *event)
 focusOutEvent	texto.h	/^    void focusOutEvent(QFocusEvent *event);$/;"	p	class:Texto	access:public	signature:(QFocusEvent *event)
 formas	mainwindow.h	/^    QToolBar *formas;$/;"	m	class:MainWindow	access:private
@@ -667,51 +691,49 @@ genEspAtiva	texto.h	/^    bool genEspAtiva;$/;"	m	class:Texto	access:private
 gen_esp	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 gen_esp	mainwindow.h	/^    QToolButton *gen_esp;$/;"	m	class:MainWindow	access:private
 gen_esp	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
-generalizacao_especializacao_associada	ligacao.h	/^    QList< Poligono * > generalizacao_especializacao_associada;$/;"	m	class:Ligacao	access:private
-getAtributoAssociado	ligacao.h	/^    QList< Atributo *> getAtributoAssociado() { return atributo_associado; }$/;"	f	class:Ligacao	access:public	signature:()
-getAtributosAssociados	poligono.h	/^    QList<Atributo *> getAtributosAssociados() { return atributosAssociados; }$/;"	f	class:Poligono	access:public	signature:()
-getAtualCardinalidade	cardinalidade.h	/^    QString getAtualCardinalidade() { return this->atualCardinalidade; }$/;"	f	class:Cardinalidade	access:public	signature:()
+getAtributoAssociado	ligacao.h	/^    QList< Atributo *> getAtributoAssociado() { return atributo_associado.toList(); }$/;"	f	class:Ligacao	access:public	signature:()
+getAtributosAssociados	poligono.h	/^    QList<Atributo *> getAtributosAssociados() { return atributosAssociados.toList(); }$/;"	f	class:Poligono	access:public	signature:()
 getAutoRelacionamento	poligono.h	/^    bool getAutoRelacionamento() { return this->autoRelacionamento; }$/;"	f	class:Poligono	access:public	signature:()
 getCardItem	ligacao.h	/^    Cardinalidade * getCardItem() { return this->cardItem; }$/;"	f	class:Ligacao	access:public	signature:()
-getCardinalidades_Associadas	ligacao.h	/^    QList< Cardinalidade *> getCardinalidades_Associadas() { return cardinalidades_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
-getCardinalidades_Associadas	poligono.h	/^    QList< Cardinalidade *> getCardinalidades_Associadas() { return cardinalidades_associadas; }$/;"	f	class:Poligono	access:public	signature:()
+getCardinalidadeAtual	cardinalidade.h	/^    QString getCardinalidadeAtual() { return this->atualCardinalidade; }$/;"	f	class:Cardinalidade	access:public	signature:()
+getCardinalidadesAssociadas	poligono.h	/^    QList< Cardinalidade *> getCardinalidadesAssociadas() { return cardinalidades_associadas.toList(); }$/;"	f	class:Poligono	access:public	signature:()
+getCardinalidades_Associadas	ligacao.h	/^    QList< Cardinalidade *> getCardinalidades_Associadas() { return cardinalidades_associadas.toList(); }$/;"	f	class:Ligacao	access:public	signature:()
 getCastItem1P	ligacao.h	/^    Poligono * getCastItem1P() { return this->castItem1P; }$/;"	f	class:Ligacao	access:public	signature:()
 getCastItem2P	ligacao.h	/^    Poligono * getCastItem2P() { return this->castItem2P; }$/;"	f	class:Ligacao	access:public	signature:()
 getCastItemA	ligacao.h	/^    Atributo * getCastItemA() { return this->castItemA; }$/;"	f	class:Ligacao	access:public	signature:()
 getConectado	atributo.h	/^    bool getConectado() { return conectado; }$/;"	f	class:Atributo	access:public	signature:()
 getConectado	poligono.h	/^    bool getConectado() { return this->conectado; }$/;"	f	class:Poligono	access:public	signature:()
 getCount	texto.h	/^    int getCount() { return count; }$/;"	f	class:Texto	access:public	signature:()
-getDesfazerItem	diagrama.h	/^    QStack<QGraphicsItem*> getDesfazerItem() { return this->desfazerItem; }$/;"	f	class:Diagrama	access:public	signature:()
 getEntidadeFracaAtiva	ligacao.h	/^    bool getEntidadeFracaAtiva () { return this->entidadeFracaAtiva; }$/;"	f	class:Ligacao	access:public	signature:()
-getEntidades_Associadas	atributo.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Atributo	access:public	signature:()
-getEntidades_Associadas	cardinalidade.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Cardinalidade	access:public	signature:()
-getEntidades_Associadas	ligacao.h	/^    QList< Poligono *> getEntidades_Associadas() { return entidades_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
-getEntidades_Associativas_Associadas	atributo.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Atributo	access:public	signature:()
-getEntidades_Associativas_Associadas	cardinalidade.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Cardinalidade	access:public	signature:()
-getEntidades_Associativas_Associadas	ligacao.h	/^    QList< Poligono *> getEntidades_Associativas_Associadas() { return entidades_associativas_associadas; }$/;"	f	class:Ligacao	access:public	signature:()
 getGenEspAtiva	texto.h	/^    bool getGenEspAtiva() { return this->genEspAtiva; }$/;"	f	class:Texto	access:public	signature:()
 getLigacao	acoes/acao_criar_ligacao.h	/^    Ligacao *getLigacao() { return this->ligacao; }$/;"	f	class:AcaoCriarLigacao	access:public	signature:()
-getLinhaAssociada	atributo.h	/^    QList< QGraphicsLineItem *> getLinhaAssociada() { return linhaAssociada; }$/;"	f	class:Atributo	access:public	signature:()
-getLinhas_Associadas	poligono.h	/^    QList< Ligacao *> getLinhas_Associadas() { return linhas_associadas; }$/;"	f	class:Poligono	access:public	signature:()
+getLinhasAssociadas	atributo.h	/^    QList< Ligacao *> getLinhasAssociadas() { return linhaAssociada.toList(); }$/;"	f	class:Atributo	access:public	signature:()
+getLinhasAssociadas	poligono.h	/^    QList< Ligacao *> getLinhasAssociadas() { return linhas_associadas.toList(); }$/;"	f	class:Poligono	access:public	signature:()
 getPoligono	acoes/acao_criar_poligono.h	/^    Poligono * getPoligono() { return this->mainPol; }$/;"	f	class:AcaoCriarPoligono	access:public	signature:()
-getPoligonoAssociado	poligono.h	/^    Poligono * getPoligonoAssociado() { return polig_associado; }$/;"	f	class:Poligono	access:public	signature:()
-getPoligonoAssociados	poligono.h	/^    QList<Poligono *> getPoligonoAssociados() {$/;"	f	class:Poligono	access:public	signature:()
-getPoligonosAssociadoOfType	ligacao.h	/^    public getPoligonosAssociadoOfType() {$/;"	f	class:Ligacao	access:public	signature:()
-getRelacionamentos_Associados	atributo.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Atributo	access:public	signature:()
-getRelacionamentos_Associados	cardinalidade.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Cardinalidade	access:public	signature:()
-getRelacionamentos_Associados	ligacao.h	/^    QList< Poligono *> getRelacionamentos_Associados() { return relacionamentos_associados; }$/;"	f	class:Ligacao	access:public	signature:()
+getPoligonoFilho	poligono.h	/^    Poligono * getPoligonoFilho() { return poligonoFilho; }$/;"	f	class:Poligono	access:public	signature:()
+getPoligonoPai	poligono.h	/^    Poligono * getPoligonoPai() { return poligonoPai; }$/;"	f	class:Poligono	access:public	signature:()
+getPoligonosAssociadoOfType	atributo.h	/^    QList<Poligono *> getPoligonosAssociadoOfType() {$/;"	f	class:Atributo	access:public	signature:()
+getPoligonosAssociadoOfType	cardinalidade.h	/^    QList<Poligono *> getPoligonosAssociadoOfType() {$/;"	f	class:Cardinalidade	access:public	signature:()
+getPoligonosAssociadoOfType	ligacao.h	/^    QList<Poligono *> getPoligonosAssociadoOfType() {$/;"	f	class:Ligacao	access:public	signature:()
+getPoligonosAssociadoOfType	poligono.h	/^    QList<Poligono *> getPoligonosAssociadoOfType() {$/;"	f	class:Poligono	access:public	signature:()
 getTipo	atributo.h	/^    Tipo getTipo() { return tipo; }$/;"	f	class:Atributo	access:public	signature:()
 getTipo	poligono.h	/^    Tipo getTipo() { return tipo; }$/;"	f	class:Poligono	access:public	signature:()
 getTipoER	diagrama.h	/^    TipoER getTipoER() { return tipoER; }$/;"	f	class:Diagrama	access:public	signature:()
 getTipoGenEsp	texto.h	/^    QString getTipoGenEsp () { return this->tipoGenEsp; }$/;"	f	class:Texto	access:public	signature:()
+getToDelete	atributo.cpp	/^QList<QGraphicsItem *> Atributo::getToDelete()$/;"	f	class:Atributo	signature:()
+getToDelete	atributo.h	/^    virtual QList<QGraphicsItem *> getToDelete();$/;"	p	class:Atributo	access:public	signature:()
+getToDelete	ligacao.cpp	/^QList<QGraphicsItem *> Ligacao::getToDelete()$/;"	f	class:Ligacao	signature:()
+getToDelete	ligacao.h	/^    virtual QList<QGraphicsItem *> getToDelete();$/;"	p	class:Ligacao	access:public	signature:()
+getToDelete	objetoremovivel.h	/^    virtual QList<QGraphicsItem *> getToDelete() = 0;$/;"	p	class:ObjetoRemovivel	access:public	signature:()
+getToDelete	poligono.cpp	/^QList<QGraphicsItem *> Poligono::getToDelete()$/;"	f	class:Poligono	signature:()
+getToDelete	poligono.h	/^    virtual QList<QGraphicsItem *> getToDelete();$/;"	p	class:Poligono	access:public	signature:()
 getTopCommand	acoespilha.cpp	/^Acao * AcoesPilha::getTopCommand()$/;"	f	class:AcoesPilha	signature:()
 getTopCommand	acoespilha.h	/^    Acao * getTopCommand();$/;"	p	class:AcoesPilha	access:public	signature:()
-insereCardinalidade	diagrama.h	/^    Cardinalidade *insereCardinalidade;$/;"	m	class:Diagrama	access:private
-instanciaUnica	acoespilha.h	/^    static AcoesPilha * instanciaUnica()$/;"	f	class:AcoesPilha	access:public	signature:()
+hasChanged	acoespilha.h	/^    bool hasChanged() { return _changed; }$/;"	f	class:AcoesPilha	access:public	signature:()
+houveModificacao	mainwindow.cpp	/^void MainWindow::houveModificacao()$/;"	f	class:MainWindow	signature:()
+houveModificacao	mainwindow.h	/^    void houveModificacao();$/;"	p	class:MainWindow	access:private	signature:()
 item1	acoes/acao_criar_ligacao.h	/^    QGraphicsItem * item1, * item2;$/;"	m	class:AcaoCriarLigacao	access:private
-item1	diagrama.h	/^    QGraphicsItem *item1;$/;"	m	class:Diagrama	access:private
 item2	acoes/acao_criar_ligacao.h	/^    QGraphicsItem * item1, * item2;$/;"	m	class:AcaoCriarLigacao	access:private
-item2	diagrama.h	/^    QGraphicsItem *item2;$/;"	m	class:Diagrama	access:private
 itemA	cardinalidade.h	/^    Poligono *itemA;$/;"	m	class:Cardinalidade	access:private
 itemB	cardinalidade.h	/^    Poligono *itemB;$/;"	m	class:Cardinalidade	access:private
 itemChange	atributo.cpp	/^QVariant Atributo::itemChange(GraphicsItemChange change, const QVariant &value)$/;"	f	class:Atributo	signature:(GraphicsItemChange change, const QVariant &value)
@@ -723,16 +745,26 @@ itemInserido	mainwindow.cpp	/^void MainWindow::itemInserido()$/;"	f	class:MainWi
 itemInserido	mainwindow.h	/^    void itemInserido();$/;"	p	class:MainWindow	access:private	signature:()
 itemRemovido	poligono.cpp	/^void Poligono::itemRemovido()$/;"	f	class:Poligono	signature:()
 itemRemovido	poligono.h	/^    void itemRemovido();$/;"	p	class:Poligono	access:public	signature:()
-lig	diagrama.h	/^    Ligacao *lig;$/;"	m	class:Diagrama	access:private
-lig	mainwindow.h	/^    Ligacao *lig;$/;"	m	class:MainWindow	access:private
+items	acoes/acao_deletar.h	/^    QList<QGraphicsItem *> items;$/;"	m	class:AcaoDeletar	access:private
 ligacao	acoes/acao_criar_ligacao.h	/^    Ligacao * ligacao;$/;"	m	class:AcaoCriarLigacao	access:private
+limpar	acoespilha.cpp	/^void AcoesPilha::limpar()$/;"	f	class:AcoesPilha	signature:()
+limpar	acoespilha.h	/^    void limpar();$/;"	p	class:AcoesPilha	access:public	signature:()
+limparAtributosAssociados	ligacao.h	/^    void limparAtributosAssociados() { this->atributo_associado.clear(); }$/;"	f	class:Ligacao	access:public	signature:()
+limparAtributosAssociados	poligono.h	/^    void limparAtributosAssociados() {this->atributosAssociados.clear(); }$/;"	f	class:Poligono	access:public	signature:()
+limparCardinalidadesAssociadas	ligacao.h	/^    void limparCardinalidadesAssociadas() { this->cardinalidades_associadas.clear(); }$/;"	f	class:Ligacao	access:public	signature:()
+limparCardinalidadesAssociadas	poligono.h	/^    void limparCardinalidadesAssociadas() { this->cardinalidades_associadas.clear(); }$/;"	f	class:Poligono	access:public	signature:()
+limparLinhasAssociadas	atributo.h	/^    void limparLinhasAssociadas() { this->linhaAssociada.clear(); }$/;"	f	class:Atributo	access:public	signature:()
+limparLinhasAssociadas	poligono.h	/^    void limparLinhasAssociadas() { this->linhas_associadas.clear(); }$/;"	f	class:Poligono	access:public	signature:()
+limparPoligonosOfType	atributo.h	/^    void limparPoligonosOfType() {$/;"	f	class:Atributo	access:public	signature:()
+limparPoligonosOfType	cardinalidade.h	/^    void limparPoligonosOfType() {$/;"	f	class:Cardinalidade	access:public	signature:()
+limparPoligonosOfType	ligacao.h	/^    void limparPoligonosOfType() {$/;"	f	class:Ligacao	access:public	signature:()
+limparPoligonosOfType	poligono.h	/^    void limparPoligonosOfType() {$/;"	f	class:Poligono	access:public	signature:()
 linha	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 linhaAlterada	ligacao.h	/^    void linhaAlterada( QLineF nova_linha );$/;"	p	class:Ligacao	access:private	signature:( QLineF nova_linha )
-linhaAssociada	atributo.h	/^    QList< QGraphicsLineItem * > linhaAssociada;$/;"	m	class:Atributo	access:private
+linhaAssociada	atributo.h	/^    QSet< Ligacao * > linhaAssociada;$/;"	m	class:Atributo	access:private
 linha_atual	cardinalidade.h	/^    Ligacao *linha_atual;$/;"	m	class:Cardinalidade	access:private
 linhas	mainwindow.h	/^    QToolButton *linhas;$/;"	m	class:MainWindow	access:private
-linhas_associadas	poligono.h	/^    QList< Ligacao * > linhas_associadas;$/;"	m	class:Poligono	access:private
-lixo	mainwindow.h	/^    QList<QGraphicsItem *> lixo;$/;"	m	class:MainWindow	access:private
+linhas_associadas	poligono.h	/^    QSet< Ligacao * > linhas_associadas;$/;"	m	class:Poligono	access:private
 mScrool	diagramaview.h	/^    QSpinBox * mScrool;$/;"	m	class:DiagramaView	access:protected
 main	main.cpp	/^int main(int argc, char *argv[])$/;"	f	signature:(int argc, char *argv[])
 mainPol	acoes/acao_criar_poligono.h	/^    Poligono * mainPol;$/;"	m	class:AcaoCriarPoligono	access:private
@@ -757,34 +789,27 @@ mouseReleaseEvent	diagrama.h	/^    void mouseReleaseEvent(QGraphicsSceneMouseEve
 mouseReleaseEvent	texto.cpp	/^void Texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)$/;"	f	class:Texto	signature:(QGraphicsSceneMouseEvent *event)
 mouseReleaseEvent	texto.h	/^    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);$/;"	p	class:Texto	access:public	signature:(QGraphicsSceneMouseEvent *event)
 mudandoZoom	diagramaview.h	/^    void mudandoZoom(int zoomLevel);$/;"	p	class:DiagramaView	access:protected	signature:(int zoomLevel)
-nomeAtributo	diagrama.h	/^    Texto *nomeAtributo;$/;"	m	class:Diagrama	access:private
-nomeAtributoIdentificador	diagrama.h	/^    Texto *nomeAtributoIdentificador;$/;"	m	class:Diagrama	access:private
-nomeEntidade	diagrama.h	/^    Texto *nomeEntidade;$/;"	m	class:Diagrama	access:private
-nomeEntidadeAssociativa	diagrama.h	/^    Texto *nomeEntidadeAssociativa;$/;"	m	class:Diagrama	access:private
-nomeLigacao1	acoes/acao_criar_ligacao.h	/^    Texto * nomeLigacao1, * nomeLigacao2;$/;"	m	class:AcaoCriarLigacao	access:private
-nomeLigacao1	diagrama.h	/^    Texto *nomeLigacao1;$/;"	m	class:Diagrama	access:private
+nomeArquivoAtual	mainwindow.h	/^    QString nomeArquivoAtual;$/;"	m	class:MainWindow	access:private
+nomeEntidade	acoes/acao_criar_poligono.h	/^    Texto * nomeEntidade;$/;"	m	class:AcaoCriarPoligono	access:private
 nomeLigacao1	ligacao.h	/^    Texto *nomeLigacao1, *nomeLigacao2;$/;"	m	class:Ligacao	access:private
-nomeLigacao2	acoes/acao_criar_ligacao.h	/^    Texto * nomeLigacao1, * nomeLigacao2;$/;"	m	class:AcaoCriarLigacao	access:private
-nomeLigacao2	diagrama.h	/^    Texto *nomeLigacao2;$/;"	m	class:Diagrama	access:private
 nomeLigacao2	ligacao.h	/^    Texto *nomeLigacao1, *nomeLigacao2;$/;"	m	class:Ligacao	access:private
-nomeRelacionamento	diagrama.h	/^    Texto *nomeRelacionamento;$/;"	m	class:Diagrama	access:private
 novaAction	mainwindow.h	/^    QAction *novaAction;$/;"	m	class:MainWindow	access:private
 novaJanela	mainwindow.cpp	/^void MainWindow::novaJanela()$/;"	f	class:MainWindow	signature:()
 novaJanela	mainwindow.h	/^    void novaJanela();$/;"	p	class:MainWindow	access:private	signature:()
 novaLinha	diagrama.h	/^    QGraphicsLineItem *novaLinha;$/;"	m	class:Diagrama	access:private
-operator =	acoespilha.h	/^    void operator=(AcoesPilha const&); \/\/ Nao implementar$/;"	p	class:AcoesPilha	access:private	signature:(AcoesPilha const&)
 organizarEntidades	mainwindow.cpp	/^void MainWindow::organizarEntidades(int direcao) \/\/ 0 = Hor, 1 = Vert$/;"	f	class:MainWindow	signature:(int direcao)
 organizarEntidades	mainwindow.h	/^    void organizarEntidades(int direcao);$/;"	p	class:MainWindow	access:private	signature:(int direcao)
 organizarHor	mainwindow.h	/^    QToolButton *organizarHor;$/;"	m	class:MainWindow	access:private
 organizarVer	mainwindow.h	/^    QToolButton *organizarVer;$/;"	m	class:MainWindow	access:private
-paint	atributo.cpp	/^void Atributo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)$/;"	f	class:Atributo	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+paint	atributo.cpp	/^void Atributo::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)$/;"	f	class:Atributo	signature:(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 paint	atributo.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);$/;"	p	class:Atributo	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-paint	ligacao.cpp	/^void Ligacao::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)$/;"	f	class:Ligacao	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-paint	ligacao.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);$/;"	p	class:Ligacao	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-paint	poligono.cpp	/^void Poligono::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)$/;"	f	class:Poligono	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+paint	ligacao.cpp	/^void Ligacao::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)$/;"	f	class:Ligacao	signature:(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+paint	ligacao.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);$/;"	p	class:Ligacao	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+paint	poligono.cpp	/^void Poligono::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)$/;"	f	class:Poligono	signature:(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 paint	poligono.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);$/;"	p	class:Poligono	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 paint	texto.cpp	/^void Texto::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)$/;"	f	class:Texto	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 paint	texto.h	/^    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);$/;"	p	class:Texto	access:public	signature:(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+parentIsInSet	acoes/acao_deletar.cpp	/^bool parentIsInSet(QSet<QGraphicsItem *> & set, QGraphicsItem * item) {$/;"	f	signature:(QSet<QGraphicsItem *> & set, QGraphicsItem * item)
 pilhaDeAcoes	acoespilha.h	/^    QList<Acao *> pilhaDeAcoes;$/;"	m	class:AcoesPilha	access:private
 pilhaDeAcoes	diagrama.h	/^    AcoesPilha * pilhaDeAcoes;$/;"	m	class:Diagrama	access:private
 pilhaDeAcoes	mainwindow.h	/^    AcoesPilha * pilhaDeAcoes;$/;"	m	class:MainWindow	access:private
@@ -792,90 +817,91 @@ podeDesfazer	acao.h	/^    virtual bool podeDesfazer() = 0;$/;"	p	class:Acao	acce
 podeDesfazer	acoes/acao_criar_atributo.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoCriarAtributo	access:public	signature:()
 podeDesfazer	acoes/acao_criar_ligacao.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoCriarLigacao	access:public	signature:()
 podeDesfazer	acoes/acao_criar_poligono.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoCriarPoligono	access:public	signature:()
+podeDesfazer	acoes/acao_deletar.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoDeletar	access:public	signature:()
 podeDesfazer	acoes/acao_mover.h	/^    virtual bool podeDesfazer() { return true; }$/;"	f	class:AcaoMover	access:public	signature:()
-poli	diagrama.h	/^    Poligono *poli;$/;"	m	class:Diagrama	access:private
-poli2	diagrama.h	/^    Poligono *poli2;$/;"	m	class:Diagrama	access:private
-polig_associado	poligono.h	/^    Poligono * polig_associado;$/;"	m	class:Poligono	access:private
 poligono	poligono.h	/^    QPolygonF poligono;$/;"	m	class:Poligono	access:private
-poligonosAssociados	poligono.h	/^    QMap<Tipo, QList<Poligono *> > poligonosAssociados;$/;"	m	class:Poligono	access:private
-poligonos_associados	ligacao.h	/^    QMap<Poligono::Tipo, QList<Poligono *> > poligonos_associados;$/;"	m	class:Ligacao	access:private
+poligonoFilho	poligono.h	/^    Poligono * poligonoFilho;$/;"	m	class:Poligono	access:private
+poligonoPai	poligono.h	/^    Poligono * poligonoPai;$/;"	m	class:Poligono	access:private
+poligonosAssociados	atributo.h	/^    QMap<Poligono::Tipo, QSet< Poligono * > > poligonosAssociados;$/;"	m	class:Atributo	access:private
+poligonosAssociados	cardinalidade.h	/^    QMap<Poligono::Tipo, QSet<Poligono *> > poligonosAssociados;$/;"	m	class:Cardinalidade	access:private
+poligonosAssociados	ligacao.h	/^    QMap<Poligono::Tipo, QSet<Poligono *> > poligonosAssociados;$/;"	m	class:Ligacao	access:private
+poligonosAssociados	poligono.h	/^    QMap<Tipo, QSet<Poligono *> > poligonosAssociados;$/;"	m	class:Poligono	access:private
 pontoInicial	diagrama.h	/^    QPointF pontoInicial;$/;"	m	class:Diagrama	access:private
-popDesfazerItem	diagrama.h	/^    void popDesfazerItem() { this->desfazerItem.pop(); }$/;"	f	class:Diagrama	access:public	signature:()
-popRefazerItem	diagrama.h	/^    void popRefazerItem() { this->refazerItem.pop(); }$/;"	f	class:Diagrama	access:public	signature:()
 posAtual	acoespilha.h	/^    int posAtual;$/;"	m	class:AcoesPilha	access:private
 posicao	acoes/acao_criar_atributo.h	/^    QPointF posicao;$/;"	m	class:AcaoCriarAtributo	access:private
 posicao	acoes/acao_criar_poligono.h	/^    QPointF posicao;$/;"	m	class:AcaoCriarPoligono	access:private
 posicaoAlterada	atributo.h	/^    void posicaoAlterada();$/;"	p	class:Atributo	access:protected	signature:()
 posicaoAlterada	poligono.h	/^    void posicaoAlterada();$/;"	p	class:Poligono	access:protected	signature:()
 posicaoAlterada	poligono.h	/^    void posicaoAlterada(const QPointF newPos);$/;"	p	class:Poligono	access:protected	signature:(const QPointF newPos)
+questionarSalvar	mainwindow.cpp	/^bool MainWindow::questionarSalvar(){$/;"	f	class:MainWindow	signature:()
+questionarSalvar	mainwindow.h	/^    bool questionarSalvar();$/;"	p	class:MainWindow	access:private	signature:()
 reduzir	mainwindow.h	/^    QToolButton *reduzir;$/;"	m	class:MainWindow	access:private
 refazer	acoespilha.cpp	/^bool AcoesPilha::refazer()$/;"	f	class:AcoesPilha	signature:()
 refazer	acoespilha.h	/^    bool refazer();$/;"	p	class:AcoesPilha	access:public	signature:()
 refazer	mainwindow.cpp	/^void MainWindow::refazer()$/;"	f	class:MainWindow	signature:()
 refazer	mainwindow.h	/^    void refazer();$/;"	p	class:MainWindow	access:private	signature:()
 refazerAction	mainwindow.h	/^    QAction *refazerAction;$/;"	m	class:MainWindow	access:private
-refazerItem	diagrama.h	/^    QStack<QGraphicsItem*> refazerItem;$/;"	m	class:Diagrama	access:private
 relacionamento	diagrama.h	/^    enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };$/;"	e	enum:Diagrama::TipoER
 relacionamento	mainwindow.h	/^    QToolButton *relacionamento;$/;"	m	class:MainWindow	access:private
 relacionamento	poligono.h	/^    enum Tipo { entidade, relacionamento, gen_esp, ent_associativa };$/;"	e	enum:Poligono::Tipo
-relacionamentos_associados	atributo.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Atributo	access:private
-relacionamentos_associados	cardinalidade.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Cardinalidade	access:private
-relacionamentos_associados	ligacao.h	/^    QList< Poligono * > relacionamentos_associados;$/;"	m	class:Ligacao	access:private
-removeAtributoAssociado	poligono.h	/^    void removeAtributoAssociado( int index ) { this->atributosAssociados.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-removePoligonoAssociadoAt	ligacao.h	/^    public removePoligonoAssociadoAt(int index) {$/;"	f	class:Ligacao	access:public	signature:(int index)
-removePoligonosAssociadoAt	poligono.h	/^    void removePoligonosAssociadoAt(int index) {$/;"	f	class:Poligono	access:public	signature:(int index)
-removeTodasCardinalidadesAssociadas	poligono.h	/^    void removeTodasCardinalidadesAssociadas() { this->cardinalidades_associadas.erase(this->cardinalidades_associadas.begin(), this->cardinalidades_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
-removeTodasLinhasAssociadas	poligono.h	/^    void removeTodasLinhasAssociadas() { this->linhas_associadas.erase(this->linhas_associadas.begin(), this->linhas_associadas.end()); }$/;"	f	class:Poligono	access:public	signature:()
-removeTodosAtributosAssociados	poligono.h	/^    void removeTodosAtributosAssociados() {this->atributosAssociados.erase( this->atributosAssociados.begin(), this->atributosAssociados.end()); }$/;"	f	class:Poligono	access:public	signature:()
-removeTodosPoligonosAssociados	poligono.h	/^    void removeTodosPoligonosAssociados() {$/;"	f	class:Poligono	access:public	signature:()
-removeTodosPoligonosOfType	ligacao.h	/^    public removeTodosPoligonosOfType() {$/;"	f	class:Ligacao	access:public	signature:()
-remove_Cardinalidade_Associada	poligono.h	/^    void remove_Cardinalidade_Associada( int index ) { this->cardinalidades_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
-remove_Linha_Associada	poligono.h	/^    void remove_Linha_Associada( int index ) { this->linhas_associadas.removeAt(index); }$/;"	f	class:Poligono	access:public	signature:( int index )
 remover	poligono.cpp	/^void Poligono::remover()$/;"	f	class:Poligono	signature:()
 remover	poligono.h	/^    void remover();$/;"	p	class:Poligono	access:public	signature:()
+removerAtributoAssociada	poligono.h	/^    void removerAtributoAssociada(Atributo * it) { atributosAssociados.remove(it); }$/;"	f	class:Poligono	access:public	signature:(Atributo * it)
+removerAtributoAssociado	ligacao.h	/^    void removerAtributoAssociado(Atributo * it) { atributo_associado.remove(it); }$/;"	f	class:Ligacao	access:public	signature:(Atributo * it)
+removerCardinalidadeAssociada	ligacao.h	/^    void removerCardinalidadeAssociada(Cardinalidade * it) { cardinalidades_associadas.remove(it); }$/;"	f	class:Ligacao	access:public	signature:(Cardinalidade * it)
+removerCardinalidadeAssociada	poligono.h	/^    void removerCardinalidadeAssociada(Cardinalidade * it) { cardinalidades_associadas.remove(it); }$/;"	f	class:Poligono	access:public	signature:(Cardinalidade * it)
+removerLinhaAssociada	atributo.h	/^    void removerLinhaAssociada(Ligacao * it) { linhaAssociada.remove(it); }$/;"	f	class:Atributo	access:public	signature:(Ligacao * it)
+removerLinhaAssociada	poligono.h	/^    void removerLinhaAssociada(Ligacao * it) { linhas_associadas.remove(it); }$/;"	f	class:Poligono	access:public	signature:(Ligacao * it)
+removerPoligonoAssociado	atributo.h	/^    void removerPoligonoAssociado(Poligono * poligono) {$/;"	f	class:Atributo	access:public	signature:(Poligono * poligono)
+removerPoligonoAssociado	cardinalidade.h	/^    void removerPoligonoAssociado(Poligono * poligono) {$/;"	f	class:Cardinalidade	access:public	signature:(Poligono * poligono)
+removerPoligonoAssociado	ligacao.h	/^    void removerPoligonoAssociado(Poligono * poligono) {$/;"	f	class:Ligacao	access:public	signature:(Poligono * poligono)
+removerPoligonoAssociado	poligono.h	/^    void removerPoligonoAssociado(Poligono * poligono) {$/;"	f	class:Poligono	access:public	signature:(Poligono * poligono)
 removido	poligono.h	/^    void removido();$/;"	p	class:Poligono	access:protected	signature:()
+removidos	acoes/acao_deletar.h	/^    QList<QGraphicsItem *> removidos;$/;"	m	class:AcaoDeletar	access:private
+resetWindowState	mainwindow.cpp	/^void MainWindow::resetWindowState() {$/;"	f	class:MainWindow	signature:()
+resetWindowState	mainwindow.h	/^    void resetWindowState();$/;"	p	class:MainWindow	access:private	signature:()
 sairAction	mainwindow.h	/^    QAction *sairAction;$/;"	m	class:MainWindow	access:private
+salvar	mainwindow.cpp	/^void MainWindow::salvar()$/;"	f	class:MainWindow	signature:()
+salvar	mainwindow.h	/^    void salvar();$/;"	p	class:MainWindow	access:private	signature:()
 salvarAction	mainwindow.h	/^    QAction *salvarAction;$/;"	m	class:MainWindow	access:private
 salvarArquivo	mainwindow.cpp	/^void MainWindow::salvarArquivo(const QString nomeArquivo)$/;"	f	class:MainWindow	signature:(const QString nomeArquivo)
 salvarArquivo	mainwindow.h	/^    void salvarArquivo(const QString nomeArquivo);$/;"	p	class:MainWindow	access:private	signature:(const QString nomeArquivo)
 salvarComo	mainwindow.cpp	/^void MainWindow::salvarComo()$/;"	f	class:MainWindow	signature:()
 salvarComo	mainwindow.h	/^    void salvarComo();$/;"	p	class:MainWindow	access:private	signature:()
+salvarComoAction	mainwindow.h	/^    QAction *salvarComoAction;$/;"	m	class:MainWindow	access:private
 scene	acoes/acao_criar_atributo.h	/^    QGraphicsScene * scene;$/;"	m	class:AcaoCriarAtributo	access:private
 scene	acoes/acao_criar_ligacao.h	/^    QGraphicsScene * scene;$/;"	m	class:AcaoCriarLigacao	access:private
 scene	acoes/acao_criar_poligono.h	/^    QGraphicsScene * scene;$/;"	m	class:AcaoCriarPoligono	access:private
+scene	acoes/acao_deletar.h	/^    QGraphicsScene * scene;$/;"	m	class:AcaoDeletar	access:private
 scene	mainwindow.h	/^    Diagrama *scene;$/;"	m	class:MainWindow	access:private
 scroolZoom	mainwindow.h	/^    QSpinBox * scroolZoom;$/;"	m	class:MainWindow	access:private
-setAtributoAssociado	ligacao.h	/^    void setAtributoAssociado( Atributo *aa ) { this->atributo_associado.push_back(aa); }$/;"	f	class:Ligacao	access:public	signature:( Atributo *aa )
-setAtributosAssociados	poligono.h	/^    void setAtributosAssociados( Atributo *aa ) { this->atributosAssociados.push_back(aa); }$/;"	f	class:Poligono	access:public	signature:( Atributo *aa )
-setAtualCardinalidade	cardinalidade.h	/^    void setAtualCardinalidade( QString c ) { this->atualCardinalidade = c; }$/;"	f	class:Cardinalidade	access:public	signature:( QString c )
+selecionarBox	diagrama.h	/^    QGraphicsRectItem * selecionarBox;$/;"	m	class:Diagrama	access:private
+setArquivoAtual	mainwindow.cpp	/^void MainWindow::setArquivoAtual(const QString nome)$/;"	f	class:MainWindow	signature:(const QString nome)
+setArquivoAtual	mainwindow.h	/^    void setArquivoAtual(const QString nomeArquivo);$/;"	p	class:MainWindow	access:private	signature:(const QString nomeArquivo)
+setArquivoAtualTitulo	mainwindow.cpp	/^void MainWindow::setArquivoAtualTitulo(const QString nome)$/;"	f	class:MainWindow	signature:(const QString nome)
+setArquivoAtualTitulo	mainwindow.h	/^    void setArquivoAtualTitulo(const QString nome);$/;"	p	class:MainWindow	access:private	signature:(const QString nome)
 setAutoRelacionamento	poligono.h	/^    void setAutoRelacionamento( bool a ) { this->autoRelacionamento = a; }$/;"	f	class:Poligono	access:public	signature:( bool a )
-setCardinalidades_Associadas	ligacao.h	/^    void setCardinalidades_Associadas( Cardinalidade *ca ) { this->cardinalidades_associadas.push_back(ca); }$/;"	f	class:Ligacao	access:public	signature:( Cardinalidade *ca )
-setCardinalidades_Associadas	poligono.h	/^    void setCardinalidades_Associadas( Cardinalidade *ca ) { this->cardinalidades_associadas.push_back(ca); }$/;"	f	class:Poligono	access:public	signature:( Cardinalidade *ca )
+setCardinalidadeAtual	cardinalidade.h	/^    void setCardinalidadeAtual( QString c ) { this->atualCardinalidade = c; }$/;"	f	class:Cardinalidade	access:public	signature:( QString c )
+setChanged	acoespilha.cpp	/^void AcoesPilha::setChanged()$/;"	f	class:AcoesPilha	signature:()
+setChanged	acoespilha.h	/^    void setChanged();$/;"	p	class:AcoesPilha	access:private	signature:()
 setConectado	atributo.h	/^    void setConectado( bool c ) { this->conectado = c; }$/;"	f	class:Atributo	access:public	signature:( bool c )
 setConectado	poligono.h	/^    void setConectado( bool c ) { this->conectado = c; }$/;"	f	class:Poligono	access:public	signature:( bool c )
 setCount	texto.h	/^    void setCount( int countR ) { this->count = countR; }$/;"	f	class:Texto	access:public	signature:( int countR )
-setDesfazer	diagrama.cpp	/^void Diagrama::setDesfazer(QGraphicsItem *item)$/;"	f	class:Diagrama	signature:(QGraphicsItem *item)
-setDesfazer	diagrama.h	/^    void setDesfazer( QGraphicsItem *item );$/;"	p	class:Diagrama	access:public	signature:( QGraphicsItem *item )
 setEntidadeFracaAtiva	ligacao.h	/^    void setEntidadeFracaAtiva( bool set ) { this->entidadeFracaAtiva = set; }$/;"	f	class:Ligacao	access:public	signature:( bool set )
-setEntidades_Associadas	atributo.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Atributo	access:public	signature:( Poligono *ea )
-setEntidades_Associadas	cardinalidade.h	/^    void setEntidades_Associadas( Poligono *ea ) { this->entidades_associadas.push_back(ea); }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *ea )
-setEntidades_Associativas_Associadas	atributo.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Atributo	access:public	signature:( Poligono *eaa )
-setEntidades_Associativas_Associadas	cardinalidade.h	/^    void setEntidades_Associativas_Associadas( Poligono *eaa ) { this->entidades_associativas_associadas.push_back(eaa); }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *eaa )
 setGenEspAtiva	texto.h	/^    void setGenEspAtiva( bool gea ) { this->genEspAtiva = gea; }$/;"	f	class:Texto	access:public	signature:( bool gea )
 setItemA	cardinalidade.h	/^    void setItemA ( Poligono *item ) { this->itemA = item; }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *item )
 setItemB	cardinalidade.h	/^    void setItemB ( Poligono *item ) { this->itemB = item; }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *item )
-setLinhaAssociada	atributo.h	/^    void setLinhaAssociada( QGraphicsLineItem *la ) { this->linhaAssociada.push_back(la); }$/;"	f	class:Atributo	access:public	signature:( QGraphicsLineItem *la )
-setLinha_Atual	cardinalidade.h	/^    void setLinha_Atual ( Ligacao *linha ) { this->linha_atual = linha; }$/;"	f	class:Cardinalidade	access:public	signature:( Ligacao *linha )
-setLinhas_Associadas	poligono.h	/^    void setLinhas_Associadas( Ligacao *la ) { this->linhas_associadas.push_back(la); }$/;"	f	class:Poligono	access:public	signature:( Ligacao *la )
-setPoligonoAssociado	poligono.h	/^    void setPoligonoAssociado(Poligono * pol) { polig_associado = pol; }$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
-setRelacionamento_Associados	cardinalidade.h	/^    void setRelacionamento_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Cardinalidade	access:public	signature:( Poligono *ra )
-setRelacionamentos_Associados	atributo.h	/^    void setRelacionamentos_Associados( Poligono *ra ) { this->relacionamentos_associados.push_back(ra); }$/;"	f	class:Atributo	access:public	signature:( Poligono *ra )
+setLinhaAtual	cardinalidade.h	/^    void setLinhaAtual ( Ligacao *linha ) { this->linha_atual = linha; }$/;"	f	class:Cardinalidade	access:public	signature:( Ligacao *linha )
+setNomeArquivoAtual	mainwindow.h	/^    void setNomeArquivoAtual(QString nome) { this->nomeArquivoAtual = nome; }$/;"	f	class:MainWindow	access:private	signature:(QString nome)
+setPoligonoFilho	poligono.h	/^    void setPoligonoFilho(Poligono * filho) { poligonoFilho = filho; }$/;"	f	class:Poligono	access:public	signature:(Poligono * filho)
+setPoligonoPai	poligono.h	/^    void setPoligonoPai(Poligono * pol) { poligonoPai = pol; }$/;"	f	class:Poligono	access:public	signature:(Poligono * pol)
 setScrool	diagramaview.cpp	/^void DiagramaView::setScrool(QSpinBox *scrool)$/;"	f	class:DiagramaView	signature:(QSpinBox *scrool)
 setScrool	diagramaview.h	/^    void setScrool(QSpinBox * scrool);$/;"	p	class:DiagramaView	access:public	signature:(QSpinBox * scrool)
 setTipo	atributo.h	/^    void setTipo(Tipo tipo) { this->tipo = tipo; }$/;"	f	class:Atributo	access:public	signature:(Tipo tipo)
 setTipo	poligono.h	/^    void setTipo(Tipo tipo) { this->tipo = tipo; }$/;"	f	class:Poligono	access:public	signature:(Tipo tipo)
 setTipoER	diagrama.h	/^    void setTipoER( TipoER tipo ) { this->tipoER = tipo; }$/;"	f	class:Diagrama	access:public	signature:( TipoER tipo )
 setTipoGenEsp	texto.h	/^    void setTipoGenEsp( QString tipo ) { this->tipoGenEsp = tipo; }$/;"	f	class:Texto	access:public	signature:( QString tipo )
+setUnchaged	acoespilha.h	/^    void setUnchaged() { _changed = false; }$/;"	f	class:AcoesPilha	access:public	signature:()
 setarZoom	diagramaview.cpp	/^void DiagramaView::setarZoom(int zoomLevel)$/;"	f	class:DiagramaView	signature:(int zoomLevel)
 setarZoom	diagramaview.h	/^    void setarZoom(int zoomLevel);$/;"	p	class:DiagramaView	access:public	signature:(int zoomLevel)
 shape	ligacao.cpp	/^QPainterPath Ligacao::shape() const$/;"	f	class:Ligacao	signature:() const
@@ -886,12 +912,11 @@ temp	ligacao.h	/^    QPointF temp;$/;"	m	class:Ligacao	access:private
 tipo	atributo.h	/^    Tipo tipo;$/;"	m	class:Atributo	access:private
 tipo	poligono.h	/^    Tipo tipo;$/;"	m	class:Poligono	access:private
 tipoER	diagrama.h	/^    TipoER tipoER;$/;"	m	class:Diagrama	access:private
-tipoGenEsp	diagrama.h	/^    Texto *tipoGenEsp;$/;"	m	class:Diagrama	access:private
 tipoGenEsp	texto.h	/^    QString tipoGenEsp;$/;"	m	class:Texto	access:private
 type	atributo.h	/^    int type() const$/;"	f	class:Atributo	access:public	signature:() const
+type	cardinalidade.h	/^    int type() const {$/;"	f	class:Cardinalidade	access:public	signature:() const
 type	ligacao.h	/^    int type() const$/;"	f	class:Ligacao	access:public	signature:() const
 type	poligono.h	/^    int type() const$/;"	f	class:Poligono	access:public	signature:() const
-ui	mainwindow.h	/^    Ui::MainWindow *ui;$/;"	m	class:MainWindow	access:private
 view	mainwindow.h	/^    DiagramaView *view;$/;"	m	class:MainWindow	access:private
 wheelEvent	diagramaview.cpp	/^void DiagramaView::wheelEvent(QWheelEvent *event)$/;"	f	class:DiagramaView	signature:(QWheelEvent *event)
 wheelEvent	diagramaview.h	/^    virtual void wheelEvent(QWheelEvent *event);$/;"	p	class:DiagramaView	access:protected	signature:(QWheelEvent *event)
