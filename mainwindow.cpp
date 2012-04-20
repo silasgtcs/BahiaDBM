@@ -1023,18 +1023,23 @@ void MainWindow::createToolBar()
     exibicaoToolBar = addToolBar(trUtf8("&Zoom"));
 
     scroolZoom = new QSpinBox(exibicaoToolBar);
-    scroolZoom->setFixedWidth(50);
-    scroolZoom->setMaximum(500);
+    scroolZoom->setFixedWidth(60);
     scroolZoom->setMinimum(10);
+    scroolZoom->setMaximum(500);
     scroolZoom->setValue(100);
     scroolZoom->setToolTip(trUtf8("Zoom"));
 
     barraZoom = new QSlider(exibicaoToolBar);
     barraZoom->setFixedWidth(200);
     barraZoom->setMinimum(10);
-    barraZoom->setMaximum(100);
+    barraZoom->setMaximum(500);
+    barraZoom->setValue(100);
     barraZoom->setToolTip(trUtf8("Zoom"));
     barraZoom->setOrientation(Qt::Horizontal);
+
+
+    connect(barraZoom, SIGNAL(valueChanged(int)), scroolZoom, SLOT(setValue(int)));
+    connect(scroolZoom, SIGNAL(valueChanged(int)), barraZoom, SLOT(setValue(int)));
 
     exibicaoToolBar->addWidget(scroolZoom);
     label = new QLabel("   ");
