@@ -48,7 +48,10 @@ void MainWindow::criarScene()
     sceneLogico->setTipoER(Diagrama::TipoER(7));
     viewLogico = new DiagramaView(sceneLogico);
 
-    Tabela *t = new Tabela(NULL, sceneLogico);
+    Tabela *t = new Tabela("Funcionario", NULL, sceneLogico);
+    t->addAtributo("codEmpregado", true, true);
+    t->addAtributo("nome", false, true);
+    t->addAtributo("salario", false, false);
 
     //Cria diagrama físico
     sceneFisico = new Diagrama(this, pilhaDeAcoes);

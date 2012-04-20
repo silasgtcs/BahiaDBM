@@ -9,6 +9,8 @@ de ser utilizada para definir os tipos de generalização/especialização.*/
 
 class Texto : public QGraphicsTextItem
 {
+    Q_OBJECT
+
 public:
     Texto(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
 
@@ -26,11 +28,18 @@ public:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
+signals:
+    void lostFocus(Texto *item);
+    void selectedChange(QGraphicsItem *item);
+
 private:
     int count;
     Dialog chamarTelaTipoGenEsp;
     QString tipoGenEsp;
     bool genEspAtiva;
+
+protected:
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };
 
 #endif // TEXTO_H

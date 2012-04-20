@@ -1,43 +1,53 @@
 #include "tabela.h"
 
-Tabela::Tabela( QGraphicsItem *parent, QGraphicsScene *scene )
+Tabela::Tabela( QString nomeTitulo, QGraphicsItem *parent, QGraphicsScene *scene )
     : QGraphicsRectItem( parent, scene )
 {
-    setAltura(50.0);
-    setLargura(200.0);
+    this->scene = scene;
+    tab = new QRectF(2424,2397,200,25);
+    setRect(*tab);
 
-    tab = new QRectF(2424,2397,getLargura(),getAltura());
-    setRect(2424,2397,200,50);
+    this->scene->addLine(tab->x(),tab->y()+25,tab->x()+tab->width(),tab->y()+25);
 
-    scene->addLine(2424,2397+25,2424+200,2397+25);
+    titulo = new QGraphicsTextItem();
 
-    titulo = new Texto();
-
-    titulo->setTextInteractionFlags(Qt::TextEditorInteraction);
+    //titulo->setTextInteractionFlags(Qt::TextEditorInteraction);
     titulo->setFocus();
     //titulo->setParentItem( ( tipo == Poligono::ent_associativa) ? childPol : mainPol );
 
-    titulo->setPlainText("Teste");
-    titulo->setPos(2424,2397);
-    scene->addItem(titulo);
+    titulo->setPlainText(nomeTitulo);
+    titulo->setPos(tab->x()+(tab->width()/2)-(nomeTitulo.size()*3.5),tab->y());
+    this->scene->addItem(titulo);
 }
 
-void Tabela::setAltura(double a)
+void Tabela::setTitulo(QString titulo)
 {
-    this->altura = a;
+    this->nomeTitulo = titulo;
 }
 
-void Tabela::setLargura(double l)
+QString Tabela::getTitulo()
 {
-    this->largura = l;
+    return this->nomeTitulo;
 }
 
-double Tabela::getAltura()
+void Tabela::addAtributo(QString nome, bool chavePrimaria, bool chaveEstrangeira)
 {
-    return this->altura;
-}
+    if ( chaveEstrangeira )
+    {
+        nome.insert(0, "[FK] ");
+    }
 
-double Tabela::getLargura()
-{
-    return this->largura;
+    if ( chavePrimaria )
+    {
+        nome.insert(0, "[PK] ");
+    }
+
+    atributo = new QGraphicsTextItem();
+    atributo->setPlainText(nome);
+    atributo->setPos(tab->x(),tab->y()+tab->height());
+    this->scene->addItem(atributo);
+    listaAtributo.push_back(atributo);
+
+    tab->setHeight(tab->height()+25);
+    setRect(*tab);
 }

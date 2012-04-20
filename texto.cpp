@@ -16,7 +16,16 @@ void Texto::focusOutEvent(QFocusEvent *event)
     cursor.clearSelection();
     setTextCursor(cursor);
     setTextInteractionFlags(Qt::NoTextInteraction);
+    emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);
+}
+
+QVariant Texto::itemChange(GraphicsItemChange change,
+                     const QVariant &value)
+{
+    if (change == QGraphicsItem::ItemSelectedHasChanged)
+        emit selectedChange(this);
+    return value;
 }
 
 void Texto::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

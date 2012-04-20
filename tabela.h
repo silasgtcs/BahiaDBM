@@ -9,20 +9,25 @@ class Tabela : public QObject, public QGraphicsRectItem
     Q_OBJECT
 
 public:
-    Tabela( QGraphicsItem *parent = 0, QGraphicsScene *scene = 0 );
+    Tabela( QString nomeTitulo, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0 );
 
-    void setAltura(double);
-    double getAltura();
-    void setLargura(double);
-    double getLargura();
-
-    QRectF *tab;
-    QGraphicsLineItem *linha;
-    Texto *titulo;
+    void setTitulo(QString);
+    QString getTitulo();
+    void addAtributo(QString nome, bool chavePrimaria, bool chaveEstrangeira);
 
 private:
-    double altura;
-    double largura;
+    QRectF *tab;
+
+    QGraphicsLineItem *linha;
+
+    QGraphicsScene *scene;
+
+    QGraphicsTextItem *titulo;
+    QGraphicsTextItem *atributo;
+
+    QString nomeTitulo;
+
+    QList<QGraphicsTextItem *> listaAtributo;
 };
 
 #endif // TABELA_H
