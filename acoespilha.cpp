@@ -24,7 +24,7 @@ void AcoesPilha::addAcao(Acao *command) {
 void AcoesPilha::addAcao(Acao *acao, bool run)
 {
     if(!acao->podeDesfazer())
-            pilhaDeAcoes.clear();
+        pilhaDeAcoes.clear();
     else
     {
         posAtual++;
@@ -46,7 +46,7 @@ void AcoesPilha::addAcao(Acao *acao, bool run)
 bool AcoesPilha::desfazer()
 {
     if(posAtual == -1)
-            return false;
+        return false;
 
     pilhaDeAcoes.at(posAtual)->desfazerAcao();
     posAtual--;
@@ -57,7 +57,7 @@ bool AcoesPilha::desfazer()
 bool AcoesPilha::refazer()
 {
     if(posAtual == pilhaDeAcoes.size()-1)
-            return false;
+        return false;
 
     pilhaDeAcoes.at(++posAtual)->fazerAcao();
     setChanged();
