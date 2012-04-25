@@ -13,7 +13,12 @@ public:
 
     void setTitulo(QString);
     QString getTitulo();
-    void addAtributo(QString nome, bool chavePrimaria, bool chaveEstrangeira);
+    void addAtributo(QString nome, bool chavePrimaria, bool chaveEstrangeira, bool nulo);
+    void setMaiorLargura(int ml) { this->maiorLargura = ml; }
+    int getMaiorLargura() { return this->maiorLargura; }
+    void atualizarLargura();
+    void atualizarNomeAtributo(QString, int);
+    QList<Texto*> getListaAtributo() { return this->listaAtributo; }
 
 private:
     QRectF *tab;
@@ -22,12 +27,18 @@ private:
 
     QGraphicsScene *scene;
 
-    QGraphicsTextItem *titulo;
-    QGraphicsTextItem *atributo;
+    Texto *titulo;
+    Texto *atributo;
 
     QString nomeTitulo;
 
-    QList<QGraphicsTextItem *> listaAtributo;
+    int maiorLargura;
+
+    QList<Texto *> listaAtributo;
+
+public slots:
+    void atualizarTitulo();
+    void atualizarAtributo(int);
 };
 
 #endif // TABELA_H

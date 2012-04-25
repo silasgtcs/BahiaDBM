@@ -49,9 +49,9 @@ void MainWindow::criarScene()
     viewLogico = new DiagramaView(sceneLogico);
 
     Tabela *t = new Tabela("Funcionario", NULL, sceneLogico);
-    t->addAtributo("codEmpregado", true, true);
-    t->addAtributo("nome", false, true);
-    t->addAtributo("salario", false, false);
+    t->addAtributo("codFuncionario", true, true, true);
+    t->addAtributo("nome", false, true, false);
+    t->addAtributo("salario", false, false, true);
 
     //Cria diagrama físico
     sceneFisico = new Diagrama(this, pilhaDeAcoes);
@@ -1140,20 +1140,35 @@ void MainWindow::abaAlterada(int index)
     if ( index == 0 )
     {
         if ( sceneConceitual != NULL )
+        {
+            formas->setHidden(false);
             formas->setEnabled(true);
+            mouseLinha->actions().at(1)->setVisible(true);
+            mouseLinha->actions().at(2)->setVisible(true);
+        }
     }
 
     //Aba "Logico"
     else if ( index == 1 )
     {
         if ( sceneLogico != NULL )
+        {
+            formas->setHidden(true);
             formas->setEnabled(false);
+            mouseLinha->actions().at(1)->setVisible(false);
+            mouseLinha->actions().at(2)->setVisible(false);
+        }
     }
 
     //Aba "Fisico"
     else if ( index == 2 )
     {
         if ( sceneFisico != NULL )
+        {
+            formas->setHidden(true);
             formas->setEnabled(false);
+            mouseLinha->actions().at(1)->setVisible(false);
+            mouseLinha->actions().at(2)->setVisible(false);
+        }
     }
 }

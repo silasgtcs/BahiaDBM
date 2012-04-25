@@ -34,3 +34,16 @@ QString Dialog::mostrarTipoGenEsp()
     else
         return NULL;
 }
+
+QString Dialog::alterarNomeLogico(QString nomeAtual)
+{
+    bool ok;
+    QString texto = QInputDialog::getText(this, tr("Alterar Nome"),
+                                         tr("Novo nome:"), QLineEdit::Normal,
+                                         nomeAtual, &ok);
+
+    if (ok && !texto.isEmpty())
+        return texto;
+    else
+        return NULL;
+}

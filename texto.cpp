@@ -8,6 +8,14 @@ Texto::Texto(QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsTextItem(p
 
     setTipoGenEsp("xt");
     setGenEspAtiva(false);
+    setTabelaLogicoAtiva(false);
+}
+
+void Texto::setGenEspAtiva( bool gea )
+{
+    this->genEspAtiva = gea;
+//    setFlag(QGraphicsItem::ItemIsMovable, false);
+//    setFlag(QGraphicsItem::ItemSendsGeometryChanges, false);
 }
 
 void Texto::focusOutEvent(QFocusEvent *event)
@@ -41,10 +49,11 @@ void Texto::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
 void Texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( !getGenEspAtiva() )
+    if (( !getGenEspAtiva() ) && ( !getTabelaLogicoAtiva() ))
     {
         setTextInteractionFlags(Qt::TextEditorInteraction);
     }
+
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
@@ -57,6 +66,17 @@ void Texto::mousePressEvent(QGraphicsSceneMouseEvent *event)
         {
             setTipoGenEsp(temp);
             this->setPlainText(getTipoGenEsp());
+        }
+    }
+
+    if ( getTabelaLogicoAtiva() )
+    {
+        QString temp = chamarTelaLogico.alterarNomeLogico(getTextoTabelaLogico().first);
+        if ( temp != NULL )
+        {
+            setTextoTabelaLogico(temp,getTextoTabelaLogico().second);
+            emit textoTabelaLogicoAlterado(getTextoTabelaLogico().second);
+            //this->setPlainText(getTextoTabelaLogico());
         }
     }
 

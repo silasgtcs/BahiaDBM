@@ -18,6 +18,7 @@ public:
     Dialog(QWidget *parent = 0);
     QString mostrarCardinalidade();
     QString mostrarTipoGenEsp();
+    QString alterarNomeLogico(QString nomeAtual);
 };
 
 #endif // DIALOG_H

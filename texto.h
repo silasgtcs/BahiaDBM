@@ -20,8 +20,14 @@ public:
     void setTipoGenEsp( QString tipo ) { this->tipoGenEsp = tipo; }
     QString getTipoGenEsp () { return this->tipoGenEsp; }
 
+    void setTextoTabelaLogico( QString txt, int pos ) { this->textoTabelaLogico = qMakePair(txt, pos); }
+    QPair<QString, int> getTextoTabelaLogico() { return this->textoTabelaLogico; }
+
     bool getGenEspAtiva() { return this->genEspAtiva; }
-    void setGenEspAtiva( bool gea ) { this->genEspAtiva = gea; }
+    void setGenEspAtiva( bool gea );
+
+    bool getTabelaLogicoAtiva() { return this->tabelaLogicoAtiva; }
+    void setTabelaLogicoAtiva( bool tla ) { this->tabelaLogicoAtiva = tla; }
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void focusOutEvent(QFocusEvent *event);
@@ -31,12 +37,18 @@ public:
 signals:
     void lostFocus(Texto *item);
     void selectedChange(QGraphicsItem *item);
+    void textoTabelaLogicoAlterado(int);
 
 private:
     int count;
     Dialog chamarTelaTipoGenEsp;
+    Dialog chamarTelaLogico;
+
     QString tipoGenEsp;
+    QPair<QString, int> textoTabelaLogico;
+
     bool genEspAtiva;
+    bool tabelaLogicoAtiva;
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
