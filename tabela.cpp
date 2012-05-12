@@ -5,9 +5,11 @@ Tabela::Tabela( QString nomeTitulo, QGraphicsItem *parent, QGraphicsScene *scene
 {
     setFlag(QGraphicsRectItem::ItemIsMovable, true);
     setFlag(QGraphicsRectItem::ItemIsSelectable, true);
+    setFlag(QGraphicsRectItem::ItemSendsGeometryChanges, true);
 
+    setQtdAtributo(0);
     this->scene = scene;
-    tab = new QRectF(2424,2397,216,25);
+    tab = new QRectF(0,0,216,25);
     setRect(*tab);
 
     linha = this->scene->addLine(tab->x(),tab->y()+25,tab->x()+tab->width(),tab->y()+25);
@@ -32,11 +34,12 @@ void Tabela::atualizarLargura()
         if ( listaAtributo[i]->toPlainText().size() > maior )
             maior = listaAtributo[i]->toPlainText().size();
 
-    tab->setWidth(maior*8);
+    tab->setWidth(maior*8.5);
     setRect(*tab);
 
     linha->setLine(tab->x(),tab->y()+25,tab->x()+tab->width(),tab->y()+25);
     this->titulo->setPos(tab->x()+(tab->width()/2)-(this->nomeTitulo.size()*3.5),tab->y());
+    setMaiorLargura(maior);
 }
 
 void Tabela::setTitulo(QString titulo)
@@ -101,13 +104,13 @@ void Tabela::addAtributo(QString nome, bool chavePrimaria, bool chaveEstrangeira
     atributo->setParentItem(this);
     atributo->setTabelaLogicoAtiva(true);
     atributo->setCursor(Qt::PointingHandCursor);
-    this->scene->addItem(atributo);
     listaAtributo.push_back(atributo);
     connect(listaAtributo[listaAtributo.size()-1], SIGNAL(textoTabelaLogicoAlterado(int)), this, SLOT(atualizarAtributo(int)));
     atualizarLargura();
 
     tab->setHeight(tab->height()+25);
     setRect(*tab);
+    setQtdAtributo(getQtdAtributo()+1);
 }
 
 void Tabela::atualizarTitulo()
@@ -118,4 +121,22 @@ void Tabela::atualizarTitulo()
 void Tabela::atualizarAtributo(int pos)
 {
     atualizarNomeAtributo(listaAtributo[pos]->getTextoTabelaLogico().first, pos);
+}
+
+QVariant Tabela::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if ((change == QGraphicsItem::ItemPositionChange) || ( change == QGraphicsItem::ItemPositionHasChanged ))
+    {
+        emit posicaoAlterada();
+    }
+
+    return value;
+}
+
+void Tabela::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+{
+    painter->setBrush(Qt::white);
+    if ( isSelected() )
+        painter->setPen(QPen(Qt::red, 2, Qt::DashLine));
+    painter->drawRect(*tab);
 }

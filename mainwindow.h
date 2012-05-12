@@ -45,6 +45,7 @@ private slots:
     void fecharDiagrama();
     void houveModificacao();
     void abaAlterada(int index);
+    void gerarModeloLogico();
 protected:
     virtual void closeEvent(QCloseEvent *);
 
@@ -65,15 +66,21 @@ private:
     void deletarScene();
     bool questionarSalvar();
     void resetWindowState();
+    void insereAtributoTabela( Atributo::Tipo tipoAtributo, Poligono *entidade, Tabela *tab, bool pk, bool fk, bool nulo );
+    QString buscaNome( Poligono *p );
 
     AcoesPilha * pilhaDeAcoes;
+
+    Texto *castTexto;
 
     Diagrama *sceneConceitual;
     Diagrama *sceneLogico;
     Diagrama *sceneFisico;
+
     DiagramaView *viewConceitual;
     DiagramaView *viewLogico;
     DiagramaView *viewFisico;
+
     Poligono *cast_poligono;
 
     QAction *sairAction;
@@ -86,10 +93,13 @@ private:
     QAction *novaAction;
     QAction *arquivosRecentes[MAXARQRECENTES];
     QAction *fecharDiagramaAtual;
+    QAction *modeloLogico;
+    QAction *modeloFisico;
 
     QMenu *arquivoMenu;
     QMenu *editarMenu;
     QMenu *ajudaMenu;
+    QMenu *gerarMenu;
 
     QToolBar *formas;
     QToolBar *manipulacoes;
@@ -105,10 +115,8 @@ private:
     QToolButton *reduzir;
     QToolButton *mouse;
     QToolButton *linhas;
-
     QToolButton *deletar;
     QToolButton *entidadeFraca;
-
     QToolButton *organizarHor;
     QToolButton *organizarVer;
 
@@ -117,13 +125,22 @@ private:
     QButtonGroup *botoesML;    
 
     QToolBar *exibicaoToolBar;
+
     QSpinBox *scroolZoom;
+
     QSlider *barraZoom;
+
     QLabel *label;
 
     QString nomeArquivoAtual;
 
     QTabWidget *tabWidget;
+
+    QGraphicsLineItem *nLinha;
+
+    Tabela *tab1;
+    Tabela *tab2;
+    Tabela *tab3;
 };
 
 #endif // MAINWINDOW_H

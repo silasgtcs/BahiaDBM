@@ -48,10 +48,10 @@ void MainWindow::criarScene()
     sceneLogico->setTipoER(Diagrama::TipoER(7));
     viewLogico = new DiagramaView(sceneLogico);
 
-    Tabela *t = new Tabela("Funcionario", NULL, sceneLogico);
-    t->addAtributo("codFuncionario", true, true, true);
-    t->addAtributo("nome", false, true, false);
-    t->addAtributo("salario", false, false, true);
+    //    Tabela *t = new Tabela("Funcionario", NULL, sceneLogico);
+    //    t->addAtributo("codFuncionario", true, true, true);
+    //    t->addAtributo("nome", false, true, false);
+    //    t->addAtributo("salario", false, false, true);
 
     //Cria diagrama físico
     sceneFisico = new Diagrama(this, pilhaDeAcoes);
@@ -60,11 +60,11 @@ void MainWindow::criarScene()
     sceneFisico->setTipoER(Diagrama::TipoER(7));
     viewFisico = new DiagramaView(sceneFisico);
 
-//    QHBoxLayout *layout = new QHBoxLayout;
-//    layout->addWidget(view);
+    //    QHBoxLayout *layout = new QHBoxLayout;
+    //    layout->addWidget(view);
 
-//    QWidget *widget = new QWidget;
-//    widget->setLayout(layout);
+    //    QWidget *widget = new QWidget;
+    //    widget->setLayout(layout);
 
     tabWidget = new QTabWidget;
     tabWidget->addTab(viewConceitual, trUtf8("Conceitual"));
@@ -864,6 +864,13 @@ void MainWindow::createActions()
     ajudaAction->setShortcut(trUtf8("Ctrl+H"));
     ajudaAction->setStatusTip(trUtf8("Sobre BahiaDBM"));
     connect(ajudaAction, SIGNAL(triggered()), this, SLOT(sobre()));
+
+    modeloLogico = new QAction(trUtf8("&Modelo Lógico"), this);
+    modeloLogico->setStatusTip(trUtf8("Gerar Modelo Lógico"));
+    connect(modeloLogico, SIGNAL(triggered()), this, SLOT(gerarModeloLogico()));
+
+    modeloFisico = new QAction(trUtf8("&Modelo Físico"), this);
+    modeloFisico->setStatusTip(trUtf8("Gerar Modelo Físico"));
 }
 
 void MainWindow::createMenu()
@@ -885,6 +892,10 @@ void MainWindow::createMenu()
     editarMenu = menuBar()->addMenu(trUtf8("&Editar"));
     editarMenu->addAction(desfazerAction);
     editarMenu->addAction(refazerAction);
+
+    gerarMenu = menuBar()->addMenu(trUtf8("&Gerar"));
+    gerarMenu->addAction(modeloLogico);
+    gerarMenu->addAction(modeloFisico);
 
     ajudaMenu = menuBar()->addMenu(trUtf8("&Ajuda"));
     ajudaMenu->addAction(ajudaAction);
@@ -1169,6 +1180,289 @@ void MainWindow::abaAlterada(int index)
             formas->setEnabled(false);
             mouseLinha->actions().at(1)->setVisible(false);
             mouseLinha->actions().at(2)->setVisible(false);
+        }
+    }
+}
+
+void MainWindow::insereAtributoTabela(Atributo::Tipo tipoAtributo, Poligono *entidade, Tabela *tab, bool pk, bool fk, bool nulo)
+{
+    for ( int j=0; j<entidade->getAtributosAssociados().size(); j++ )
+    {
+        Atributo *atr = entidade->getAtributosAssociados().at(j);
+        if (( atr->getTipo() == tipoAtributo ) && ( atr->childItems().size() == 1 ) && ( atr->childItems().at(0)->type() == Texto::Type ))
+        {
+            castTexto = qgraphicsitem_cast<Texto *>(atr->childItems().at(0));
+            tab->addAtributo(castTexto->toPlainText(), pk, fk, nulo);
+        }
+    }
+}
+
+QString MainWindow::buscaNome(Poligono *p)
+{
+    QString nome = NULL;
+    for ( int j=0; j<p->childItems().size(); j++ )
+        if ( p->childItems().at(j)->type() == Texto::Type )
+        {
+            castTexto = qgraphicsitem_cast<Texto *>(p->childItems().at(j));
+            nome = castTexto->toPlainText();
+            break;
+        }
+
+    return nome;
+}
+
+void MainWindow::gerarModeloLogico()
+{
+    const int espacoEntreTabelas = 50;
+
+    QList<QGraphicsItem *> itens = sceneConceitual->items();
+    int inicio=2120;
+    qreal alturaMax;
+    QPointF pos;
+    pos.setX(2120); pos.setY(2397);
+
+    for ( int i=0; i<itens.size(); i++ )
+    {
+        if ( itens[i]->type() == Poligono::Type )
+        {
+            cast_poligono = qgraphicsitem_cast<Poligono *>(itens[i]);
+            if (( cast_poligono->getTipo() == Poligono::relacionamento ) && ( cast_poligono->getCardinalidadesAssociadas().size() == 2 ))
+            {
+                QString cardMax1 = cast_poligono->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(4);
+                QString cardMin1 = cast_poligono->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0);
+                QString cardMax2 = cast_poligono->getCardinalidadesAssociadas().at(1)->getCardinalidadeAtual().at(4);
+                QString cardMin2 = cast_poligono->getCardinalidadesAssociadas().at(1)->getCardinalidadeAtual().at(0);
+
+                //Cria modelo lógico a partir de um relacionamento N:N
+                if (( cardMax1 == "N" ) && ( cardMax2 == "N" ))
+                {
+                    QList<Poligono *> entidade = cast_poligono->getPoligonosAssociadoOfType<Poligono::entidade>();
+
+                    if ( entidade.size() == 2 )
+                    {
+                        Poligono *ent1 = entidade[0];
+                        Poligono *ent2 = entidade[1];
+
+                        //Busca nomes associados de relacionamento e entidades.
+                        QString nomeRelacionamento = buscaNome(cast_poligono);
+                        QString nomeEnt1 = buscaNome(ent1);
+                        QString nomeEnt2 = buscaNome(ent2);
+
+                        alturaMax = 0;
+
+                        //Tabela 1
+                        pos.setX(inicio);
+                        tab1 = new Tabela(nomeEnt1, NULL, sceneLogico);
+                        tab1->setPos(pos);
+
+                        //Adiciona na tabela os atributos identificadores de ent1
+                        insereAtributoTabela(Atributo::atributo_identif, ent1, tab1, true, false, false);
+
+                        //Adiciona na tabela os atributos de ent1
+                        insereAtributoTabela(Atributo::atributo, ent1, tab1, false, false, true);
+
+                        alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                        //Tabela 2
+                        pos.setX(pos.x()+(tab1->rect().width()+espacoEntreTabelas));
+                        tab2 = new Tabela(nomeRelacionamento, NULL, sceneLogico);
+                        tab2->setPos(pos);
+
+                        //Adiciona na tabela os atributos identificadores de ent1
+                        insereAtributoTabela(Atributo::atributo_identif, ent1, tab2, true, true, false);
+
+                        //Adiciona na tabela os atributos identificadores de ent2
+                        insereAtributoTabela(Atributo::atributo_identif, ent2, tab2, true, true, false);
+
+                        //Adiciona na tabela os atributos do relacionamento
+                        insereAtributoTabela(Atributo::atributo, cast_poligono, tab2, false, false, true);
+
+                        alturaMax = ( tab2->rect().height() > alturaMax ) ? tab2->rect().height() : alturaMax;
+
+                        //Tabela 3
+                        pos.setX(pos.x()+(tab2->rect().width()+espacoEntreTabelas));
+                        tab3 = new Tabela(nomeEnt2, NULL, sceneLogico);
+                        tab3->setPos(pos);
+
+                        //Adiciona na tabela os atributos identificadores de ent2
+                        insereAtributoTabela(Atributo::atributo_identif, ent2, tab3, true, false, false);
+
+                        //Procura e adiciona na tabela os atributos de ent2
+                        insereAtributoTabela(Atributo::atributo, ent2, tab3, false, false, true);
+
+                        alturaMax = ( tab3->rect().height() > alturaMax ) ? tab3->rect().height() : alturaMax;
+
+                        //Atualiza posição da coordenada Y
+                        pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                        AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
+                        if ( acao1->getLigacao() )
+                        {
+                            pilhaDeAcoes->addAcao(acao1);
+                            acao1->fazerAcao();
+                        }
+
+                        AcaoCriarLigacao * acao2 = new AcaoCriarLigacao(sceneLogico, tab2, tab3);
+                        if ( acao2->getLigacao() )
+                        {
+                            pilhaDeAcoes->addAcao(acao2);
+                            acao2->fazerAcao();
+                        }
+                    }
+                }
+
+                //Cria modelo lógico a partir de um relacionamento 1:N ou N:1
+                else if ((( cardMax1 == "1" ) && ( cardMax2 == "N" )) || (( cardMax1 == "N" ) && ( cardMax2 == "1" )))
+                {
+                    QList<Poligono *> entidade = cast_poligono->getPoligonosAssociadoOfType<Poligono::entidade>();
+
+                    if ( entidade.size() == 2 )
+                    {
+                        Poligono *ent1 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(4) == 'N') ? entidade[0] : entidade[1];
+                        Poligono *ent2 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(4) == 'N') ? entidade[1] : entidade[0];
+
+                        //Busca nomes associados de entidades.
+                        QString nomeEnt1 = buscaNome(ent1);
+                        QString nomeEnt2 = buscaNome(ent2);
+
+                        alturaMax = 0;
+
+                        //Tabela 1
+                        pos.setX(inicio);
+                        tab1 = new Tabela(nomeEnt1, NULL, sceneLogico);
+                        tab1->setPos(pos);
+
+                        //Adiciona na tabela os atributos identificadores de ent1
+                        insereAtributoTabela(Atributo::atributo_identif, ent1, tab1, true, false, false);
+
+                        //Procura e adiciona na tabela como os atributos identificadores de ent2
+                        insereAtributoTabela(Atributo::atributo_identif, ent2, tab1, false, true, false);
+
+                        //Adiciona na tabela os atributos de ent1
+                        insereAtributoTabela(Atributo::atributo, ent1, tab1, false, false, true);
+
+                        alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                        //Tabela 2
+                        pos.setX(pos.x()+(tab1->rect().width()+espacoEntreTabelas));
+                        tab2 = new Tabela(nomeEnt2, NULL, sceneLogico);
+                        tab2->setPos(pos);
+
+                        //Adiciona na tabela como os atributos identificadores de ent2
+                        insereAtributoTabela(Atributo::atributo_identif, ent2, tab2, true, false, false);
+
+                        //Procura e adiciona na tabela como os atributos de ent2
+                        insereAtributoTabela(Atributo::atributo, ent2, tab2, false, false, true);
+
+                        alturaMax = ( tab2->rect().height() > alturaMax ) ? tab2->rect().height() : alturaMax;
+
+                        //Atualiza posição da coordenada Y
+                        pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                        AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
+                        if ( acao1->getLigacao() )
+                        {
+                            pilhaDeAcoes->addAcao(acao1);
+                            acao1->fazerAcao();
+                        }
+                    }
+                }
+
+                //Cria modelo lógico a partir de um relacionamento 1:1, onde as cardinalidade mínimas são iguais.
+                //Cria modelo lógico a partir de um relacionamento 1:1, onde as cardinalidade mínimas são diferentes.
+                else if (( cardMax1 == "1" ) && ( cardMax2 == "1" ))
+                {
+                    QList<Poligono *> entidade = cast_poligono->getPoligonosAssociadoOfType<Poligono::entidade>();
+
+                    if ( entidade.size() == 2 )
+                    {
+                        Poligono *ent1;
+                        Poligono *ent2;
+                        if (( entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0' ) || ( entidade[1]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0' ))
+                        {
+                            ent1 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0') ? entidade[0] : entidade[1];
+                            ent2 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0') ? entidade[1] : entidade[0];
+                        }
+                        else
+                        {
+                            ent1 = entidade[0];
+                            ent2 = entidade[1];
+                        }
+
+                        //Busca nomes associados de entidades.
+                        QString nomeEnt1 = buscaNome(ent1);
+                        QString nomeEnt2 = buscaNome(ent2);
+
+                        alturaMax = 0;
+
+                        //Tabela 1
+                        pos.setX(inicio);
+                        tab1 = new Tabela(nomeEnt1, NULL, sceneLogico);
+                        tab1->setPos(pos);
+
+                        //Adiciona na tabela os atributos identificadores de ent1
+                        insereAtributoTabela(Atributo::atributo_identif, ent1, tab1, true, false, false);
+
+                        //Adiciona na tabela os atributos identificadores de ent2
+                        insereAtributoTabela(Atributo::atributo_identif, ent2, tab1, false, true, false);
+
+                        //Adiciona na tabela os atributos do relacionamento
+                        insereAtributoTabela(Atributo::atributo, cast_poligono, tab1, false, true, false);
+
+                        //Adiciona na tabela os atributos de ent1
+                        insereAtributoTabela(Atributo::atributo, ent1, tab1, false, false, true);
+
+                        alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                        //Tabela 2
+                        pos.setX(pos.x()+(tab1->rect().width()+espacoEntreTabelas));
+                        tab2 = new Tabela(nomeEnt2, NULL, sceneLogico);
+                        tab2->setPos(pos);
+
+                        //Adiciona na tabela os atributos identificadores de ent2
+                        insereAtributoTabela(Atributo::atributo_identif, ent2, tab2, true, false, false);
+
+                        //Adiciona na tabela os atributos de ent2
+                        insereAtributoTabela(Atributo::atributo, ent2, tab2, false, false, true);
+
+                        alturaMax = ( tab2->rect().height() > alturaMax ) ? tab2->rect().height() : alturaMax;
+
+                        //Atualiza posição da coordenada Y
+                        pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                        AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
+                        if ( acao1->getLigacao() )
+                        {
+                            pilhaDeAcoes->addAcao(acao1);
+                            acao1->fazerAcao();
+                        }
+                    }
+                }
+            }
+
+            else if (( cast_poligono->getTipo() == Poligono::entidade ) && ( cast_poligono->getCardinalidadesAssociadas().size() == 0 ))
+            {
+                //Busca nomes associados de entidades.
+                QString nomeEnt = buscaNome(cast_poligono);
+
+                alturaMax = 0;
+
+                //Tabela 1
+                pos.setX(inicio);
+                tab1 = new Tabela(nomeEnt, NULL, sceneLogico);
+                tab1->setPos(pos);
+
+                //Adiciona na tabela os atributos identificadores da entidade
+                insereAtributoTabela(Atributo::atributo_identif, cast_poligono, tab1, true, false, false);
+
+                //Adiciona na tabela os atributos da entidade
+                insereAtributoTabela(Atributo::atributo, cast_poligono, tab1, false, false, true);
+
+                alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                //Atualiza posição da coordenada Y
+                pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+            }
         }
     }
 }

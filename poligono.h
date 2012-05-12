@@ -5,9 +5,11 @@
 
 #include <QtGui>
 #include <objetoremovivel.h>
+
 class Atributo;
 class Cardinalidade;
 class Ligacao;
+class Texto;
 
 class Poligono : public QObject, public QGraphicsPolygonItem, public ObjetoRemovivel
 {

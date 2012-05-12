@@ -18,7 +18,16 @@ public:
     int getMaiorLargura() { return this->maiorLargura; }
     void atualizarLargura();
     void atualizarNomeAtributo(QString, int);
+    void setQtdAtributo( int qtd ) { this->qtdAtributo = qtd; }
+    int getQtdAtributo() { return this->qtdAtributo; }
     QList<Texto*> getListaAtributo() { return this->listaAtributo; }
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+protected:
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+signals:
+    void posicaoAlterada();
 
 private:
     QRectF *tab;
@@ -33,6 +42,7 @@ private:
     QString nomeTitulo;
 
     int maiorLargura;
+    int qtdAtributo;
 
     QList<Texto *> listaAtributo;
 

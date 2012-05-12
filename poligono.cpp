@@ -41,6 +41,7 @@ QVariant Poligono::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if ((change == QGraphicsItem::ItemPositionChange) || ( change == QGraphicsItem::ItemPositionHasChanged ))
     {
+        //printf("%lf %lf\n", this->scenePos().x(), this->y());
         emit posicaoAlterada();
         emit posicaoAlterada(value.toPointF());
     }

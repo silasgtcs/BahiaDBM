@@ -17,13 +17,14 @@ AcaoCriarLigacao::AcaoCriarLigacao(QGraphicsScene * scene, QGraphicsItem * item1
     ligacao->setZValue(-1000.0);
     cast1P = ligacao->getCastItem1P();
     cast2P = ligacao->getCastItem2P();
+    cast1T = ligacao->getCastItem1T();
     //    this->item1 = item1;
     //    this->item2 = item2;
     this->scene = scene;
 
     cardinalidade = ligacao->getCardItem();
 
-    if (( cast1P == NULL ) && ( cast2P == NULL ))
+    if ((( cast1P == NULL ) && ( cast2P == NULL )) && ( cast1T == NULL ))
     {
         delete ligacao;
         ligacao = NULL;
