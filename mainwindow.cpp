@@ -1221,6 +1221,8 @@ void MainWindow::gerarModeloLogico()
     QPointF pos;
     pos.setX(2120); pos.setY(2397);
 
+    sceneLogico->clear(); // Henrique entrando em ação!!
+
     for ( int i=0; i<itens.size(); i++ )
     {
         if ( itens[i]->type() == Poligono::Type )
