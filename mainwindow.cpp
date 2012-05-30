@@ -871,6 +871,7 @@ void MainWindow::createActions()
 
     modeloFisico = new QAction(trUtf8("&Modelo Físico"), this);
     modeloFisico->setStatusTip(trUtf8("Gerar Modelo Físico"));
+    connect(modeloFisico, SIGNAL(triggered()), this, SLOT(gerarModeloFisico()));
 }
 
 void MainWindow::createMenu()
@@ -1465,6 +1466,22 @@ void MainWindow::gerarModeloLogico()
                 //Atualiza posição da coordenada Y
                 pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
             }
+        }
+    }
+}
+
+void MainWindow::gerarModeloFisico()
+{
+    int i;
+    QList<QGraphicsItem *> itens = sceneConceitual->items();
+
+    for (i=0; i<itens.size(); i++)
+    {
+        if ( itens[i]->type() == Atributo::Type )
+        {
+            QMessageBox msgbox;
+            msgbox.setText("Achou um atributo");
+            msgbox.exec();
         }
     }
 }

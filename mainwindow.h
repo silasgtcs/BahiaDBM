@@ -14,6 +14,7 @@
 
 #include <QMainWindow>
 #include <QtGui>
+#include <QMessageBox>
 
 class Diagrama;
 
@@ -46,6 +47,7 @@ private slots:
     void houveModificacao();
     void abaAlterada(int index);
     void gerarModeloLogico();
+    void gerarModeloFisico();
 protected:
     virtual void closeEvent(QCloseEvent *);
 
