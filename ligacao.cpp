@@ -261,6 +261,8 @@ void Ligacao::conectarObjetos()
         castItem1P->addLinhasAssociadas(this);
         this->addPoligonoAssociado(castItem1P);
         this->addPoligonoAssociado(castItem2P);
+        castItem1P->setConectado(true);
+        castItem2P->setConectado(true);
     }
     else if ((( castItem1P != NULL ) || ( castItem2P != NULL )) && ( castItemA != NULL ))
     {

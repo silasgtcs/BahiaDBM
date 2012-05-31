@@ -31,6 +31,7 @@ Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *s
     setPolygon(poligono);
     setConectado(false);
     setAutoRelacionamento(false);
+    setEntidadeFraca(false);
 
     setFlag(QGraphicsItem::ItemIsMovable, pai);
     setFlag(QGraphicsItem::ItemIsSelectable, pai);

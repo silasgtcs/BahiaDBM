@@ -63,8 +63,8 @@ void Tabela::atualizarNomeAtributo(QString novoNome, int pos)
 
     if ( fk ) novoNome.insert(0, "[FK] ");
     if ( pk ) novoNome.insert(0, "[PK] ");
-    if ( nulo ) novoNome.insert(novoNome.size(), " NULL");
-    else novoNome.insert(novoNome.size(), " NOT NULL");
+    if ( nulo ) novoNome.insert(novoNome.size(), " \"NULL\"");
+    else novoNome.insert(novoNome.size(), " \"NOT NULL\"");
 
     listaAtributo[pos]->setPlainText(novoNome);
     atualizarLargura();
@@ -92,11 +92,11 @@ void Tabela::addAtributo(QString nome, bool chavePrimaria, bool chaveEstrangeira
 
     if ( nulo )
     {
-        nome.insert(nome.size(), " NULL");
+        nome.insert(nome.size(), " \"NULL\"");
     }
     else
     {
-        nome.insert(nome.size(), " NOT NULL");
+        nome.insert(nome.size(), " \"NOT NULL\"");
     }
 
     atributo->setPlainText(nome);

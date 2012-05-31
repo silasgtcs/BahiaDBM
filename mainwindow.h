@@ -66,8 +66,12 @@ private:
     void deletarScene();
     bool questionarSalvar();
     void resetWindowState();
+    QString formataAtributo(QString nome);
+    bool procuraAtributo(Tabela *tab, QString nome);
     void insereAtributoTabela( Atributo::Tipo tipoAtributo, Poligono *entidade, Tabela *tab, bool pk, bool fk, bool nulo );
     QString buscaNome( Poligono *p );
+    int dialogGenEsp(QString generalizacao);
+    Tabela *procuraTabela(QString nomeTab);
 
     AcoesPilha * pilhaDeAcoes;
 
@@ -141,6 +145,9 @@ private:
     Tabela *tab1;
     Tabela *tab2;
     Tabela *tab3;
+    Tabela *tabEsp;
+
+    QList <Tabela *> tabelasLogico;
 };
 
 #endif // MAINWINDOW_H

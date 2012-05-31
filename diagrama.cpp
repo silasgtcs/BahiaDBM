@@ -111,11 +111,11 @@ void Diagrama::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                         if(poligono->getTipo() != Poligono::gen_esp) {
                             int numAtributos = poligono->getAtributosAssociados().size();
                             QSizeF size = poligono->boundingRect().size() * poligono->scale();
-                            qreal r = ((size.width() + size.height()) / 2.0) * (1.3);
+                            qreal r = ((size.width() + size.height()) / 2.0) * (1.0);
                             qreal x =  poligono->x();
                             qreal y =  poligono->y();
                             qreal radian = PI/180.0;
-                            qreal degree = (17.5 * numAtributos);
+                            qreal degree = (17.5 * numAtributos)+60;
                             position = QPointF(x + (r * cos(degree*radian)), y + (r * sin(-degree*radian)));
 
                             break;
