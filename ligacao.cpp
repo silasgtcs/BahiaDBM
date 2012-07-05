@@ -224,6 +224,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
     }
     else if (( castItem1T != NULL ) && ( castItem2T != NULL ))
     {
+        tabelasAssociadas = qMakePair(castItem1T, castItem2T);
         connect(castItem1T, SIGNAL(posicaoAlterada()), this, SLOT(atualizaPos()));
         connect(castItem2T, SIGNAL(posicaoAlterada()), this, SLOT(atualizaPos()));
     }
