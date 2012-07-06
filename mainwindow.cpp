@@ -921,7 +921,8 @@ void MainWindow::deletarSelecionados() {
 void MainWindow::sobre()
 {
     QMessageBox::about(this, trUtf8("Sobre BahiaDBM"), trUtf8("Bahia Database Modeler - v1.0\nSoftware Livre não open-source " \
-                                                              "\n\nFerramenta para modelagem de Bancos de Dados com geração de código SQL."));
+                                                              "\n\nFerramenta para modelagem de Bancos de Dados com geração de código SQL." \
+                                                              "\n\nDesenvolvido por Judith Mendoza e Sydney Viana"));
 }
 
 void MainWindow::createActions()
@@ -1140,8 +1141,6 @@ void MainWindow::createToolBar()
     botoesML->addButton(deletar,2);
     connect(botoesML, SIGNAL(buttonClicked(int)),
             this, SLOT(botoesMLClicked(int)));
-    connect(botoesML, SIGNAL(buttonReleased(int)),
-            this, SLOT(botoesMLUnclicked(int)));
 
     mouseLinha = addToolBar(trUtf8("&MouseLinha"));
     mouseLinha->addWidget(mouse);

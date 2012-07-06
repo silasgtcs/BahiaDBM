@@ -12,7 +12,6 @@ Diagrama::Diagrama( QObject *parent, AcoesPilha * pilhaDeAcoes ) : QGraphicsScen
     novaLinha = NULL;
     ativaSelecao = false;
     ativaMover = false;
-    //relLinha = false;
     countRelacionamento = 1;
     countEntidade = 1;
     countAtributo = 1;
@@ -182,7 +181,7 @@ void Diagrama::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 AcaoCriarLigacao * acao = new AcaoCriarLigacao(this, item1, item2);
                 if ( acao->getLigacao() )
                 {
-                    emit fezLinha();
+                    emit fezLinha(); // para voltar a ser mouse após criar linha - mainwindow que processa
                     pilhaDeAcoes->addAcao(acao);
                     acao->fazerAcao();
                 }

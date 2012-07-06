@@ -24,6 +24,9 @@ Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *s
             poligono << QPointF(0, -22) << QPointF(-60, 22)
                      << QPointF(60, 22);
             break;
+
+        case ent_associativa:
+            break;
     }
     poligonoPai = NULL;
     poligonoFilho = NULL;
