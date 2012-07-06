@@ -4,6 +4,7 @@ ou os tipos de cardinalidade.*/
 #ifndef DIALOG_H
 #define DIALOG_H
 
+#include <QtGui>
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -18,7 +19,19 @@ public:
     Dialog(QWidget *parent = 0);
     QString mostrarCardinalidade();
     QString mostrarTipoGenEsp();
-    QString alterarNomeLogico(QString nomeAtual);
+    QPair<QString, bool> alterarNomeLogico(QString nomeAtual, bool alteraRestricao, bool nulo);
+
+private slots:
+    void botaoOk() { dlg->close(); } ;
+    void botaoCancelar();
+
+private:
+    QDialog *dlg;
+    QLabel *label;
+    QLineEdit *lineEdit;
+    QRadioButton *notNullRadio;
+    QRadioButton *nullRadio;
+    bool cancelar;
 };
 
 #endif // DIALOG_H

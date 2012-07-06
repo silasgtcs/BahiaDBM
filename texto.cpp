@@ -60,6 +60,14 @@ void Texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
+void Texto::setTextoTabelaLogico(QString txt, int pos, bool alterarRestricao, bool nulo)
+{
+    textoTabelaLogico.nome = txt;
+    textoTabelaLogico.pos = pos;
+    textoTabelaLogico.alterarRestricao = alterarRestricao;
+    textoTabelaLogico.nulo = nulo;
+}
+
 void Texto::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     //this->setFocus();
@@ -76,11 +84,11 @@ void Texto::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     if ( getTabelaLogicoAtiva() )
     {
-        QString temp = chamarTelaLogico.alterarNomeLogico(getTextoTabelaLogico().first);
-        if ( temp != NULL )
+        QPair<QString,bool> temp = chamarTelaLogico.alterarNomeLogico(getTextoTabelaLogico().nome, getTextoTabelaLogico().alterarRestricao, getTextoTabelaLogico().nulo);
+        if ( temp.first != NULL )
         {
-            setTextoTabelaLogico(temp,getTextoTabelaLogico().second);
-            emit textoTabelaLogicoAlterado(getTextoTabelaLogico().second);
+            setTextoTabelaLogico(temp.first, getTextoTabelaLogico().pos, getTextoTabelaLogico().alterarRestricao, temp.second );
+            emit textoTabelaLogicoAlterado(getTextoTabelaLogico().pos);
             //this->setPlainText(getTextoTabelaLogico());
         }
     }

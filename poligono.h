@@ -5,9 +5,11 @@
 
 #include <QtGui>
 #include <objetoremovivel.h>
+
 class Atributo;
 class Cardinalidade;
 class Ligacao;
+class Texto;
 
 class Poligono : public QObject, public QGraphicsPolygonItem, public ObjetoRemovivel
 {
@@ -26,6 +28,9 @@ public:
 
     bool getConectado() { return this->conectado; }
     void setConectado( bool c ) { this->conectado = c; }
+
+    bool getEntidadeFraca() { return this->entidadeFraca; }
+    void setEntidadeFraca( bool ef ) { this->entidadeFraca = ef; }
 
     bool getAutoRelacionamento() { return this->autoRelacionamento; }
     void setAutoRelacionamento( bool a ) { this->autoRelacionamento = a; }
@@ -98,6 +103,7 @@ private:
 
     bool conectado;
     bool autoRelacionamento;
+    bool entidadeFraca;
     Poligono * poligonoPai;
     Poligono * poligonoFilho;
 

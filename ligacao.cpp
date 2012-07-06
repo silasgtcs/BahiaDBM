@@ -8,6 +8,7 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     castItem1P = castItem2P =  NULL; //Poligonos
+    castItem1T = castItem2T = NULL; //Tabelas modelo lógico
     castItemA = NULL; //Atributos
     cardItem = NULL; //Cardinalidades
     setEntidadeFracaAtiva(false);
@@ -26,6 +27,11 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
         castItemA = qgraphicsitem_cast<Atributo *>(item1);
     }
 
+    else if ( item1->type() == Tabela::Type )
+    {
+        castItem1T = qgraphicsitem_cast<Tabela *>(item1);
+    }
+
     //Faz CAST em Item2, de acordo com o tipo que for recebido
     if (item2->type() == Poligono::Type)
     {
@@ -39,6 +45,11 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
     {
         castItemA = qgraphicsitem_cast<Atributo *>(item2);
         //connect(castItemA, SIGNAL(posicaoAlterada()), this, SLOT(atualizaPos()) );
+    }
+
+    else if ( item2->type() == Tabela::Type )
+    {
+        castItem2T = qgraphicsitem_cast<Tabela *>(item2);
     }
 
     /*Verifica se itens já estão conectados. Em caso afirmativo, não insere nova linha.
@@ -211,6 +222,12 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
             connect(properPoligono, SIGNAL(posicaoAlterada()), this, SLOT(atualizaPos()) );
         }
     }
+    else if (( castItem1T != NULL ) && ( castItem2T != NULL ))
+    {
+        tabelasAssociadas = qMakePair(castItem1T, castItem2T);
+        connect(castItem1T, SIGNAL(posicaoAlterada()), this, SLOT(atualizaPos()));
+        connect(castItem2T, SIGNAL(posicaoAlterada()), this, SLOT(atualizaPos()));
+    }
 
     //Verifica se a ligação é entre entidade/relacionamento, entidade associativa/relacionamento ou relacionamento/entidade associativa.
     //Em caso afirmativo, permite a colocação de cardinalidade.
@@ -232,7 +249,8 @@ Ligacao::Ligacao(QGraphicsItem *item1, QGraphicsItem *item2, QGraphicsItem *pare
     conectarObjetos();
 }
 
-void Ligacao::conectarObjetos(){
+void Ligacao::conectarObjetos()
+{
     if (( castItem1P != NULL ) && ( castItem2P != NULL ))
     {
         //Adiciona no vector dessa entidade que esse relacionamento e esta linha pertence-a.
@@ -244,6 +262,8 @@ void Ligacao::conectarObjetos(){
         castItem1P->addLinhasAssociadas(this);
         this->addPoligonoAssociado(castItem1P);
         this->addPoligonoAssociado(castItem2P);
+        castItem1P->setConectado(true);
+        castItem2P->setConectado(true);
     }
     else if ((( castItem1P != NULL ) || ( castItem2P != NULL )) && ( castItemA != NULL ))
     {
@@ -298,6 +318,11 @@ void Ligacao::conectarObjetos(){
     if(castItemA){
         castItemA->moveBy(0.1, 0.1);
         castItemA->moveBy(-0.1, -0.1);
+    }
+    if ( castItem1T )
+    {
+        castItem1T->moveBy(0.1, 0.1);
+        castItem1T->moveBy(-0.1, -0.1);
     }
 }
 
@@ -374,6 +399,13 @@ void Ligacao::atualizaPos()
             //emit linhaAlterada(line);
         }
     }
+
+    else if (( castItem1T != NULL ) && ( castItem2T != NULL ))
+    {
+        QLineF line(mapFromItem( castItem1T, castItem1T->rect().width()/2, castItem1T->rect().height()/2 ), mapFromItem( castItem2T, castItem2T->rect().width()/2, castItem2T->rect().height()/2 ));
+        setLine(line);
+    }
+
     else if (( properPoligono != NULL ) && ( castItemA != NULL ))
     {
         QLineF line(mapFromItem( properPoligono, 0, 0 ),

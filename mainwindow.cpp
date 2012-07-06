@@ -50,10 +50,10 @@ void MainWindow::criarScene()
     sceneLogico->setTipoER(Diagrama::TipoER(7));
     viewLogico = new DiagramaView(sceneLogico);
 
-    Tabela *t = new Tabela("Funcionario", NULL, sceneLogico);
-    t->addAtributo("codFuncionario", true, true, true);
-    t->addAtributo("nome", false, true, false);
-    t->addAtributo("salario", false, false, true);
+    //    Tabela *t = new Tabela("Funcionario", NULL, sceneLogico);
+    //    t->addAtributo("codFuncionario", true, true, true);
+    //    t->addAtributo("nome", false, true, false);
+    //    t->addAtributo("salario", false, false, true);
 
     //Cria diagrama físico
     sceneFisico = new Diagrama(this, pilhaDeAcoes);
@@ -62,11 +62,11 @@ void MainWindow::criarScene()
     sceneFisico->setTipoER(Diagrama::TipoER(7));
     viewFisico = new DiagramaView(sceneFisico);
 
-//    QHBoxLayout *layout = new QHBoxLayout;
-//    layout->addWidget(view);
+    //    QHBoxLayout *layout = new QHBoxLayout;
+    //    layout->addWidget(view);
 
-//    QWidget *widget = new QWidget;
-//    widget->setLayout(layout);
+    //    QWidget *widget = new QWidget;
+    //    widget->setLayout(layout);
 
     tabWidget = new QTabWidget;
     tabWidget->addTab(viewConceitual, trUtf8("Conceitual"));
@@ -136,6 +136,9 @@ void MainWindow::botoesERClicked(int id)
         {
             Ligacao * castLinha = qgraphicsitem_cast<Ligacao *>(entidade[0]);
             castLinha->setEntidadeFracaAtiva(true);
+            QList<Poligono *> p = castLinha->getPoligonosAssociadoOfType<Poligono::entidade>();
+            if ( p.size() == 1 )
+                p[0]->setEntidadeFraca(true);
         }
     }
 }
@@ -169,7 +172,6 @@ void MainWindow::botoesManipClicked(int id)
                 itens[i]->setPos(itens[i]->x()+0.1, itens[i]->y()+0.1);
                 itens[i]->setPos(itens[i]->x()-0.1, itens[i]->y()-0.1);
             }
-
         }
     }
     else if(id == 2 || id == 3)
@@ -462,6 +464,38 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
         }
     }
 
+    QList<QGraphicsItem *> obj2 = sceneLogico->items();
+
+    for ( int i=0; i<obj2.size(); i++ )
+    {
+        if ( obj2[i]->type() == Tabela::Type )
+        {
+            Tabela *tab = qgraphicsitem_cast<Tabela *>(obj2[i]);
+            QString temp = "|_tabela_logica_|";
+
+            out << temp;
+            out << tab->getTitulo();
+            out << (float)tab->x() << (float)tab->y();
+
+            for ( int j=0; j<tab->getListaAtributo().size(); j++ )
+                out << tab->getListaAtributo().at(j)->toPlainText();
+
+            temp = "|_fim_tabela_logica_|";
+            out << temp;
+        }
+    }
+
+    for ( int i=0; i<obj2.size(); i++ )
+    {
+        if ( obj2[i]->type() == Ligacao::Type )
+        {
+            Ligacao *lg = qgraphicsitem_cast<Ligacao *>(obj2[i]);
+            QString temp = "|_linha_tabela_logica_|";
+            out << temp;
+            out << lg->getTabelasAssociadas().first->getTitulo() << lg->getTabelasAssociadas().second->getTitulo();
+        }
+    }
+
     pilhaDeAcoes->setUnchaged();
     setArquivoAtual(nomeArquivo);
     setArquivoAtualTitulo(diminuirNome(nomeArquivo));
@@ -684,6 +718,11 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
             ligacao->addCardinalidadeAssociada(abrirCardinalidade);
             ligacao->setEntidadeFracaAtiva(entidadeFraca);
 
+            if ( castPoligono->getTipo() == Poligono::entidade )
+                castPoligono->setEntidadeFraca(entidadeFraca);
+            if ( castPoligono2->getTipo() == Poligono::entidade )
+                castPoligono2->setEntidadeFraca(entidadeFraca);
+
             abrirCardinalidade->addPoligonoAssociado(castPoligono);
             abrirCardinalidade->addPoligonoAssociado(castPoligono2);
 
@@ -741,6 +780,55 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
 
             item[0]->setPos(item[0]->x()+0.1, item[0]->y()+0.1);
             item[0]->setPos(item[0]->x()-0.1, item[0]->y()-0.1);
+        }
+
+        else if ( head == "|_tabela_logica_|" )
+        {
+            QString nome;
+            float x, y;
+
+            in >> nome;
+            in >> x >> y;
+
+            tab1 = new Tabela(nome, NULL, sceneConceitual, sceneLogico);
+            tab1->setPos(x,y);
+
+            in >> nome;
+            while ( nome != "|_fim_tabela_logica_|" )
+            {
+                bool pk,fk,nulo;
+
+                pk = (nome.contains("[PK]", Qt::CaseSensitive)) ? true : false;
+                fk = (nome.contains("[FK]", Qt::CaseSensitive)) ? true : false;
+                nulo = (nome.contains("NOT NULL", Qt::CaseSensitive)) ? false : true;
+
+                tab1->addAtributo(formataAtributo(nome), pk, fk, nulo);
+                in >> nome;
+            }
+
+            tabelasLogico.push_back(tab1);
+        }
+
+        else if ( head == "|_linha_tabela_logica_|" )
+        {
+            QString nome1, nome2;
+            Tabela *tabA, *tabB;
+
+            in >> nome1 >> nome2;
+            for ( int w=0; w<tabelasLogico.size(); w++ )
+            {
+                if ( tabelasLogico[w]->getTitulo() == nome1 )
+                    tabA = tabelasLogico[w];
+                else if ( tabelasLogico[w]->getTitulo() == nome2 )
+                    tabB = tabelasLogico[w];
+            }
+
+            AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tabA, tabB);
+            if ( acao1->getLigacao() )
+            {
+                pilhaDeAcoes->addAcao(acao1);
+                acao1->fazerAcao();
+            }
         }
     }
 
@@ -889,6 +977,13 @@ void MainWindow::createActions()
     ajudaAction->setShortcut(trUtf8("Ctrl+H"));
     ajudaAction->setStatusTip(trUtf8("Sobre BahiaDBM"));
     connect(ajudaAction, SIGNAL(triggered()), this, SLOT(sobre()));
+
+    modeloLogico = new QAction(trUtf8("&Modelo Lógico"), this);
+    modeloLogico->setStatusTip(trUtf8("Gerar Modelo Lógico"));
+    connect(modeloLogico, SIGNAL(triggered()), this, SLOT(gerarModeloLogico()));
+
+    modeloFisico = new QAction(trUtf8("&Modelo Físico"), this);
+    modeloFisico->setStatusTip(trUtf8("Gerar Modelo Físico"));
 }
 
 void MainWindow::createMenu()
@@ -910,6 +1005,10 @@ void MainWindow::createMenu()
     editarMenu = menuBar()->addMenu(trUtf8("&Editar"));
     editarMenu->addAction(desfazerAction);
     editarMenu->addAction(refazerAction);
+
+    gerarMenu = menuBar()->addMenu(trUtf8("&Gerar"));
+    gerarMenu->addAction(modeloLogico);
+    gerarMenu->addAction(modeloFisico);
 
     ajudaMenu = menuBar()->addMenu(trUtf8("&Ajuda"));
     ajudaMenu->addAction(ajudaAction);
@@ -1196,6 +1295,617 @@ void MainWindow::abaAlterada(int index)
             formas->setEnabled(false);
             mouseLinha->actions().at(1)->setVisible(false);
             mouseLinha->actions().at(2)->setVisible(false);
+        }
+    }
+}
+
+//Formata atributo
+QString MainWindow::formataAtributo(QString nome)
+{
+    QString nomeFormatado = NULL;
+    for ( int i=nome.size()-2; i>=0; i-- )
+        if ( nome[i] == '"' )
+        {
+            for ( int j=i-2;; j-- )
+            {
+                if ( j == 0 )
+                {
+                    nomeFormatado.insert(0, nome[j]);
+                    break;
+                }
+
+                if ( nome[j-1] == ']' )
+                    break;
+
+                nomeFormatado.insert(0, nome[j]);
+            }
+
+            break;
+        }
+
+    return nomeFormatado;
+}
+
+//Verifica se atributo informado já existe na tabela lógica especificada.
+bool MainWindow::procuraAtributo(Tabela *tab, QString nome)
+{
+    QList<Texto *> atr = tab->getListaAtributo();
+    for ( int i=0; i<atr.size(); i++ )
+        if ( formataAtributo(atr[i]->toPlainText()) == nome )
+            return true;
+
+    return false;
+}
+
+void MainWindow::insereAtributoTabela(Atributo::Tipo tipoAtributo, Poligono *entidade, Tabela *tab, bool pk, bool fk, bool nulo)
+{
+    if ( entidade != NULL )
+    {
+        for ( int j=0; j<entidade->getAtributosAssociados().size(); j++ )
+        {
+            Atributo *atr = entidade->getAtributosAssociados().at(j);
+            if (( atr->getTipo() == tipoAtributo ) && ( atr->childItems().size() == 1 ) && ( atr->childItems().at(0)->type() == Texto::Type ))
+            {
+                castTexto = qgraphicsitem_cast<Texto *>(atr->childItems().at(0));
+                if ( !procuraAtributo(tab, castTexto->toPlainText()) )
+                    tab->addAtributo(castTexto->toPlainText(), pk, fk, nulo);
+            }
+        }
+    }
+}
+
+//Busca nome do poligono, setado como filho.
+QString MainWindow::buscaNome(Poligono *p)
+{
+    if ( p != NULL )
+    {
+        QString nome = NULL;
+        for ( int j=0; j<p->childItems().size(); j++ )
+            if ( p->childItems().at(j)->type() == Texto::Type )
+            {
+                castTexto = qgraphicsitem_cast<Texto *>(p->childItems().at(j));
+                nome = castTexto->toPlainText();
+                break;
+            }
+
+        return nome;
+    }
+    else
+        return NULL;
+}
+
+//Caixa de diálogo com o usuário na transformação conceitual/lógico quando uma generalização/especialização é encontrada.
+int MainWindow::dialogGenEsp(QString generalizacao)
+{
+    QMessageBox msgbox(QMessageBox::Question, trUtf8("Generalização/Especialização"),
+                       trUtf8("Generalização/Especialização encontrada ("+generalizacao.toUtf8()+"). O que deseja fazer?\n\nOpção A: Criar uma única tabela\nOpção B: Criar várias tabelas\n"),
+                       0, this);
+
+    msgbox.addButton(trUtf8("Opção A"), QMessageBox::AcceptRole);
+    msgbox.addButton(trUtf8("Opção B"), QMessageBox::RejectRole);
+
+    int ret = msgbox.exec();
+
+    if ( ret == QMessageBox::AcceptRole )
+        return 1;
+    else
+        return 2;
+}
+
+//Verifica se tabela informada já existe no diagrama lógico.
+Tabela *MainWindow::procuraTabela(QString nomeTab)
+{
+    for ( int i=0; i<tabelasLogico.size(); i++ )
+        if ( tabelasLogico[i]->getTitulo() == nomeTab )
+            return tabelasLogico[i];
+
+    return NULL;
+}
+
+void MainWindow::gerarModeloLogico()
+{
+    //Limpa a área de trabalho do lógico antes de adicionar algo.
+    QList<QGraphicsItem *> lixo = sceneLogico->items();
+    for ( int i=0; i<lixo.size(); i++ )
+        delete lixo[i];
+
+    tabelasLogico.clear();
+
+    const int espacoEntreTabelas = 50;
+
+    QList<QGraphicsItem *> itens = sceneConceitual->items();
+    int inicio=2120;
+    qreal alturaMax;
+    QPointF pos;
+    pos.setX(2120); pos.setY(2397);
+
+    for ( int i=0; i<itens.size(); i++ )
+    {
+        if ( itens[i]->type() == Poligono::Type )
+        {
+            cast_poligono = qgraphicsitem_cast<Poligono *>(itens[i]);
+            if ((( cast_poligono->getTipo() == Poligono::relacionamento ) || ( cast_poligono->getTipo() == Poligono::ent_associativa )) && ( cast_poligono->getCardinalidadesAssociadas().size() >= 2 ))
+            {
+                QString cardMax1 = cast_poligono->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(4);
+                QString cardMin1 = cast_poligono->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0);
+                QString cardMax2 = cast_poligono->getCardinalidadesAssociadas().at(1)->getCardinalidadeAtual().at(4);
+                QString cardMin2 = cast_poligono->getCardinalidadesAssociadas().at(1)->getCardinalidadeAtual().at(0);
+
+                //Cria modelo lógico a partir de um relacionamento N:N
+                if (( cardMax1 == "N" ) && ( cardMax2 == "N" ))
+                {
+                    QList<Poligono *> entidade = cast_poligono->getPoligonosAssociadoOfType<Poligono::entidade>();
+                    QList<Poligono *> entidade2 = cast_poligono->getPoligonosAssociadoOfType<Poligono::ent_associativa>();
+
+                    if ( (( entidade.size() == 2 ) || (( entidade.size() == 1 ) && ( entidade2.size() == 1 ))) || ((entidade.size() == 1) && (entidade[0]->getAutoRelacionamento())) )
+                    {
+                        Poligono *ent1 = entidade[0];
+                        Poligono *ent2 = NULL;
+                        if ( !entidade[0]->getAutoRelacionamento() )
+                            ent2 = (entidade.size() == 2) ? entidade[1] : entidade2[0];
+
+                        //Busca nomes associados de relacionamento e entidades.
+                        QString nomeRelacionamento = buscaNome(cast_poligono);
+                        QString nomeEnt1 = buscaNome(ent1);
+                        QString nomeEnt2 = buscaNome(ent2);
+
+                        alturaMax = 0;
+
+                        //Tabela 1
+                        pos.setX(inicio);
+                        Tabela *aux = procuraTabela(nomeEnt1);
+                        if ( aux == NULL )
+                        {
+                            tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                            tab1->setPos(pos);
+                            tabelasLogico.push_back(tab1);
+                        }
+                        else
+                            tab1 = aux;
+
+                        //Adiciona na tabela os atributos identificadores de ent1
+                        insereAtributoTabela(Atributo::atributo_identif, ent1, tab1, true, false, false);
+
+                        //Adiciona na tabela os atributos de ent1
+                        insereAtributoTabela(Atributo::atributo, ent1, tab1, false, false, true);
+
+                        alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                        //Tabela 2
+                        pos.setX(pos.x()+(tab1->rect().width()+espacoEntreTabelas));
+                        aux = procuraTabela(nomeRelacionamento);
+                        if ( aux == NULL )
+                        {
+                            tab2 = new Tabela(nomeRelacionamento, NULL, sceneConceitual, sceneLogico);
+                            tab2->setPos(pos);
+                            tabelasLogico.push_back(tab2);
+                        }
+                        else
+                            tab2 = aux;
+
+                        //Adiciona na tabela os atributos identificadores de ent1
+                        insereAtributoTabela(Atributo::atributo_identif, ent1, tab2, true, true, false);
+
+                        //Adiciona na tabela os atributos identificadores de ent2
+                        insereAtributoTabela(Atributo::atributo_identif, ent2, tab2, true, true, false);
+
+                        //Adiciona na tabela os atributos do relacionamento
+                        if ( cast_poligono->getTipo() != Poligono::ent_associativa )
+                            insereAtributoTabela(Atributo::atributo, cast_poligono, tab2, false, false, true);
+
+                        alturaMax = ( tab2->rect().height() > alturaMax ) ? tab2->rect().height() : alturaMax;
+
+                        //Tabela 3
+                        if ( ent2 != NULL )
+                        {
+                            pos.setX(pos.x()+(tab2->rect().width()+espacoEntreTabelas));
+                            Tabela *aux = procuraTabela(nomeEnt2);
+                            if ( aux == NULL )
+                            {
+                                tab3 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                tab3->setPos(pos);
+                                tabelasLogico.push_back(tab3);
+                            }
+                            else
+                                tab3 = aux;
+
+                            //Adiciona na tabela os atributos identificadores de ent2
+                            insereAtributoTabela(Atributo::atributo_identif, ent2, tab3, true, false, false);
+
+                            //Procura e adiciona na tabela os atributos de ent2
+                            insereAtributoTabela(Atributo::atributo, ent2, tab3, false, false, true);
+
+                            alturaMax = ( tab3->rect().height() > alturaMax ) ? tab3->rect().height() : alturaMax;
+
+                            AcaoCriarLigacao * acao2 = new AcaoCriarLigacao(sceneLogico, tab2, tab3);
+                            if ( acao2->getLigacao() )
+                            {
+                                pilhaDeAcoes->addAcao(acao2);
+                                acao2->fazerAcao();
+                            }
+                        }
+
+                        AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
+                        if ( acao1->getLigacao() )
+                        {
+                            pilhaDeAcoes->addAcao(acao1);
+                            acao1->fazerAcao();
+                        }
+
+                        //Atualiza posição da coordenada Y
+                        pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+                    }
+                }
+
+                //Cria modelo lógico a partir de um relacionamento 1:N ou N:1
+                else if ((( cardMax1 == "1" ) && ( cardMax2 == "N" )) || (( cardMax1 == "N" ) && ( cardMax2 == "1" )))
+                {
+                    QList<Poligono *> entidade = cast_poligono->getPoligonosAssociadoOfType<Poligono::entidade>();
+                    QList<Poligono *> entidade2 = cast_poligono->getPoligonosAssociadoOfType<Poligono::ent_associativa>();
+
+                    if ((( entidade.size() == 2 ) || (( entidade.size() == 1 ) && ( entidade2.size() == 1 ))) || ((entidade.size() == 1) && (entidade[0]->getAutoRelacionamento())) )
+                    {
+                        Poligono *ent1, *ent2;
+                        if ( entidade.size() == 2 )
+                        {
+                            ent1 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(4) == 'N') ? entidade[0] : entidade[1];
+                            ent2 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(4) == 'N') ? entidade[1] : entidade[0];
+                        }
+                        else if ( entidade[0]->getAutoRelacionamento() )
+                        {
+                            ent1 = entidade[0];
+                            ent2 = NULL;
+                        }
+                        else
+                        {
+                            ent1 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(4) == 'N') ? entidade[0] : entidade2[0];
+                            ent2 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(4) == 'N') ? entidade2[0] : entidade[0];
+                        }
+
+                        //Busca nomes associados de entidades.
+                        QString nomeEnt1 = buscaNome(ent1);
+                        QString nomeEnt2 = buscaNome(ent2);
+
+                        alturaMax = 0;
+
+                        //Tabela 1
+                        pos.setX(inicio);
+                        Tabela *aux = procuraTabela(nomeEnt1);
+                        if ( aux == NULL )
+                        {
+                            tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                            tab1->setPos(pos);
+                            tabelasLogico.push_back(tab1);
+                        }
+                        else
+                            tab1 = aux;
+
+                        //Adiciona na tabela os atributos identificadores de ent2 caso seja uma entidade fraca
+                        if ( ent1->getEntidadeFraca() )
+                            insereAtributoTabela(Atributo::atributo_identif, ent2, tab1, true, true, false);
+
+                        //Adiciona na tabela os atributos identificadores de ent1
+                        insereAtributoTabela(Atributo::atributo_identif, ent1, tab1, true, false, false);
+
+                        //Adiciona na tabela os atributos identificadores de ent2 caso seja uma entidade forte
+                        if ( !ent1->getEntidadeFraca() )
+                            insereAtributoTabela(Atributo::atributo_identif, ent2, tab1, false, true, false);
+
+                        //Adiciona na tabela os atributos do relacionamento
+                        if ( cast_poligono->getTipo() != Poligono::ent_associativa )
+                            insereAtributoTabela(Atributo::atributo, cast_poligono, tab1, false, false, true);
+
+                        //Adiciona na tabela os atributos de ent1
+                        insereAtributoTabela(Atributo::atributo, ent1, tab1, false, false, true);
+
+                        alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                        //Tabela 2
+                        if ( ent2 != NULL )
+                        {
+                            pos.setX(pos.x()+(tab1->rect().width()+espacoEntreTabelas));
+                            Tabela *aux = procuraTabela(nomeEnt2);
+                            if ( aux == NULL )
+                            {
+                                tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                tab2->setPos(pos);
+                                tabelasLogico.push_back(tab2);
+                            }
+                            else
+                                tab2 = aux;
+
+                            //Adiciona na tabela os atributos identificadores de ent2
+                            insereAtributoTabela(Atributo::atributo_identif, ent2, tab2, true, false, false);
+
+                            //Adiciona na tabela os atributos de ent2
+                            insereAtributoTabela(Atributo::atributo, ent2, tab2, false, false, true);
+
+                            alturaMax = ( tab2->rect().height() > alturaMax ) ? tab2->rect().height() : alturaMax;
+
+                            AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
+                            if ( acao1->getLigacao() )
+                            {
+                                pilhaDeAcoes->addAcao(acao1);
+                                acao1->fazerAcao();
+                            }
+                        }
+
+                        //Atualiza posição da coordenada Y
+                        pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+                    }
+                }
+
+                //Cria modelo lógico a partir de um relacionamento 1:1, onde as cardinalidade mínimas são iguais.
+                //Cria modelo lógico a partir de um relacionamento 1:1, onde as cardinalidade mínimas são diferentes.
+                else if (( cardMax1 == "1" ) && ( cardMax2 == "1" ))
+                {
+                    QList<Poligono *> entidade = cast_poligono->getPoligonosAssociadoOfType<Poligono::entidade>();
+                    QList<Poligono *> entidade2 = cast_poligono->getPoligonosAssociadoOfType<Poligono::ent_associativa>();
+
+                    if ((( entidade.size() == 2 ) || (( entidade.size() == 1 ) && ( entidade2.size() == 1 ))) || ((entidade.size() == 1) && (entidade[0]->getAutoRelacionamento())) )
+                    {
+                        Poligono *ent1;
+                        Poligono *ent2;
+
+                        if ( entidade.size() == 2 )
+                        {
+                            if (( entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0' ) || ( entidade[1]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0' ))
+                            {
+                                ent1 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0') ? entidade[0] : entidade[1];
+                                ent2 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0') ? entidade[1] : entidade[0];
+                            }
+                            else
+                            {
+                                ent1 = entidade[0];
+                                ent2 = entidade[1];
+                            }
+                        }
+                        else if ( entidade[0]->getAutoRelacionamento() )
+                        {
+                            ent1 = entidade[0];
+                            ent2 = NULL;
+                        }
+                        else
+                        {
+                            if (( entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0' ) || ( entidade2[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0' ))
+                            {
+                                ent1 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0') ? entidade[0] : entidade2[0];
+                                ent2 = (entidade[0]->getCardinalidadesAssociadas().at(0)->getCardinalidadeAtual().at(0) == '0') ? entidade2[0] : entidade[0];
+                            }
+                            else
+                            {
+                                ent1 = entidade[0];
+                                ent2 = entidade2[0];
+                            }
+                        }
+
+                        //Busca nomes associados de entidades.
+                        QString nomeEnt1 = buscaNome(ent1);
+                        QString nomeEnt2 = buscaNome(ent2);
+
+                        alturaMax = 0;
+
+                        //Tabela 1
+                        //Antes de criar uma tabela, verifica no diagrama se esta já foi criada em outra situação.
+                        pos.setX(inicio);
+                        Tabela *aux = procuraTabela(nomeEnt1);
+                        if ( aux == NULL )
+                        {
+                            tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                            tab1->setPos(pos);
+                            tabelasLogico.push_back(tab1);
+                        }
+                        else
+                            tab1 = aux;
+
+                        //Adiciona na tabela os atributos identificadores de ent1
+                        insereAtributoTabela(Atributo::atributo_identif, ent1, tab1, true, false, false);
+
+                        //Adiciona na tabela os atributos identificadores de ent2
+                        insereAtributoTabela(Atributo::atributo_identif, ent2, tab1, false, true, false);
+
+                        //Adiciona na tabela os atributos do relacionamento
+                        if ( cast_poligono->getTipo() != Poligono::ent_associativa )
+                            insereAtributoTabela(Atributo::atributo, cast_poligono, tab1, false, false, true);
+
+                        //Adiciona na tabela os atributos de ent1
+                        insereAtributoTabela(Atributo::atributo, ent1, tab1, false, false, true);
+
+                        alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                        //Tabela 2
+                        //ent2 será NULL quando for um auto-relacionamento
+                        if ( ent2 != NULL )
+                        {
+                            //Antes de criar uma tabela, verifica no diagrama se esta já foi criada em outra situação.
+                            pos.setX(pos.x()+(tab1->rect().width()+espacoEntreTabelas));
+                            Tabela *aux = procuraTabela(nomeEnt2);
+                            if ( aux == NULL )
+                            {
+                                tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                tab2->setPos(pos);
+                                tabelasLogico.push_back(tab2);
+                            }
+                            else
+                                tab2 = aux;
+
+                            //Adiciona na tabela os atributos identificadores de ent2
+                            insereAtributoTabela(Atributo::atributo_identif, ent2, tab2, true, false, false);
+
+                            //Adiciona na tabela os atributos de ent2
+                            insereAtributoTabela(Atributo::atributo, ent2, tab2, false, false, true);
+
+                            alturaMax = ( tab2->rect().height() > alturaMax ) ? tab2->rect().height() : alturaMax;
+
+                            AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
+                            if ( acao1->getLigacao() )
+                            {
+                                pilhaDeAcoes->addAcao(acao1);
+                                acao1->fazerAcao();
+                            }
+                        }
+
+                        //Atualiza posição da coordenada Y
+                        pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+                    }
+                }
+            }
+
+            else if (( cast_poligono->getTipo() == Poligono::entidade ) && ( !cast_poligono->getConectado() ))
+            {
+                //Busca nomes associados de entidades.
+                QString nomeEnt = buscaNome(cast_poligono);
+
+                alturaMax = 0;
+
+                //Tabela 1
+                pos.setX(inicio);
+                Tabela *aux = procuraTabela(nomeEnt);
+                if ( aux == NULL )
+                {
+                    tab1 = new Tabela(nomeEnt, NULL, sceneConceitual, sceneLogico);
+                    tab1->setPos(pos);
+                    tabelasLogico.push_back(tab1);
+                }
+                else
+                    tab1 = aux;
+
+                //Adiciona na tabela os atributos identificadores da entidade
+                insereAtributoTabela(Atributo::atributo_identif, cast_poligono, tab1, true, false, false);
+
+                //Adiciona na tabela os atributos da entidade
+                insereAtributoTabela(Atributo::atributo, cast_poligono, tab1, false, false, true);
+
+                alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                //Atualiza posição da coordenada Y
+                pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+            }
+            else if ( cast_poligono->getTipo() == Poligono::gen_esp )
+            {
+                QList<Poligono *> entidade = cast_poligono->getPoligonosAssociadoOfType<Poligono::entidade>();
+
+                //Procura a entidade genérica e especializada por meio do atributo identificador.
+                Poligono *generalizacao = NULL;
+                QList< Poligono * > especializacao;
+
+                for ( int i=0; i<entidade.size(); i++ )
+                {
+                    bool control=false;
+                    QList<Atributo *> atr = entidade[i]->getAtributosAssociados();
+                    for ( int j=0; j<atr.size(); j++ )
+                    {
+                        if ( atr[j]->getTipo() == Atributo::atributo_identif )
+                        {
+                            generalizacao = entidade[i];
+                            control = true;
+                            break;
+                        }
+                    }
+                    if ( !control )
+                        especializacao.push_back(entidade[i]);
+                }
+
+                QString nomeGeneralizacao = buscaNome(generalizacao);
+                int tipo = dialogGenEsp(nomeGeneralizacao);
+
+                //Tipo 1 = Cria uma única tabela
+                if ( tipo == 1 )
+                {
+                    //Tabela 1
+                    pos.setX(inicio);
+                    Tabela *aux = procuraTabela(nomeGeneralizacao);
+                    if ( aux == NULL )
+                    {
+                        tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico);
+                        tab1->setPos(pos);
+                        tabelasLogico.push_back(tab1);
+                    }
+                    else
+                        tab1 = aux;
+
+                    alturaMax = 0;
+
+                    //Adiciona na tabela os atributos identificadores da generalização
+                    insereAtributoTabela(Atributo::atributo_identif, generalizacao, tab1, true, false, false);
+
+                    //Adiciona na tabela os atributos da generalização
+                    insereAtributoTabela(Atributo::atributo, generalizacao, tab1, false, false, true);
+
+                    //Adiciona na tabela os atributos das especializações
+                    for ( int i=0; i<especializacao.size(); i++ )
+                        insereAtributoTabela(Atributo::atributo, especializacao[i], tab1, false, false, true);
+
+                    alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                    //Atualiza posição da coordenada Y
+                    pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+                }
+
+                //Tipo 2 = Cria mais de uma tabela
+                else
+                {
+                    //Tabela 1
+                    pos.setX(inicio);
+                    Tabela *aux = procuraTabela(nomeGeneralizacao);
+                    if ( aux == NULL )
+                    {
+                        tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico);
+                        tab1->setPos(pos);
+                        tabelasLogico.push_back(tab1);
+                    }
+                    else
+                        tab1 = aux;
+
+                    alturaMax = 0;
+
+                    //Adiciona na tabela os atributos identificadores da generalização
+                    insereAtributoTabela(Atributo::atributo_identif, generalizacao, tab1, true, false, false);
+
+                    //Adiciona na tabela os atributos da generalização
+                    insereAtributoTabela(Atributo::atributo, generalizacao, tab1, false, false, true);
+
+                    alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
+
+                    //Atualiza posição da coordenada Y
+                    pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                    //Tabelas da especialização
+                    pos.setX(inicio);
+                    for ( int i=0; i<especializacao.size(); i++ )
+                    {
+                        Tabela *aux = procuraTabela(buscaNome(especializacao[i]));
+                        if ( aux == NULL )
+                        {
+                            tabEsp = new Tabela(buscaNome(especializacao[i]), NULL, sceneConceitual, sceneLogico);
+                            tabEsp->setPos(pos);
+                            tabelasLogico.push_back(tabEsp);
+                        }
+                        else
+                            tabEsp = aux;
+
+                        //Adiciona na tabela especializada o(s) atributo(s) identificador(es) da generalização
+                        insereAtributoTabela(Atributo::atributo_identif, generalizacao, tabEsp, true, true, false);
+
+                        //Adiciona na tabela os atributos da especialização
+                        insereAtributoTabela(Atributo::atributo, especializacao[i], tabEsp, false, false, true);
+
+                        alturaMax = ( tabEsp->rect().height() > alturaMax ) ? tabEsp->rect().height() : alturaMax;
+
+                        pos.setX(pos.x()+(tabEsp->rect().width()+espacoEntreTabelas));
+
+                        AcaoCriarLigacao *acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tabEsp);
+                        if ( acao1->getLigacao() )
+                        {
+                            pilhaDeAcoes->addAcao(acao1);
+                            acao1->fazerAcao();
+                        }
+                    }
+
+                    //Atualiza posição da coordenada Y
+                    pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+                }
+            }
         }
     }
 }

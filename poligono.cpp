@@ -31,6 +31,7 @@ Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *s
     setPolygon(poligono);
     setConectado(false);
     setAutoRelacionamento(false);
+    setEntidadeFraca(false);
 
     setFlag(QGraphicsItem::ItemIsMovable, pai);
     setFlag(QGraphicsItem::ItemIsSelectable, pai);
@@ -41,6 +42,7 @@ QVariant Poligono::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if ((change == QGraphicsItem::ItemPositionChange) || ( change == QGraphicsItem::ItemPositionHasChanged ))
     {
+        //printf("%lf %lf\n", this->scenePos().x(), this->y());
         emit posicaoAlterada();
         emit posicaoAlterada(value.toPointF());
     }

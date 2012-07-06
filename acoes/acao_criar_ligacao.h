@@ -5,6 +5,7 @@
 #include "ligacao.h"
 #include "cardinalidade.h"
 #include "texto.h"
+#include "tabela.h"
 #include <QtGui>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
@@ -14,6 +15,7 @@ class AcaoCriarLigacao : public Acao
 private:
     QGraphicsItem * item1, * item2;
     Poligono *cast1P, *cast2P;
+    Tabela *cast1T, *cast2T;
     Ligacao * ligacao;
     QGraphicsScene * scene;
 

@@ -7,6 +7,14 @@ de ser utilizada para definir os tipos de generalização/especialização.*/
 #include <QtGui>
 #include <dialog.h>
 
+struct restricao
+{
+    QString nome;
+    int pos;
+    bool alterarRestricao;
+    bool nulo;
+};
+
 class Texto : public QGraphicsTextItem
 {
     Q_OBJECT
@@ -20,8 +28,8 @@ public:
     void setTipoGenEsp( QString tipo ) { this->tipoGenEsp = tipo; }
     QString getTipoGenEsp () { return this->tipoGenEsp; }
 
-    void setTextoTabelaLogico( QString txt, int pos ) { this->textoTabelaLogico = qMakePair(txt, pos); }
-    QPair<QString, int> getTextoTabelaLogico() { return this->textoTabelaLogico; }
+    void setTextoTabelaLogico( QString txt, int pos, bool alterarRestricao, bool nulo );
+    restricao getTextoTabelaLogico() { return this->textoTabelaLogico; }
 
     bool getGenEspAtiva() { return this->genEspAtiva; }
     void setGenEspAtiva( bool gea );
@@ -45,7 +53,7 @@ private:
     Dialog chamarTelaLogico;
 
     QString tipoGenEsp;
-    QPair<QString, int> textoTabelaLogico;
+    restricao textoTabelaLogico;
 
     bool genEspAtiva;
     bool tabelaLogicoAtiva;

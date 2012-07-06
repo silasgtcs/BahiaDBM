@@ -8,6 +8,7 @@
 #include <texto.h>
 #include <poligono.h>
 #include <objetoremovivel.h>
+#include <tabela.h>
 class Cardinalidade;
 
 
@@ -37,6 +38,10 @@ public:
     Poligono * getCastItem2P() { return this->castItem2P; }
     Atributo * getCastItemA() { return this->castItemA; }
     Cardinalidade * getCardItem() { return this->cardItem; }
+    Tabela *getCastItem1T() { return this->castItem1T; }
+    Tabela *getCastItem2T() { return this->castItem2T; }
+
+    QPair<Tabela *, Tabela *> getTabelasAssociadas() { return this->tabelasAssociadas; }
 
     // Garante tipo unico para objeto desse tipo
     enum { Type = UserType + 2 };
@@ -75,6 +80,9 @@ private:
 
     Atributo *castItemA;
 
+    Tabela *castItem1T;
+    Tabela *castItem2T;
+
     Cardinalidade *cardItem;
 
     Texto *nomeLigacao1, *nomeLigacao2;
@@ -83,6 +91,7 @@ private:
 
     bool entidadeFracaAtiva;
 
+    QPair<Tabela *, Tabela *> tabelasAssociadas;
     QSet< Cardinalidade * > cardinalidades_associadas;
     QSet< Atributo * > atributo_associado;
     QMap<Poligono::Tipo, QSet<Poligono *> > poligonosAssociados;
