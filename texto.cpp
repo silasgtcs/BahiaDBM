@@ -29,6 +29,19 @@ void Texto::focusOutEvent(QFocusEvent *event)
     QGraphicsTextItem::focusOutEvent(event);
 }
 
+void Texto::focusInEvent(QFocusEvent *event)
+{
+    QTextCursor cursor = textCursor();
+    cursor.clearSelection();
+    cursor.setPosition(Texto::toPlainText().length(), QTextCursor::MoveAnchor);
+    setTextCursor(cursor);
+
+    //Texto::textCursor().setPosition(Texto::toPlainText().length(), QTextCursor::MoveAnchor);
+    // pq apenas isso não funciona?
+
+    QGraphicsTextItem::focusOutEvent(event);
+}
+
 QVariant Texto::itemChange(GraphicsItemChange change,
                      const QVariant &value)
 {
