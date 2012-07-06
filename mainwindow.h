@@ -34,6 +34,7 @@ private slots:
     void botoesERClicked(int id);
     void botoesManipClicked(int id);
     void botoesMLClicked(int id);
+    //void botoesMLUnclicked(int id);
     void itemInserido();
     void desfazer();
     void refazer();
@@ -45,6 +46,7 @@ private slots:
     void fecharDiagrama();
     void houveModificacao();
     void abaAlterada(int index);
+    void voltaMouse();
 protected:
     virtual void closeEvent(QCloseEvent *);
 

@@ -24,6 +24,7 @@ void Texto::focusOutEvent(QFocusEvent *event)
     cursor.clearSelection();
     setTextCursor(cursor);
     setTextInteractionFlags(Qt::NoTextInteraction);
+
     emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);
 }
@@ -49,9 +50,11 @@ void Texto::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
 void Texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+
     if (( !getGenEspAtiva() ) && ( !getTabelaLogicoAtiva() ))
     {
         setTextInteractionFlags(Qt::TextEditorInteraction);
+        this->setFocus(); // faz já começar a editar
     }
 
     QGraphicsTextItem::mouseReleaseEvent(event);
@@ -59,6 +62,8 @@ void Texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void Texto::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    //this->setFocus();
+
     if ( getGenEspAtiva() )
     {
         QString temp = chamarTelaTipoGenEsp.mostrarTipoGenEsp();

@@ -19,6 +19,8 @@ class Diagrama : public QGraphicsScene
 public:
     Diagrama(QObject *parent, AcoesPilha * pilhaDeAcoes);
     enum TipoER { entidade, relacionamento, gen_esp, ent_associativa, atributo, atributo_ident, linha, mouse };
+    //bool getRelLinha() { return relLinha; }
+    //void setRelLinha(bool st) { relLinha = st; }
 
 public slots:
     TipoER getTipoER() { return tipoER; }
@@ -26,6 +28,7 @@ public slots:
 
 signals:
     void itemInserido();
+    void fezLinha();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -50,6 +53,7 @@ private:
 
     bool ativaSelecao;
     bool ativaMover;
+    //bool relLinha;
 };
 
 #endif // DSCENE_H

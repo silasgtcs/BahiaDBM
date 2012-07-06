@@ -21,8 +21,8 @@ Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *s
             break;
 
         case(gen_esp):
-            poligono << QPointF(0, -30) << QPointF(-60, 30)
-                     << QPointF(60, 30);
+            poligono << QPointF(0, -22) << QPointF(-60, 22)
+                     << QPointF(60, 22);
             break;
     }
     poligonoPai = NULL;

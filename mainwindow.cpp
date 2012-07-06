@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     pilhaDeAcoes = new AcoesPilha();
     connect(pilhaDeAcoes, SIGNAL(changed()), this, SLOT(houveModificacao()));
@@ -40,6 +39,9 @@ void MainWindow::criarScene()
             this, SLOT(itemInserido()));
     sceneConceitual->setTipoER(Diagrama::TipoER(7));
     viewConceitual = new DiagramaView(sceneConceitual);
+
+    connect(sceneConceitual, SIGNAL(fezLinha()),
+            this, SLOT(voltaMouse()));
 
     //Cria diagrama lógico
     sceneLogico = new Diagrama(this, pilhaDeAcoes);
@@ -798,6 +800,28 @@ void MainWindow::botoesMLClicked(int id)
         deletarSelecionados();
 }
 
+void MainWindow::voltaMouse()
+{
+    //botoesMLClicked(0);
+
+    QList<QAbstractButton *> botoes = botoesML->buttons();
+    foreach ( QAbstractButton *botao, botoes )
+        if ( botoesML->button(0) != botao )
+            botao->setChecked(false);
+
+    botoesML->button(0)->setChecked(true);
+}
+
+/*
+void MainWindow::botoesMLUnclicked(int id)
+{
+    if (sceneConceitual->getRelLinha() == true)
+    {
+        sceneConceitual->setRelLinha(false);
+        botoesMLClicked(0);
+    }
+}*/
+
 void MainWindow::deletarSelecionados() {
     if(sceneConceitual->selectedItems().size() <= 0)
         return;
@@ -808,7 +832,8 @@ void MainWindow::deletarSelecionados() {
 
 void MainWindow::sobre()
 {
-    QMessageBox::about(this, trUtf8("Sobre BahiaDBM"), trUtf8("Bahia Database Modeler"));
+    QMessageBox::about(this, trUtf8("Sobre BahiaDBM"), trUtf8("Bahia Database Modeler - v1.0\nSoftware Livre não open-source " \
+                                                              "\n\nFerramenta para modelagem de Bancos de Dados com geração de código SQL."));
 }
 
 void MainWindow::createActions()
@@ -1016,6 +1041,8 @@ void MainWindow::createToolBar()
     botoesML->addButton(deletar,2);
     connect(botoesML, SIGNAL(buttonClicked(int)),
             this, SLOT(botoesMLClicked(int)));
+    connect(botoesML, SIGNAL(buttonReleased(int)),
+            this, SLOT(botoesMLUnclicked(int)));
 
     mouseLinha = addToolBar(trUtf8("&MouseLinha"));
     mouseLinha->addWidget(mouse);
