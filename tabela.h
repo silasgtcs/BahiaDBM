@@ -9,7 +9,7 @@ class Tabela : public QObject, public QGraphicsRectItem
     Q_OBJECT
 
 public:
-    Tabela( QString nomeTitulo, QGraphicsItem *parent = 0, QGraphicsScene *scene = 0 );
+    Tabela( QString nomeTitulo, QGraphicsItem *parent = 0, QGraphicsScene *sceneConceitual = 0, QGraphicsScene *sceneLogico = 0 );
 
     void setTitulo(QString);
     QString getTitulo();
@@ -17,11 +17,13 @@ public:
     void setMaiorLargura(int ml) { this->maiorLargura = ml; }
     int getMaiorLargura() { return this->maiorLargura; }
     void atualizarLargura();
-    void atualizarNomeAtributo(QString, int);
+    void atualizarNomeAtributo(QString, QString, int);
     void setQtdAtributo( int qtd ) { this->qtdAtributo = qtd; }
     int getQtdAtributo() { return this->qtdAtributo; }
     QList<Texto*> getListaAtributo() { return this->listaAtributo; }
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void alterarNomeConceitualELogico( QString antigo, QString novo );
+    QString formataAtributo(QString nome);
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -34,7 +36,8 @@ private:
 
     QGraphicsLineItem *linha;
 
-    QGraphicsScene *scene;
+    QGraphicsScene *sceneL;
+    QGraphicsScene *sceneC;
 
     Texto *titulo;
     Texto *atributo;

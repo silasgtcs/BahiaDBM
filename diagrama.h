@@ -26,6 +26,7 @@ public slots:
 
 signals:
     void itemInserido();
+    void fezLinha();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

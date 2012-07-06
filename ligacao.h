@@ -41,6 +41,8 @@ public:
     Tabela *getCastItem1T() { return this->castItem1T; }
     Tabela *getCastItem2T() { return this->castItem2T; }
 
+    QPair<Tabela *, Tabela *> getTabelasAssociadas() { return this->tabelasAssociadas; }
+
     // Garante tipo unico para objeto desse tipo
     enum { Type = UserType + 2 };
     int type() const
@@ -89,6 +91,7 @@ private:
 
     bool entidadeFracaAtiva;
 
+    QPair<Tabela *, Tabela *> tabelasAssociadas;
     QSet< Cardinalidade * > cardinalidades_associadas;
     QSet< Atributo * > atributo_associado;
     QMap<Poligono::Tipo, QSet<Poligono *> > poligonosAssociados;

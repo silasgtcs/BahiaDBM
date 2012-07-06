@@ -21,8 +21,11 @@ Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *s
             break;
 
         case(gen_esp):
-            poligono << QPointF(0, -30) << QPointF(-60, 30)
-                     << QPointF(60, 30);
+            poligono << QPointF(0, -22) << QPointF(-60, 22)
+                     << QPointF(60, 22);
+            break;
+
+        case ent_associativa:
             break;
     }
     poligonoPai = NULL;
@@ -31,6 +34,7 @@ Poligono::Poligono(Tipo tipo, bool pai, QGraphicsItem *parent, QGraphicsScene *s
     setPolygon(poligono);
     setConectado(false);
     setAutoRelacionamento(false);
+    setEntidadeFraca(false);
 
     setFlag(QGraphicsItem::ItemIsMovable, pai);
     setFlag(QGraphicsItem::ItemIsSelectable, pai);

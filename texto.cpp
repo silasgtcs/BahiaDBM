@@ -24,6 +24,7 @@ void Texto::focusOutEvent(QFocusEvent *event)
     cursor.clearSelection();
     setTextCursor(cursor);
     setTextInteractionFlags(Qt::NoTextInteraction);
+
     emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);
 }
@@ -49,16 +50,28 @@ void Texto::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
 void Texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+
     if (( !getGenEspAtiva() ) && ( !getTabelaLogicoAtiva() ))
     {
         setTextInteractionFlags(Qt::TextEditorInteraction);
+        this->setFocus(); // faz já começar a editar
     }
 
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
+void Texto::setTextoTabelaLogico(QString txt, int pos, bool alterarRestricao, bool nulo)
+{
+    textoTabelaLogico.nome = txt;
+    textoTabelaLogico.pos = pos;
+    textoTabelaLogico.alterarRestricao = alterarRestricao;
+    textoTabelaLogico.nulo = nulo;
+}
+
 void Texto::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    //this->setFocus();
+
     if ( getGenEspAtiva() )
     {
         QString temp = chamarTelaTipoGenEsp.mostrarTipoGenEsp();
@@ -71,11 +84,11 @@ void Texto::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     if ( getTabelaLogicoAtiva() )
     {
-        QString temp = chamarTelaLogico.alterarNomeLogico(getTextoTabelaLogico().first);
-        if ( temp != NULL )
+        QPair<QString,bool> temp = chamarTelaLogico.alterarNomeLogico(getTextoTabelaLogico().nome, getTextoTabelaLogico().alterarRestricao, getTextoTabelaLogico().nulo);
+        if ( temp.first != NULL )
         {
-            setTextoTabelaLogico(temp,getTextoTabelaLogico().second);
-            emit textoTabelaLogicoAlterado(getTextoTabelaLogico().second);
+            setTextoTabelaLogico(temp.first, getTextoTabelaLogico().pos, getTextoTabelaLogico().alterarRestricao, temp.second );
+            emit textoTabelaLogicoAlterado(getTextoTabelaLogico().pos);
             //this->setPlainText(getTextoTabelaLogico());
         }
     }
