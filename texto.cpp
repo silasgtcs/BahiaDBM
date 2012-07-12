@@ -1,10 +1,19 @@
 #include "texto.h"
 
+
+QList<Texto *> Texto::listaTextos;
+
+
 Texto::Texto(QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsTextItem(parent, scene)
 {
+
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+
+    tipoOwner = 0;
+
+    Texto::listaTextos.append(this);
 
     setTipoGenEsp("xt");
     setGenEspAtiva(false);
@@ -20,10 +29,37 @@ void Texto::setGenEspAtiva( bool gea )
 
 void Texto::focusOutEvent(QFocusEvent *event)
 {
+    int i, tam, erro=0;
+
     QTextCursor cursor = textCursor();
-    cursor.clearSelection();
-    setTextCursor(cursor);
-    setTextInteractionFlags(Qt::NoTextInteraction);
+
+    tam = listaTextos.size();
+    for (i=0; i<tam; i++)
+    {
+        if ((listaTextos.at(i) != this) &&
+           (listaTextos.at(i)->document()->toPlainText().remove("\n") == cursor.document()->toPlainText().remove("\n")) &&
+           //(listaTextos.at(i)->parentItem()->Type == Atributo::Type)) // não sei pq isso não funciona, se funcionasse
+                                                                        // poderíamos remover essa onda de tipoOwner
+           (tipoOwner == 1))
+        {
+            erro = 1;
+            break;
+        }
+    }
+
+    if (erro)
+    {
+        QMessageBox a;
+        a.setText("Erro! Ja existe atributo com mesmo nome.");
+        a.exec();
+        this->setFocus();
+    }
+    else
+    {
+        cursor.clearSelection();
+        setTextCursor(cursor);
+        setTextInteractionFlags(Qt::NoTextInteraction);
+    }
 
     emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);

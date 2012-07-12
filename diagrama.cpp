@@ -181,7 +181,7 @@ void Diagrama::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 AcaoCriarLigacao * acao = new AcaoCriarLigacao(this, item1, item2);
                 if ( acao->getLigacao() )
                 {
-                    emit fezLinha(); // para voltar a ser mouse após criar linha - mainwindow que processa
+                    emit fezLinha(); // para voltar a ser mouse após criar linha. Mainwindow que processa.
                     pilhaDeAcoes->addAcao(acao);
                     acao->fazerAcao();
                 }

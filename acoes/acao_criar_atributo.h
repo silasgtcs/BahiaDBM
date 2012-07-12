@@ -10,8 +10,10 @@ class AcaoCriarAtributo : public Acao
 {
 private:
     Atributo * atributo;
+    Texto * nomeAtributo;
     QPointF posicao;
     QGraphicsScene * scene;
+
 public:
     AcaoCriarAtributo(QGraphicsScene * scene, Atributo::Tipo tipo, QString nome, QPointF posicao);
     virtual void fazerAcao();

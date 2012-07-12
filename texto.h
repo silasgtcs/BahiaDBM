@@ -6,6 +6,7 @@ de ser utilizada para definir os tipos de generalização/especialização.*/
 
 #include <QtGui>
 #include <dialog.h>
+#include "atributo.h"
 
 struct restricao
 {
@@ -34,6 +35,8 @@ public:
     bool getGenEspAtiva() { return this->genEspAtiva; }
     void setGenEspAtiva( bool gea );
 
+    void setTipoOwner(int t) { tipoOwner = t; };
+
     bool getTabelaLogicoAtiva() { return this->tabelaLogicoAtiva; }
     void setTabelaLogicoAtiva( bool tla ) { this->tabelaLogicoAtiva = tla; }
 
@@ -43,15 +46,22 @@ public:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
+    static QList<Texto *> listaTextos;
+
 signals:
     void lostFocus(Texto *item);
     void selectedChange(QGraphicsItem *item);
     void textoTabelaLogicoAlterado(int);
 
+
 private:
     int count;
     Dialog chamarTelaTipoGenEsp;
     Dialog chamarTelaLogico;
+
+    int tipoOwner; // 1 = atributo, 2 = atributo ID, 3 = entidade, 4 = ent. associativa
+                   // 5 = relacionamento, 6 = generalizacao/especializacao
+                   // meio grosseiro isso aqui!
 
     QString tipoGenEsp;
     restricao textoTabelaLogico;
