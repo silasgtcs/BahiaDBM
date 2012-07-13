@@ -36,10 +36,9 @@ void Texto::focusOutEvent(QFocusEvent *event)
     tam = listaTextos.size();
     for (i=0; i<tam; i++)
     {
+        //if (listaTextos.at(i)->parentItem()->Type == Atributo::Type)) // não sei pq isso não funciona, se funcionasse poderíamos remover essa onda de tipoOwner
         if ((listaTextos.at(i) != this) &&
            (listaTextos.at(i)->document()->toPlainText().remove("\n") == cursor.document()->toPlainText().remove("\n")) &&
-           //(listaTextos.at(i)->parentItem()->Type == Atributo::Type)) // não sei pq isso não funciona, se funcionasse
-                                                                        // poderíamos remover essa onda de tipoOwner
            (tipoOwner == 1))
         {
             erro = 1;

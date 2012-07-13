@@ -6,6 +6,8 @@
 #include <QtGui>
 #include <QList>
 
+class Texto;
+
 class AcaoDeletar : public Acao
 {
 private:

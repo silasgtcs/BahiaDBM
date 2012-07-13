@@ -109,31 +109,44 @@ void Diagrama::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                     poligono = qgraphicsitem_cast<Poligono *>(item);
                     if(poligono != NULL) {
                         if(poligono->getTipo() != Poligono::gen_esp) {
-                            int numAtributos = poligono->getAtributosAssociados().size();
-                            QSizeF size = poligono->boundingRect().size() * poligono->scale();
-                            qreal r = ((size.width() + size.height()) / 2.0) * (1.0);
-                            qreal x =  poligono->x();
-                            qreal y =  poligono->y();
-                            qreal radian = PI/180.0;
-                            qreal degree = (17.5 * numAtributos)+60;
-                            position = QPointF(x + (r * cos(degree*radian)), y + (r * sin(-degree*radian)));
+                            // não pode haver atributo identificador em relacionamento:
+                            if ((tipoER != atributo_ident) || (poligono->getTipo() != Poligono::relacionamento))
+                            {
+                                int numAtributos = poligono->getAtributosAssociados().size();
+                                QSizeF size = poligono->boundingRect().size() * poligono->scale();
+                                qreal r = ((size.width() + size.height()) / 2.0) * (1.0);
+                                qreal x =  poligono->x();
+                                qreal y =  poligono->y();
+                                qreal radian = PI/180.0;
+                                qreal degree = (17.5 * numAtributos)+60;
+                                position = QPointF(x + (r * cos(degree*radian)), y + (r * sin(-degree*radian)));
 
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
 
+
+
         if(tipoER == atributo)
             acao = new AcaoCriarAtributo(this, Atributo::atributo, QString("A%1").arg(countAtributo++), position);
         else
+        {
             acao = new AcaoCriarAtributo(this, Atributo::atributo_identif, QString("AI%1").arg(countAtributoIdentificador++), position);
+        }
 
-        if(poligono != NULL) {
-            pilhaDeAcoes->addAcao(acao, true);
 
-            acao = new AcaoCriarLigacao(this, poligono, ((AcaoCriarAtributo*)acao)->getAtributo());
+        if (poligono != NULL)
+        {
+            // não pode haver atributo identificador em relacionamento:
+            if ((tipoER != atributo_ident) || (poligono->getTipo() != Poligono::relacionamento))
+            {
+                pilhaDeAcoes->addAcao(acao, true);
+                acao = new AcaoCriarLigacao(this, poligono, ((AcaoCriarAtributo*)acao)->getAtributo());
+            }
         }
 
         break;
