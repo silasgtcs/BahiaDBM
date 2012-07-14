@@ -1912,16 +1912,4 @@ void MainWindow::gerarModeloLogico()
 
 void MainWindow::gerarModeloFisico()
 {
-    int i;
-    QList<QGraphicsItem *> itens = sceneConceitual->items();
-
-    for (i=0; i<itens.size(); i++)
-    {
-        if ( itens[i]->type() == Atributo::Type )
-        {
-            QMessageBox msgbox;
-            msgbox.setText("Achou um atributo");
-            msgbox.exec();
-        }
-    }
 }

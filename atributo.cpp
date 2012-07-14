@@ -42,12 +42,25 @@ void Atributo::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidge
 
 void Atributo::doRemove(bool value)
 {
+
     foreach(Ligacao * ligacao, linhaAssociada)
         ligacao->doRemove(value);
 }
 
 QList<QGraphicsItem *> Atributo::getToDelete()
 {
+    int i, tam;
+
+    tam = Texto::listaTextos.size(); // deleta Texto da lista de textos existentes
+    for (i=0; i<tam; i++)
+    {
+        if (Texto::listaTextos.at(i)->parentItem() == this)
+        {
+            Texto::listaTextos.removeAt(i);
+            break;
+        }
+    }
+
     QList<QGraphicsItem *> toDelete;
     foreach(Ligacao * lig, linhaAssociada) {
         toDelete.push_back(lig);

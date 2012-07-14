@@ -1,7 +1,8 @@
 #include "acao_deletar.h"
 #include "objetoremovivel.h"
 #include "poligono.h"
-#include "texto.h"
+//#include "texto.h"
+//#include "atributo.h"
 #include <exception>
 
 AcaoDeletar::AcaoDeletar(QGraphicsScene * scene, QList<QGraphicsItem *> selecionados)
@@ -17,22 +18,10 @@ void AcaoDeletar::fazerAcao()
 
     removidos.clear();
     foreach(QGraphicsItem * item, items) {
+
         ObjetoRemovivel * objeto = dynamic_cast<ObjetoRemovivel *>(item);
         if(objeto) {
             foreach(QGraphicsItem * subItem, objeto->getToDelete()){
-                //if (subItem->Type == Texto::Type)
-                //{
-                    tam = Texto::listaTextos.size();
-                    for (i=0; i<tam; i++)
-                    {
-                        if (Texto::listaTextos.at(i) == item)
-                        {
-                            Texto::listaTextos.removeAt(i);
-                            break;
-                        }
-                    }
-                //}
-
                 scene->removeItem(subItem);
                 removidos.push_back(subItem);
             }
