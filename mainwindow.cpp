@@ -1053,6 +1053,7 @@ void MainWindow::createToolBar()
     entidadeFraca->setText("EF");
     entidadeFraca->setStatusTip(trUtf8("Entidade Fraca"));
     entidadeFraca->setToolTip(trUtf8("Entidade Fraca"));
+    entidadeFraca->setCheckable(true);
 
 
     botoesER = new QButtonGroup(this);

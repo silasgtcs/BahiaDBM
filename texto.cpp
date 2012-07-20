@@ -55,6 +55,15 @@ void Texto::focusOutEvent(QFocusEvent *event)
     }
     else
     {
+        // o ideal seria aqui gerar um mouseReleaseEvent()
+        if (collidesWithItem(this->parentItem(), Qt::ContainsItemShape) == false)
+        {
+            if ((this->tipoOwner != 1) && (this->tipoOwner != 2)) // não é atributo ou atributo_identificador
+            {
+                setPos(-(this->boundingRect().width() / 2), -(this->boundingRect().height() / 2));
+            }
+        }
+
         cursor.clearSelection();
         setTextCursor(cursor);
         setTextInteractionFlags(Qt::NoTextInteraction);
@@ -82,6 +91,7 @@ QVariant Texto::itemChange(GraphicsItemChange change,
 {
     if (change == QGraphicsItem::ItemSelectedHasChanged)
         emit selectedChange(this);
+
     return value;
 }
 
@@ -98,11 +108,18 @@ void Texto::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
 void Texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-
     if (( !getGenEspAtiva() ) && ( !getTabelaLogicoAtiva() ))
     {
         setTextInteractionFlags(Qt::TextEditorInteraction);
         this->setFocus(); // faz já começar a editar
+    }
+
+    if (collidesWithItem(this->parentItem(), Qt::ContainsItemShape) == false)
+    {
+        if ((this->tipoOwner != 1) && (this->tipoOwner != 2)) // não é atributo ou atributo_identificador
+        {
+            setPos(-(this->boundingRect().width() / 2), -(this->boundingRect().height() / 2));
+        }
     }
 
     QGraphicsTextItem::mouseReleaseEvent(event);

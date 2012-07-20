@@ -1,0 +1,3 @@
+UP11: 5min
+UP8: 50min
+UP3: 50min

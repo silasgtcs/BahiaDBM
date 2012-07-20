@@ -6,6 +6,7 @@ de ser utilizada para definir os tipos de generalização/especialização.*/
 
 #include <QtGui>
 #include <dialog.h>
+#include <atributo.h>
 //#include "atributo.h"
 
 class Atributo;
