@@ -9,12 +9,12 @@ AcaoCriarAtributo::AcaoCriarAtributo(QGraphicsScene * scene, Atributo::Tipo tipo
 
     atributo = new Atributo(tipo,NULL,NULL);
 
-    Texto * nomeAtributo = new Texto();
+    nomeAtributo = new Texto();
     nomeAtributo->setFocus();
     nomeAtributo->setParentItem(atributo);
+    nomeAtributo->setTipoOwner(1);
     nomeAtributo->setPos(nomeAtributo->x()-5, nomeAtributo->y()-25);
     nomeAtributo->setPlainText(nome);
-
 
     atributo->setPos(posicao);
 }

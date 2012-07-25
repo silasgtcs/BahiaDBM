@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     pilhaDeAcoes = new AcoesPilha();
     connect(pilhaDeAcoes, SIGNAL(changed()), this, SLOT(houveModificacao()));
@@ -40,6 +39,9 @@ void MainWindow::criarScene()
             this, SLOT(itemInserido()));
     sceneConceitual->setTipoER(Diagrama::TipoER(7));
     viewConceitual = new DiagramaView(sceneConceitual);
+
+    connect(sceneConceitual, SIGNAL(fezLinha()),
+            this, SLOT(voltaMouse()));
 
     //Cria diagrama lógico
     sceneLogico = new Diagrama(this, pilhaDeAcoes);
@@ -886,6 +888,28 @@ void MainWindow::botoesMLClicked(int id)
         deletarSelecionados();
 }
 
+void MainWindow::voltaMouse()
+{
+    //botoesMLClicked(0);
+
+    QList<QAbstractButton *> botoes = botoesML->buttons();
+    foreach ( QAbstractButton *botao, botoes )
+        if ( botoesML->button(0) != botao )
+            botao->setChecked(false);
+
+    botoesML->button(0)->setChecked(true);
+}
+
+/*
+void MainWindow::botoesMLUnclicked(int id)
+{
+    if (sceneConceitual->getRelLinha() == true)
+    {
+        sceneConceitual->setRelLinha(false);
+        botoesMLClicked(0);
+    }
+}*/
+
 void MainWindow::deletarSelecionados() {
     if(sceneConceitual->selectedItems().size() <= 0)
         return;
@@ -896,7 +920,9 @@ void MainWindow::deletarSelecionados() {
 
 void MainWindow::sobre()
 {
-    QMessageBox::about(this, trUtf8("Sobre BahiaDBM"), trUtf8("Bahia Database Modeler"));
+    QMessageBox::about(this, trUtf8("Sobre BahiaDBM"), trUtf8("Bahia Database Modeler - v1.0\nSoftware Livre não open-source " \
+                                                              "\n\nFerramenta para modelagem de Bancos de Dados com geração de código SQL." \
+                                                              "\n\nDesenvolvido por Judith Mendoza e Sydney Viana"));
 }
 
 void MainWindow::createActions()
@@ -959,7 +985,11 @@ void MainWindow::createActions()
 
     modeloFisico = new QAction(trUtf8("&Modelo Físico"), this);
     modeloFisico->setStatusTip(trUtf8("Gerar Modelo Físico"));
+<<<<<<< HEAD
     connect(modeloFisico, SIGNAL(triggered()), this, SLOT(gerarFisico()));
+=======
+    connect(modeloFisico, SIGNAL(triggered()), this, SLOT(gerarModeloFisico()));
+>>>>>>> 10655fcb81193104249d4e49ec32a08824e59fab
 }
 
 void MainWindow::createMenu()
@@ -1027,6 +1057,7 @@ void MainWindow::createToolBar()
     entidadeFraca->setText("EF");
     entidadeFraca->setStatusTip(trUtf8("Entidade Fraca"));
     entidadeFraca->setToolTip(trUtf8("Entidade Fraca"));
+    entidadeFraca->setCheckable(true);
 
 
     botoesER = new QButtonGroup(this);
@@ -2040,6 +2071,7 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
     }
 }
 
+<<<<<<< HEAD
 void MainWindow::gerarLogico()
 {
     gerarModeloLogicoOuFisico(false);
@@ -2048,4 +2080,8 @@ void MainWindow::gerarLogico()
 void MainWindow::gerarFisico()
 {
     gerarModeloLogicoOuFisico(true);
+=======
+void MainWindow::gerarModeloFisico()
+{
+>>>>>>> 10655fcb81193104249d4e49ec32a08824e59fab
 }

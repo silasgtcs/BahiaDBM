@@ -16,7 +16,7 @@ AcaoCriarPoligono::AcaoCriarPoligono(QGraphicsScene * scene, Poligono::Tipo tipo
     nomeEntidade = new Texto();
 
     nomeEntidade->setTextInteractionFlags(Qt::TextEditorInteraction);
-    nomeEntidade->setFocus();
+    nomeEntidade->setFocus(); // já fica disponível para editar
     nomeEntidade->setParentItem( ( tipo == Poligono::ent_associativa) ? childPol : mainPol );
 
     //Altera posição do texto para que fique no centro da figura.
