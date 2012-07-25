@@ -1,7 +1,7 @@
 #include "tabela.h"
 
-Tabela::Tabela( QString nomeTitulo, QGraphicsItem *parent, QGraphicsScene *sceneConceitual, QGraphicsScene *sceneLogico )
-    : QGraphicsRectItem( parent, sceneLogico )
+Tabela::Tabela( QString nomeTitulo, QGraphicsItem *parent, QGraphicsScene *sceneConceitual, QGraphicsScene *sceneLF )
+    : QGraphicsRectItem( parent, sceneLF )
 {
     setFlag(QGraphicsRectItem::ItemIsMovable, true);
     setFlag(QGraphicsRectItem::ItemIsSelectable, true);
@@ -9,7 +9,7 @@ Tabela::Tabela( QString nomeTitulo, QGraphicsItem *parent, QGraphicsScene *scene
 
     setQtdAtributo(0);
     this->sceneC = sceneConceitual;
-    this->sceneL = sceneLogico;
+    this->sceneL = sceneLF;
     tab = new QRectF(0,0,216,25);
     setRect(*tab);
 
@@ -84,6 +84,21 @@ void Tabela::setTitulo(QString titulo)
     this->titulo->setPos(tab->x()+(tab->width()/2)-(this->nomeTitulo.size()*3.5),tab->y());
     this->titulo->setTextoTabelaLogico(titulo,-1,false,false);
     this->titulo->setCursor(Qt::PointingHandCursor);
+}
+
+void Tabela::inserirTipo()
+{
+    for ( int i=0; i<listaAtributo.size(); i++ )
+    {
+        QString temp = listaAtributo[i]->toPlainText();
+        if ( !temp.contains(":") )
+        {
+            temp.insert(temp.size(), " : INTEGER");
+            listaAtributo[i]->setPlainText(temp);
+        }
+    }
+
+    atualizarLargura();
 }
 
 void Tabela::atualizarNomeAtributo(QString novoNome, QString nomeAntigo, int pos)

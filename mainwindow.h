@@ -45,7 +45,8 @@ private slots:
     void fecharDiagrama();
     void houveModificacao();
     void abaAlterada(int index);
-    void gerarModeloLogico();
+    void gerarLogico();
+    void gerarFisico();
 protected:
     virtual void closeEvent(QCloseEvent *);
 
@@ -68,10 +69,11 @@ private:
     void resetWindowState();
     QString formataAtributo(QString nome);
     bool procuraAtributo(Tabela *tab, QString nome);
-    void insereAtributoTabela( Atributo::Tipo tipoAtributo, Poligono *entidade, Tabela *tab, bool pk, bool fk, bool nulo );
+    void insereAtributoTabela( Atributo::Tipo tipoAtributo, Poligono *entidade, Tabela *tab, bool pk, bool fk, bool nulo);
     QString buscaNome( Poligono *p );
     int dialogGenEsp(QString generalizacao);
-    Tabela *procuraTabela(QString nomeTab);
+    Tabela *procuraTabela(QString nomeTab, bool fisico);
+    void gerarModeloLogicoOuFisico( bool fisico );
 
     AcoesPilha * pilhaDeAcoes;
 
@@ -148,6 +150,7 @@ private:
     Tabela *tabEsp;
 
     QList <Tabela *> tabelasLogico;
+    QList <Tabela *> tabelasFisico;
 };
 
 #endif // MAINWINDOW_H

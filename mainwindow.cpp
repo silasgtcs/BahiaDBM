@@ -955,10 +955,11 @@ void MainWindow::createActions()
 
     modeloLogico = new QAction(trUtf8("&Modelo Lógico"), this);
     modeloLogico->setStatusTip(trUtf8("Gerar Modelo Lógico"));
-    connect(modeloLogico, SIGNAL(triggered()), this, SLOT(gerarModeloLogico()));
+    connect(modeloLogico, SIGNAL(triggered()), this, SLOT(gerarLogico()));
 
     modeloFisico = new QAction(trUtf8("&Modelo Físico"), this);
     modeloFisico->setStatusTip(trUtf8("Gerar Modelo Físico"));
+    connect(modeloFisico, SIGNAL(triggered()), this, SLOT(gerarFisico()));
 }
 
 void MainWindow::createMenu()
@@ -1276,7 +1277,18 @@ void MainWindow::abaAlterada(int index)
 QString MainWindow::formataAtributo(QString nome)
 {
     QString nomeFormatado = NULL;
-    for ( int i=nome.size()-2; i>=0; i-- )
+
+    int ponto;
+    if ( nome.contains(':') )
+    {
+        for ( int i=nome.size()-1; i>=0; i-- )
+            if ( nome[i] == ':' )
+                ponto=i-3;
+    }
+    else
+        ponto=nome.size()-2;
+
+    for ( int i=ponto; i>=0; i-- )
         if ( nome[i] == '"' )
         {
             for ( int j=i-2;; j-- )
@@ -1366,19 +1378,34 @@ int MainWindow::dialogGenEsp(QString generalizacao)
 }
 
 //Verifica se tabela informada já existe no diagrama lógico.
-Tabela *MainWindow::procuraTabela(QString nomeTab)
+Tabela *MainWindow::procuraTabela(QString nomeTab, bool fisico)
 {
-    for ( int i=0; i<tabelasLogico.size(); i++ )
-        if ( tabelasLogico[i]->getTitulo() == nomeTab )
-            return tabelasLogico[i];
+    if ( fisico )
+    {
+        for ( int i=0; i<tabelasFisico.size(); i++ )
+            if ( tabelasFisico[i]->getTitulo() == nomeTab )
+                return tabelasFisico[i];
 
-    return NULL;
+        return NULL;
+    }
+    else
+    {
+        for ( int i=0; i<tabelasLogico.size(); i++ )
+            if ( tabelasLogico[i]->getTitulo() == nomeTab )
+                return tabelasLogico[i];
+
+        return NULL;
+    }
 }
 
-void MainWindow::gerarModeloLogico()
+void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
 {
     //Limpa a área de trabalho do lógico antes de adicionar algo.
-    QList<QGraphicsItem *> lixo = sceneLogico->items();
+    QList<QGraphicsItem *> lixo;
+    if ( fisico )
+        lixo = sceneFisico->items();
+    else
+        lixo = sceneLogico->items();
     for ( int i=0; i<lixo.size(); i++ )
         delete lixo[i];
 
@@ -1426,12 +1453,20 @@ void MainWindow::gerarModeloLogico()
 
                         //Tabela 1
                         pos.setX(inicio);
-                        Tabela *aux = procuraTabela(nomeEnt1);
+                        Tabela *aux = procuraTabela(nomeEnt1, fisico);
                         if ( aux == NULL )
                         {
-                            tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                            if ( fisico )
+                            {
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneFisico);
+                                tabelasFisico.push_back(tab1);
+                            }
+                            else
+                            {
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                                tabelasLogico.push_back(tab1);
+                            }
                             tab1->setPos(pos);
-                            tabelasLogico.push_back(tab1);
                         }
                         else
                             tab1 = aux;
@@ -1444,14 +1479,24 @@ void MainWindow::gerarModeloLogico()
 
                         alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
 
+                        if ( fisico ) tab1->inserirTipo();
+
                         //Tabela 2
                         pos.setX(pos.x()+(tab1->rect().width()+espacoEntreTabelas));
-                        aux = procuraTabela(nomeRelacionamento);
+                        aux = procuraTabela(nomeRelacionamento, fisico);
                         if ( aux == NULL )
                         {
-                            tab2 = new Tabela(nomeRelacionamento, NULL, sceneConceitual, sceneLogico);
+                            if ( fisico )
+                            {
+                                tab2 = new Tabela(nomeRelacionamento, NULL, sceneConceitual, sceneFisico);
+                                tabelasFisico.push_back(tab2);
+                            }
+                            else
+                            {
+                                tab2 = new Tabela(nomeRelacionamento, NULL, sceneConceitual, sceneLogico);
+                                tabelasLogico.push_back(tab2);
+                            }
                             tab2->setPos(pos);
-                            tabelasLogico.push_back(tab2);
                         }
                         else
                             tab2 = aux;
@@ -1468,16 +1513,26 @@ void MainWindow::gerarModeloLogico()
 
                         alturaMax = ( tab2->rect().height() > alturaMax ) ? tab2->rect().height() : alturaMax;
 
+                        if ( fisico ) tab2->inserirTipo();
+
                         //Tabela 3
                         if ( ent2 != NULL )
                         {
                             pos.setX(pos.x()+(tab2->rect().width()+espacoEntreTabelas));
-                            Tabela *aux = procuraTabela(nomeEnt2);
+                            Tabela *aux = procuraTabela(nomeEnt2, fisico);
                             if ( aux == NULL )
                             {
-                                tab3 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                if ( fisico )
+                                {
+                                    tab3 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneFisico);
+                                    tabelasFisico.push_back(tab3);
+                                }
+                                else
+                                {
+                                    tab3 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                    tabelasLogico.push_back(tab3);
+                                }
                                 tab3->setPos(pos);
-                                tabelasLogico.push_back(tab3);
                             }
                             else
                                 tab3 = aux;
@@ -1490,7 +1545,11 @@ void MainWindow::gerarModeloLogico()
 
                             alturaMax = ( tab3->rect().height() > alturaMax ) ? tab3->rect().height() : alturaMax;
 
-                            AcaoCriarLigacao * acao2 = new AcaoCriarLigacao(sceneLogico, tab2, tab3);
+                            AcaoCriarLigacao *acao2;
+                            if ( fisico )
+                                acao2 = new AcaoCriarLigacao(sceneFisico, tab2, tab3);
+                            else
+                                acao2 = new AcaoCriarLigacao(sceneLogico, tab2, tab3);
                             if ( acao2->getLigacao() )
                             {
                                 pilhaDeAcoes->addAcao(acao2);
@@ -1498,7 +1557,11 @@ void MainWindow::gerarModeloLogico()
                             }
                         }
 
-                        AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
+                        AcaoCriarLigacao *acao1;
+                        if ( fisico )
+                            acao1 = new AcaoCriarLigacao(sceneFisico, tab1, tab2);
+                        else
+                            acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
                         if ( acao1->getLigacao() )
                         {
                             pilhaDeAcoes->addAcao(acao1);
@@ -1507,6 +1570,8 @@ void MainWindow::gerarModeloLogico()
 
                         //Atualiza posição da coordenada Y
                         pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                        if ( fisico ) tab3->inserirTipo();
                     }
                 }
 
@@ -1543,12 +1608,20 @@ void MainWindow::gerarModeloLogico()
 
                         //Tabela 1
                         pos.setX(inicio);
-                        Tabela *aux = procuraTabela(nomeEnt1);
+                        Tabela *aux = procuraTabela(nomeEnt1, fisico);
                         if ( aux == NULL )
                         {
-                            tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                            if ( fisico )
+                            {
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneFisico);
+                                tabelasFisico.push_back(tab1);
+                            }
+                            else
+                            {
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                                tabelasLogico.push_back(tab1);
+                            }
                             tab1->setPos(pos);
-                            tabelasLogico.push_back(tab1);
                         }
                         else
                             tab1 = aux;
@@ -1573,16 +1646,26 @@ void MainWindow::gerarModeloLogico()
 
                         alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
 
+                        if ( fisico ) tab1->inserirTipo();
+
                         //Tabela 2
                         if ( ent2 != NULL )
                         {
                             pos.setX(pos.x()+(tab1->rect().width()+espacoEntreTabelas));
-                            Tabela *aux = procuraTabela(nomeEnt2);
+                            Tabela *aux = procuraTabela(nomeEnt2, fisico);
                             if ( aux == NULL )
                             {
-                                tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                if ( fisico )
+                                {
+                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneFisico);
+                                    tabelasFisico.push_back(tab2);
+                                }
+                                else
+                                {
+                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                    tabelasLogico.push_back(tab2);
+                                }
                                 tab2->setPos(pos);
-                                tabelasLogico.push_back(tab2);
                             }
                             else
                                 tab2 = aux;
@@ -1595,7 +1678,11 @@ void MainWindow::gerarModeloLogico()
 
                             alturaMax = ( tab2->rect().height() > alturaMax ) ? tab2->rect().height() : alturaMax;
 
-                            AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
+                            AcaoCriarLigacao *acao1;
+                            if ( fisico )
+                                acao1 = new AcaoCriarLigacao(sceneFisico, tab1, tab2);
+                            else
+                                acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
                             if ( acao1->getLigacao() )
                             {
                                 pilhaDeAcoes->addAcao(acao1);
@@ -1605,6 +1692,8 @@ void MainWindow::gerarModeloLogico()
 
                         //Atualiza posição da coordenada Y
                         pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                        if ( fisico ) tab2->inserirTipo();
                     }
                 }
 
@@ -1661,12 +1750,20 @@ void MainWindow::gerarModeloLogico()
                         //Tabela 1
                         //Antes de criar uma tabela, verifica no diagrama se esta já foi criada em outra situação.
                         pos.setX(inicio);
-                        Tabela *aux = procuraTabela(nomeEnt1);
+                        Tabela *aux = procuraTabela(nomeEnt1, fisico);
                         if ( aux == NULL )
                         {
-                            tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                            if ( fisico )
+                            {
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneFisico);
+                                tabelasFisico.push_back(tab1);
+                            }
+                            else
+                            {
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                                tabelasLogico.push_back(tab1);
+                            }
                             tab1->setPos(pos);
-                            tabelasLogico.push_back(tab1);
                         }
                         else
                             tab1 = aux;
@@ -1686,18 +1783,28 @@ void MainWindow::gerarModeloLogico()
 
                         alturaMax = ( tab1->rect().height() > alturaMax ) ? tab1->rect().height() : alturaMax;
 
+                        if ( fisico ) tab1->inserirTipo();
+
                         //Tabela 2
                         //ent2 será NULL quando for um auto-relacionamento
                         if ( ent2 != NULL )
                         {
                             //Antes de criar uma tabela, verifica no diagrama se esta já foi criada em outra situação.
                             pos.setX(pos.x()+(tab1->rect().width()+espacoEntreTabelas));
-                            Tabela *aux = procuraTabela(nomeEnt2);
+                            Tabela *aux = procuraTabela(nomeEnt2, fisico);
                             if ( aux == NULL )
                             {
-                                tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                if ( fisico )
+                                {
+                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneFisico);
+                                    tabelasFisico.push_back(tab2);
+                                }
+                                else
+                                {
+                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                    tabelasLogico.push_back(tab2);
+                                }
                                 tab2->setPos(pos);
-                                tabelasLogico.push_back(tab2);
                             }
                             else
                                 tab2 = aux;
@@ -1710,7 +1817,11 @@ void MainWindow::gerarModeloLogico()
 
                             alturaMax = ( tab2->rect().height() > alturaMax ) ? tab2->rect().height() : alturaMax;
 
-                            AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
+                            AcaoCriarLigacao *acao1;
+                            if ( fisico )
+                                acao1 = new AcaoCriarLigacao(sceneFisico, tab1, tab2);
+                            else
+                                acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tab2);
                             if ( acao1->getLigacao() )
                             {
                                 pilhaDeAcoes->addAcao(acao1);
@@ -1720,6 +1831,8 @@ void MainWindow::gerarModeloLogico()
 
                         //Atualiza posição da coordenada Y
                         pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                        if ( fisico ) tab2->inserirTipo();
                     }
                 }
             }
@@ -1733,12 +1846,20 @@ void MainWindow::gerarModeloLogico()
 
                 //Tabela 1
                 pos.setX(inicio);
-                Tabela *aux = procuraTabela(nomeEnt);
+                Tabela *aux = procuraTabela(nomeEnt, fisico);
                 if ( aux == NULL )
                 {
-                    tab1 = new Tabela(nomeEnt, NULL, sceneConceitual, sceneLogico);
+                    if ( fisico )
+                    {
+                        tab1 = new Tabela(nomeEnt, NULL, sceneConceitual, sceneFisico);
+                        tabelasFisico.push_back(tab1);
+                    }
+                    else
+                    {
+                        tab1 = new Tabela(nomeEnt, NULL, sceneConceitual, sceneLogico);
+                        tabelasLogico.push_back(tab1);
+                    }
                     tab1->setPos(pos);
-                    tabelasLogico.push_back(tab1);
                 }
                 else
                     tab1 = aux;
@@ -1753,6 +1874,8 @@ void MainWindow::gerarModeloLogico()
 
                 //Atualiza posição da coordenada Y
                 pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                if ( fisico ) tab1->inserirTipo();
             }
             else if ( cast_poligono->getTipo() == Poligono::gen_esp )
             {
@@ -1787,12 +1910,20 @@ void MainWindow::gerarModeloLogico()
                 {
                     //Tabela 1
                     pos.setX(inicio);
-                    Tabela *aux = procuraTabela(nomeGeneralizacao);
+                    Tabela *aux = procuraTabela(nomeGeneralizacao, fisico);
                     if ( aux == NULL )
                     {
-                        tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico);
+                        if ( fisico )
+                        {
+                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneFisico);
+                            tabelasFisico.push_back(tab1);
+                        }
+                        else
+                        {
+                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico);
+                            tabelasLogico.push_back(tab1);
+                        }
                         tab1->setPos(pos);
-                        tabelasLogico.push_back(tab1);
                     }
                     else
                         tab1 = aux;
@@ -1813,6 +1944,8 @@ void MainWindow::gerarModeloLogico()
 
                     //Atualiza posição da coordenada Y
                     pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                    if ( fisico ) tab1->inserirTipo();
                 }
 
                 //Tipo 2 = Cria mais de uma tabela
@@ -1820,12 +1953,20 @@ void MainWindow::gerarModeloLogico()
                 {
                     //Tabela 1
                     pos.setX(inicio);
-                    Tabela *aux = procuraTabela(nomeGeneralizacao);
+                    Tabela *aux = procuraTabela(nomeGeneralizacao, fisico);
                     if ( aux == NULL )
                     {
-                        tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico);
+                        if ( fisico )
+                        {
+                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneFisico);
+                            tabelasFisico.push_back(tab1);
+                        }
+                        else
+                        {
+                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico);
+                            tabelasLogico.push_back(tab1);
+                        }
                         tab1->setPos(pos);
-                        tabelasLogico.push_back(tab1);
                     }
                     else
                         tab1 = aux;
@@ -1843,16 +1984,26 @@ void MainWindow::gerarModeloLogico()
                     //Atualiza posição da coordenada Y
                     pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
 
+                    if ( fisico ) tab1->inserirTipo();
+
                     //Tabelas da especialização
                     pos.setX(inicio);
                     for ( int i=0; i<especializacao.size(); i++ )
                     {
-                        Tabela *aux = procuraTabela(buscaNome(especializacao[i]));
+                        Tabela *aux = procuraTabela(buscaNome(especializacao[i]), fisico);
                         if ( aux == NULL )
                         {
-                            tabEsp = new Tabela(buscaNome(especializacao[i]), NULL, sceneConceitual, sceneLogico);
+                            if ( fisico )
+                            {
+                                tabEsp = new Tabela(buscaNome(especializacao[i]), NULL, sceneConceitual, sceneFisico);
+                                tabelasFisico.push_back(tabEsp);
+                            }
+                            else
+                            {
+                                tabEsp = new Tabela(buscaNome(especializacao[i]), NULL, sceneConceitual, sceneLogico);
+                                tabelasLogico.push_back(tabEsp);
+                            }
                             tabEsp->setPos(pos);
-                            tabelasLogico.push_back(tabEsp);
                         }
                         else
                             tabEsp = aux;
@@ -1867,7 +2018,11 @@ void MainWindow::gerarModeloLogico()
 
                         pos.setX(pos.x()+(tabEsp->rect().width()+espacoEntreTabelas));
 
-                        AcaoCriarLigacao *acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tabEsp);
+                        AcaoCriarLigacao *acao1;
+                        if ( fisico )
+                            acao1 = new AcaoCriarLigacao(sceneFisico, tab1, tabEsp);
+                        else
+                            acao1 = new AcaoCriarLigacao(sceneLogico, tab1, tabEsp);
                         if ( acao1->getLigacao() )
                         {
                             pilhaDeAcoes->addAcao(acao1);
@@ -1877,8 +2032,20 @@ void MainWindow::gerarModeloLogico()
 
                     //Atualiza posição da coordenada Y
                     pos.setY(pos.y()+(alturaMax+espacoEntreTabelas));
+
+                    if ( fisico ) tabEsp->inserirTipo();
                 }
             }
         }
     }
+}
+
+void MainWindow::gerarLogico()
+{
+    gerarModeloLogicoOuFisico(false);
+}
+
+void MainWindow::gerarFisico()
+{
+    gerarModeloLogicoOuFisico(true);
 }

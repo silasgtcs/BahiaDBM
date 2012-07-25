@@ -24,6 +24,8 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void alterarNomeConceitualELogico( QString antigo, QString novo );
     QString formataAtributo(QString nome);
+    void inserirTipo();
+    void alterarTipo( QString tipo, int pos );
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
