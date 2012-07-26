@@ -985,11 +985,7 @@ void MainWindow::createActions()
 
     modeloFisico = new QAction(trUtf8("&Modelo Físico"), this);
     modeloFisico->setStatusTip(trUtf8("Gerar Modelo Físico"));
-<<<<<<< HEAD
     connect(modeloFisico, SIGNAL(triggered()), this, SLOT(gerarFisico()));
-=======
-    connect(modeloFisico, SIGNAL(triggered()), this, SLOT(gerarModeloFisico()));
->>>>>>> 10655fcb81193104249d4e49ec32a08824e59fab
 }
 
 void MainWindow::createMenu()
@@ -2071,7 +2067,6 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
     }
 }
 
-<<<<<<< HEAD
 void MainWindow::gerarLogico()
 {
     gerarModeloLogicoOuFisico(false);
@@ -2080,8 +2075,4 @@ void MainWindow::gerarLogico()
 void MainWindow::gerarFisico()
 {
     gerarModeloLogicoOuFisico(true);
-=======
-void MainWindow::gerarModeloFisico()
-{
->>>>>>> 10655fcb81193104249d4e49ec32a08824e59fab
 }

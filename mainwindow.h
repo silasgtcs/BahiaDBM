@@ -46,14 +46,9 @@ private slots:
     void fecharDiagrama();
     void houveModificacao();
     void abaAlterada(int index);
-<<<<<<< HEAD
     void gerarLogico();
     void gerarFisico();
-=======
     void voltaMouse();
-    void gerarModeloLogico();
-    void gerarModeloFisico();
->>>>>>> 10655fcb81193104249d4e49ec32a08824e59fab
 protected:
     virtual void closeEvent(QCloseEvent *);
 
