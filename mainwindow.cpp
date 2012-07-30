@@ -998,6 +998,8 @@ void MainWindow::voltaMouse()
             botao->setChecked(false);
 
     botoesML->button(0)->setChecked(true);
+
+    sceneConceitual->setTipoER(Diagrama::TipoER(7)); // mouse
 }
 
 /*
