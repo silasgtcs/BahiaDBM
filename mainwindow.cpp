@@ -496,6 +496,38 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
         }
     }
 
+    QList<QGraphicsItem *> obj3 = sceneFisico->items();
+
+    for ( int i=0; i<obj3.size(); i++ )
+    {
+        if ( obj3[i]->type() == Tabela::Type )
+        {
+            Tabela *tab = qgraphicsitem_cast<Tabela *>(obj3[i]);
+            QString temp = "|_tabela_fisica_|";
+
+            out << temp;
+            out << tab->getTitulo();
+            out << (float)tab->x() << (float)tab->y();
+
+            for ( int j=0; j<tab->getListaAtributo().size(); j++ )
+                out << tab->getListaAtributo().at(j)->toPlainText();
+
+            temp = "|_fim_tabela_fisica_|";
+            out << temp;
+        }
+    }
+
+    for ( int i=0; i<obj3.size(); i++ )
+    {
+        if ( obj3[i]->type() == Ligacao::Type )
+        {
+            Ligacao *lg = qgraphicsitem_cast<Ligacao *>(obj3[i]);
+            QString temp = "|_linha_tabela_fisica_|";
+            out << temp;
+            out << lg->getTabelasAssociadas().first->getTitulo() << lg->getTabelasAssociadas().second->getTitulo();
+        }
+    }
+
     pilhaDeAcoes->setUnchaged();
     setArquivoAtual(nomeArquivo);
     setArquivoAtualTitulo(diminuirNome(nomeArquivo));
@@ -790,7 +822,7 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
             in >> nome;
             in >> x >> y;
 
-            tab1 = new Tabela(nome, NULL, sceneConceitual, sceneLogico);
+            tab1 = new Tabela(nome, NULL, sceneConceitual, sceneLogico, sceneFisico);
             tab1->setPos(x,y);
 
             in >> nome;
@@ -824,6 +856,74 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
             }
 
             AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneLogico, tabA, tabB);
+            if ( acao1->getLigacao() )
+            {
+                pilhaDeAcoes->addAcao(acao1);
+                acao1->fazerAcao();
+            }
+        }
+
+        else if ( head == "|_tabela_fisica_|" )
+        {
+            QString nome;
+            float x, y;
+
+            in >> nome;
+            in >> x >> y;
+
+            tab1 = new Tabela(nome, NULL, sceneConceitual, sceneFisico, sceneLogico);
+            tab1->setPos(x,y);
+
+            in >> nome;
+            while ( nome != "|_fim_tabela_fisica_|" )
+            {
+                bool pk,fk,nulo;
+
+                pk = (nome.contains("[PK]", Qt::CaseSensitive)) ? true : false;
+                fk = (nome.contains("[FK]", Qt::CaseSensitive)) ? true : false;
+                nulo = (nome.contains("NOT NULL", Qt::CaseSensitive)) ? false : true;
+
+                bool control=false;
+                QString tipo="";
+                for ( int i=0; i<nome.size(); i++ )
+                {
+                    if ( nome[i] == ':' )
+                    {
+                        control=true;
+                        continue;
+                    }
+
+                    if (( control ) && ( nome[i] != ' ' ))
+                        tipo += nome[i];
+                }
+
+                tab1->addAtributo(formataAtributo(nome), pk, fk, nulo);
+
+                int pos = tab1->getListaAtributo().size()-1;
+                QString novoNome = tab1->getListaAtributo()[pos]->toPlainText()+" : "+tipo;
+                tab1->setListaAtributo(novoNome, pos);
+
+                in >> nome;
+            }
+
+            tabelasFisico.push_back(tab1);
+        }
+
+        else if ( head == "|_linha_tabela_fisica_|" )
+        {
+            QString nome1, nome2;
+            Tabela *tabA, *tabB;
+
+            in >> nome1 >> nome2;
+            for ( int w=0; w<tabelasFisico.size(); w++ )
+            {
+                if ( tabelasFisico[w]->getTitulo() == nome1 )
+                    tabA = tabelasFisico[w];
+                else if ( tabelasFisico[w]->getTitulo() == nome2 )
+                    tabB = tabelasFisico[w];
+            }
+
+            AcaoCriarLigacao * acao1 = new AcaoCriarLigacao(sceneFisico, tabA, tabB);
             if ( acao1->getLigacao() )
             {
                 pilhaDeAcoes->addAcao(acao1);
@@ -1437,6 +1537,7 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
         delete lixo[i];
 
     tabelasLogico.clear();
+    tabelasFisico.clear();
 
     const int espacoEntreTabelas = 50;
 
@@ -1485,12 +1586,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                         {
                             if ( fisico )
                             {
-                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneFisico);
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneFisico, sceneLogico);
                                 tabelasFisico.push_back(tab1);
                             }
                             else
                             {
-                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico, sceneFisico);
                                 tabelasLogico.push_back(tab1);
                             }
                             tab1->setPos(pos);
@@ -1515,12 +1616,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                         {
                             if ( fisico )
                             {
-                                tab2 = new Tabela(nomeRelacionamento, NULL, sceneConceitual, sceneFisico);
+                                tab2 = new Tabela(nomeRelacionamento, NULL, sceneConceitual, sceneFisico, sceneLogico);
                                 tabelasFisico.push_back(tab2);
                             }
                             else
                             {
-                                tab2 = new Tabela(nomeRelacionamento, NULL, sceneConceitual, sceneLogico);
+                                tab2 = new Tabela(nomeRelacionamento, NULL, sceneConceitual, sceneLogico, sceneFisico);
                                 tabelasLogico.push_back(tab2);
                             }
                             tab2->setPos(pos);
@@ -1551,12 +1652,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                             {
                                 if ( fisico )
                                 {
-                                    tab3 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneFisico);
+                                    tab3 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneFisico, sceneLogico);
                                     tabelasFisico.push_back(tab3);
                                 }
                                 else
                                 {
-                                    tab3 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                    tab3 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico, sceneFisico);
                                     tabelasLogico.push_back(tab3);
                                 }
                                 tab3->setPos(pos);
@@ -1640,12 +1741,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                         {
                             if ( fisico )
                             {
-                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneFisico);
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneFisico, sceneLogico);
                                 tabelasFisico.push_back(tab1);
                             }
                             else
                             {
-                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico, sceneFisico);
                                 tabelasLogico.push_back(tab1);
                             }
                             tab1->setPos(pos);
@@ -1684,12 +1785,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                             {
                                 if ( fisico )
                                 {
-                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneFisico);
+                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneFisico, sceneLogico);
                                     tabelasFisico.push_back(tab2);
                                 }
                                 else
                                 {
-                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico, sceneFisico);
                                     tabelasLogico.push_back(tab2);
                                 }
                                 tab2->setPos(pos);
@@ -1782,12 +1883,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                         {
                             if ( fisico )
                             {
-                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneFisico);
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneFisico, sceneLogico);
                                 tabelasFisico.push_back(tab1);
                             }
                             else
                             {
-                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico);
+                                tab1 = new Tabela(nomeEnt1, NULL, sceneConceitual, sceneLogico, sceneFisico);
                                 tabelasLogico.push_back(tab1);
                             }
                             tab1->setPos(pos);
@@ -1823,12 +1924,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                             {
                                 if ( fisico )
                                 {
-                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneFisico);
+                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneFisico, sceneLogico);
                                     tabelasFisico.push_back(tab2);
                                 }
                                 else
                                 {
-                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico);
+                                    tab2 = new Tabela(nomeEnt2, NULL, sceneConceitual, sceneLogico, sceneFisico);
                                     tabelasLogico.push_back(tab2);
                                 }
                                 tab2->setPos(pos);
@@ -1878,12 +1979,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                 {
                     if ( fisico )
                     {
-                        tab1 = new Tabela(nomeEnt, NULL, sceneConceitual, sceneFisico);
+                        tab1 = new Tabela(nomeEnt, NULL, sceneConceitual, sceneFisico, sceneLogico);
                         tabelasFisico.push_back(tab1);
                     }
                     else
                     {
-                        tab1 = new Tabela(nomeEnt, NULL, sceneConceitual, sceneLogico);
+                        tab1 = new Tabela(nomeEnt, NULL, sceneConceitual, sceneLogico, sceneFisico);
                         tabelasLogico.push_back(tab1);
                     }
                     tab1->setPos(pos);
@@ -1942,12 +2043,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                     {
                         if ( fisico )
                         {
-                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneFisico);
+                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneFisico, sceneLogico);
                             tabelasFisico.push_back(tab1);
                         }
                         else
                         {
-                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico);
+                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico, sceneFisico);
                             tabelasLogico.push_back(tab1);
                         }
                         tab1->setPos(pos);
@@ -1985,12 +2086,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                     {
                         if ( fisico )
                         {
-                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneFisico);
+                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneFisico, sceneLogico);
                             tabelasFisico.push_back(tab1);
                         }
                         else
                         {
-                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico);
+                            tab1 = new Tabela(nomeGeneralizacao, NULL, sceneConceitual, sceneLogico, sceneFisico);
                             tabelasLogico.push_back(tab1);
                         }
                         tab1->setPos(pos);
@@ -2022,12 +2123,12 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
                         {
                             if ( fisico )
                             {
-                                tabEsp = new Tabela(buscaNome(especializacao[i]), NULL, sceneConceitual, sceneFisico);
+                                tabEsp = new Tabela(buscaNome(especializacao[i]), NULL, sceneConceitual, sceneFisico, sceneLogico);
                                 tabelasFisico.push_back(tabEsp);
                             }
                             else
                             {
-                                tabEsp = new Tabela(buscaNome(especializacao[i]), NULL, sceneConceitual, sceneLogico);
+                                tabEsp = new Tabela(buscaNome(especializacao[i]), NULL, sceneConceitual, sceneLogico, sceneFisico);
                                 tabelasLogico.push_back(tabEsp);
                             }
                             tabEsp->setPos(pos);

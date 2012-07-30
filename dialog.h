@@ -19,7 +19,7 @@ public:
     Dialog(QWidget *parent = 0);
     QString mostrarCardinalidade();
     QString mostrarTipoGenEsp();
-    QPair<QString, bool> alterarNomeLogico(QString nomeAtual, bool alteraRestricao, bool nulo);
+    QPair<QString, bool> alterarNomeLogico(QString nomeAtual, QString tipo, bool alteraRestricao, bool nulo, bool tabFisica);
 
 private slots:
     void botaoOk() { dlg->close(); } ;
@@ -31,6 +31,7 @@ private:
     QLineEdit *lineEdit;
     QRadioButton *notNullRadio;
     QRadioButton *nullRadio;
+    QComboBox *selecionarTipo;
     bool cancelar;
 };
 

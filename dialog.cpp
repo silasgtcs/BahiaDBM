@@ -40,7 +40,7 @@ void Dialog::botaoCancelar()
     dlg->close();
 }
 
-QPair<QString, bool> Dialog::alterarNomeLogico(QString nomeAtual, bool alteraRestricao, bool nulo)
+QPair<QString, bool> Dialog::alterarNomeLogico(QString nomeAtual, QString tipo, bool alteraRestricao, bool nulo, bool tabFisica)
 {
     dlg = new QDialog(this);
     cancelar=false;
@@ -52,6 +52,15 @@ QPair<QString, bool> Dialog::alterarNomeLogico(QString nomeAtual, bool alteraRes
 
     notNullRadio = new QRadioButton(tr("NOT NULL"));
     nullRadio = new QRadioButton(tr("NULL"));
+
+    QStringList tipos;
+    tipos << "BIGINT" << "BLOB" << "CHAR" << "DATE" << "DATETIME" << "DECIMAL"
+          << "DOUBLE" << "FLOAT" << "INTEGER" << "LONGTEXT" << "MEDIUMINT" << "MEDIUMTEXT"
+          << "SMALLINT" << "TEXT" << "TIME" << "TIMESTAMP" << "TINYBLOB" << "TINYINT"
+          << "TINYTEXT" << "VARCHAR" << "YEAR";
+
+    selecionarTipo = new QComboBox;
+    selecionarTipo->addItems(tipos);
 
     nulo ? nullRadio->setChecked(true) : notNullRadio->setChecked(true);
 
@@ -76,6 +85,11 @@ QPair<QString, bool> Dialog::alterarNomeLogico(QString nomeAtual, bool alteraRes
         leftLayout->addWidget(notNullRadio);
         leftLayout->addWidget(nullRadio);
     }
+    if ( tabFisica )
+    {
+        leftLayout->addWidget(selecionarTipo);
+        selecionarTipo->setCurrentIndex(selecionarTipo->findText(tipo));
+    }
 
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -93,5 +107,10 @@ QPair<QString, bool> Dialog::alterarNomeLogico(QString nomeAtual, bool alteraRes
         return qMakePair(temp,false);
     }
     else
-        return qMakePair(lineEdit->displayText(), nullRadio->isChecked());
+    {
+        QString temp;
+        temp = ( tabFisica ) ? lineEdit->displayText() + " : " + selecionarTipo->currentText() : lineEdit->displayText();
+
+        return qMakePair(temp, nullRadio->isChecked());
+    }
 }

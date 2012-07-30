@@ -50,13 +50,14 @@ void Atributo::doRemove(bool value)
 QList<QGraphicsItem *> Atributo::getToDelete()
 {
     int i, tam;
+    Texto aux;
 
-    tam = Texto::listaTextos.size(); // deleta Texto da lista de textos existentes
+    tam = aux.listaTextos.size(); // deleta Texto da lista de textos existentes
     for (i=0; i<tam; i++)
     {
-        if (Texto::listaTextos.at(i)->parentItem() == this)
+        if (aux.listaTextos.at(i)->parentItem() == this)
         {
-            Texto::listaTextos.removeAt(i);
+            aux.listaTextos.removeAt(i);
             break;
         }
     }

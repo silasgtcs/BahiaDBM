@@ -1,7 +1,8 @@
 #include "tabela.h"
 
-Tabela::Tabela( QString nomeTitulo, QGraphicsItem *parent, QGraphicsScene *sceneConceitual, QGraphicsScene *sceneLF )
-    : QGraphicsRectItem( parent, sceneLF )
+Tabela::Tabela( QString nomeTitulo, QGraphicsItem *parent, QGraphicsScene *sceneConceitual,
+                QGraphicsScene *sceneLF1, QGraphicsScene *sceneLF2 )
+    : QGraphicsRectItem( parent, sceneLF1 )
 {
     setFlag(QGraphicsRectItem::ItemIsMovable, true);
     setFlag(QGraphicsRectItem::ItemIsSelectable, true);
@@ -9,22 +10,22 @@ Tabela::Tabela( QString nomeTitulo, QGraphicsItem *parent, QGraphicsScene *scene
 
     setQtdAtributo(0);
     this->sceneC = sceneConceitual;
-    this->sceneL = sceneLF;
+    this->sceneLF1 = sceneLF1;
     tab = new QRectF(0,0,216,25);
     setRect(*tab);
 
-    linha = this->sceneL->addLine(tab->x(),tab->y()+25,tab->x()+tab->width(),tab->y()+25);
+    linha = this->sceneLF1->addLine(tab->x(),tab->y()+25,tab->x()+tab->width(),tab->y()+25);
     linha->setParentItem(this);
 
     titulo = new Texto();
     titulo->setParentItem(this);
-    titulo->setTabelaLogicoAtiva(true);
+    titulo->setTabelaAtiva(true);
     setTitulo(nomeTitulo);
 
     connect(titulo, SIGNAL(textoTabelaLogicoAlterado(int)), this, SLOT(atualizarTitulo()));
 }
 
-void Tabela::alterarNomeConceitualELogico(QString antigo, QString novo)
+void Tabela::alterarNomeConceitualLogicoEFisico(QString antigo, QString novo, QString tipo)
 {
     //Procura todos os textos com nome antigo do projeto conceitual e substitui pelo nome novo.
     QList<QGraphicsItem *> itensC = sceneC->items();
@@ -40,7 +41,7 @@ void Tabela::alterarNomeConceitualELogico(QString antigo, QString novo)
         }
 
     //Procura todos os textos com nome antigo do projeto lógico e substitui pelo nome novo.
-    QList<QGraphicsItem *> itensL = sceneL->items();
+    QList<QGraphicsItem *> itensL = sceneLF1->items();
     for ( int i=0; i<itensL.size(); i++ )
     {
         if ( itensL[i]->type() == Tabela::Type )
@@ -51,7 +52,14 @@ void Tabela::alterarNomeConceitualELogico(QString antigo, QString novo)
             {
                 QString aux = formataAtributo(lista[j]->toPlainText());
                 if ( (aux == antigo) && ( (lista[j]->toPlainText().contains("[PK]", Qt::CaseSensitive)) || (lista[j]->toPlainText().contains("[FK]", Qt::CaseSensitive)) ) )
+                {
                     tab->atualizarNomeAtributo(novo, lista[j]->toPlainText(), -1);
+
+                    if ( tipo != "" )
+                        lista[j]->setPlainText(lista[j]->toPlainText()+" : "+tipo);
+
+                    tab->atualizarLargura();
+                }
             }
         }
     }
@@ -99,6 +107,19 @@ void Tabela::inserirTipo()
     }
 
     atualizarLargura();
+}
+
+void Tabela::alterarTipo(QString tipo, int pos)
+{
+    QString txt = listaAtributo[pos]->toPlainText();
+
+    for ( int i=0; i<txt.size(); i++ )
+        if ( txt[i] == ':' )
+        {
+            txt.remove(i,txt.size()-1);
+            break;
+        }
+    qDebug() << txt << "\n";
 }
 
 void Tabela::atualizarNomeAtributo(QString novoNome, QString nomeAntigo, int pos)
@@ -159,7 +180,7 @@ void Tabela::addAtributo(QString nome, bool chavePrimaria, bool chaveEstrangeira
     atributo->setPlainText(nome);
     atributo->setPos(tab->x(),tab->y()+tab->height());
     atributo->setParentItem(this);
-    atributo->setTabelaLogicoAtiva(true);
+    atributo->setTabelaAtiva(true);
     atributo->setCursor(Qt::PointingHandCursor);
     listaAtributo.push_back(atributo);
     connect(listaAtributo[listaAtributo.size()-1], SIGNAL(textoTabelaLogicoAlterado(int)), this, SLOT(atualizarAtributo(int)));
@@ -175,7 +196,7 @@ QString Tabela::formataAtributo(QString nome)
 {
     QString nomeFormatado = NULL;
     for ( int i=nome.size()-2; i>=0; i-- )
-        if ( nome[i] == '"' )
+        if (( nome[i] == '"' ) && ( nome[i-1] == ' ' ))
         {
             for ( int j=i-2;; j-- )
             {
@@ -199,15 +220,51 @@ QString Tabela::formataAtributo(QString nome)
 
 void Tabela::atualizarTitulo()
 {
-    alterarNomeConceitualELogico(getTitulo(), this->titulo->getTextoTabelaLogico().nome);
+    alterarNomeConceitualLogicoEFisico(getTitulo(), this->titulo->getTextoTabelaLogico().nome, "");
     setTitulo(this->titulo->getTextoTabelaLogico().nome);
 }
 
 void Tabela::atualizarAtributo(int pos)
 {
     QString atributoFormatado = formataAtributo(listaAtributo[pos]->toPlainText());
-    alterarNomeConceitualELogico(atributoFormatado, listaAtributo[pos]->getTextoTabelaLogico().nome);
-    atualizarNomeAtributo(listaAtributo[pos]->getTextoTabelaLogico().nome, listaAtributo[pos]->toPlainText(), pos);
+
+    QString tipo="", nome="";
+    int p=0;
+    if ( listaAtributo[pos]->getTextoTabelaLogico().nome.contains(":") )
+    {
+        bool control=false;
+        for ( int i=0; i<listaAtributo[pos]->getTextoTabelaLogico().nome.size(); i++ )
+        {
+            if (( !control ) && ( listaAtributo[pos]->getTextoTabelaLogico().nome[i] != ' ' ) && ( listaAtributo[pos]->getTextoTabelaLogico().nome[i] != ':' ))
+                nome += listaAtributo[pos]->getTextoTabelaLogico().nome[i];
+
+            if ( listaAtributo[pos]->getTextoTabelaLogico().nome[i] == ':' )
+            {
+                p = i-1;
+                control=true;
+                continue;
+            }
+
+            if (( control ) && ( listaAtributo[pos]->getTextoTabelaLogico().nome[i] != ' ' ))
+                tipo += listaAtributo[pos]->getTextoTabelaLogico().nome[i];
+        }
+    }
+    else
+        nome = listaAtributo[pos]->getTextoTabelaLogico().nome;
+
+    alterarNomeConceitualLogicoEFisico(atributoFormatado, nome, tipo);
+    atualizarNomeAtributo(nome, listaAtributo[pos]->toPlainText(), pos);
+    listaAtributo[pos]->setTextoTabelaLogico(nome, listaAtributo[pos]->getTextoTabelaLogico().pos,
+                                             listaAtributo[pos]->getTextoTabelaLogico().alterarRestricao,
+                                             listaAtributo[pos]->getTextoTabelaLogico().nulo );
+
+    if ( tipo != "" )
+    {
+        QString temp = listaAtributo[pos]->toPlainText();
+        temp.insert(temp.size(), " : "+tipo);
+        listaAtributo[pos]->setPlainText(temp);
+        atualizarLargura();
+    }
 }
 
 QVariant Tabela::itemChange(GraphicsItemChange change, const QVariant &value)

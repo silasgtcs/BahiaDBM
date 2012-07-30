@@ -1,9 +1,5 @@
 #include "texto.h"
 
-
-QList<Texto *> Texto::listaTextos;
-
-
 Texto::Texto(QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsTextItem(parent, scene)
 {
 
@@ -17,7 +13,7 @@ Texto::Texto(QGraphicsItem *parent, QGraphicsScene *scene) : QGraphicsTextItem(p
 
     setTipoGenEsp("xt");
     setGenEspAtiva(false);
-    setTabelaLogicoAtiva(false);
+    setTabelaAtiva(false);
 }
 
 void Texto::setGenEspAtiva( bool gea )
@@ -108,7 +104,7 @@ void Texto::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
 void Texto::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (( !getGenEspAtiva() ) && ( !getTabelaLogicoAtiva() ))
+    if (( !getGenEspAtiva() ) && ( !getTabelaAtiva() ))
     {
         setTextInteractionFlags(Qt::TextEditorInteraction);
         this->setFocus(); // faz já começar a editar
@@ -147,9 +143,27 @@ void Texto::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
     }
 
-    if ( getTabelaLogicoAtiva() )
+    if ( getTabelaAtiva() )
     {
-        QPair<QString,bool> temp = chamarTelaLogico.alterarNomeLogico(getTextoTabelaLogico().nome, getTextoTabelaLogico().alterarRestricao, getTextoTabelaLogico().nulo);
+        bool tabFisica=false, control=false;
+        QString tipo="";
+        if ( this->toPlainText().contains(":") )
+        {
+            tabFisica=true;
+            for ( int i=0; i<this->toPlainText().size(); i++ )
+            {
+                if ( this->toPlainText()[i] == ':' )
+                {
+                    control=true;
+                    i+=2;
+                }
+
+                if ( control )
+                    tipo += this->toPlainText()[i];
+            }
+        }
+
+        QPair<QString,bool> temp = chamarTelaLogico.alterarNomeLogico(getTextoTabelaLogico().nome, tipo, getTextoTabelaLogico().alterarRestricao, getTextoTabelaLogico().nulo, tabFisica);
         if ( temp.first != NULL )
         {
             setTextoTabelaLogico(temp.first, getTextoTabelaLogico().pos, getTextoTabelaLogico().alterarRestricao, temp.second );

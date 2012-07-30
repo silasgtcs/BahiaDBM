@@ -11,7 +11,7 @@ de ser utilizada para definir os tipos de generalização/especialização.*/
 
 class Atributo;
 
-struct restricao
+struct Restricao
 {
     QString nome;
     int pos;
@@ -33,15 +33,15 @@ public:
     QString getTipoGenEsp () { return this->tipoGenEsp; }
 
     void setTextoTabelaLogico( QString txt, int pos, bool alterarRestricao, bool nulo );
-    restricao getTextoTabelaLogico() { return this->textoTabelaLogico; }
+    Restricao getTextoTabelaLogico() { return this->textoTabelaLogico; }
 
     bool getGenEspAtiva() { return this->genEspAtiva; }
     void setGenEspAtiva( bool gea );
 
     void setTipoOwner(int t) { tipoOwner = t; };
 
-    bool getTabelaLogicoAtiva() { return this->tabelaLogicoAtiva; }
-    void setTabelaLogicoAtiva( bool tla ) { this->tabelaLogicoAtiva = tla; }
+    bool getTabelaAtiva() { return this->tabelaAtiva; }
+    void setTabelaAtiva( bool tla ) { this->tabelaAtiva = tla; }
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void focusOutEvent(QFocusEvent *event);
@@ -49,7 +49,7 @@ public:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
-    static QList<Texto *> listaTextos;
+    QList<Texto *> listaTextos;
 
 signals:
     void lostFocus(Texto *item);
@@ -64,13 +64,12 @@ private:
 
     int tipoOwner; // 1 = atributo, 2 = atributo ID, 3 = entidade, 4 = ent. associativa
                    // 5 = relacionamento, 6 = generalizacao/especializacao
-                   // meio grosseiro isso aqui!
 
     QString tipoGenEsp;
-    restricao textoTabelaLogico;
+    Restricao textoTabelaLogico;
 
     bool genEspAtiva;
-    bool tabelaLogicoAtiva;
+    bool tabelaAtiva;
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
