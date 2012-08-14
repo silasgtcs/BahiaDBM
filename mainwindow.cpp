@@ -61,6 +61,8 @@ void MainWindow::criarScene()
     sceneFisico->setSceneRect(QRectF(0, 0, 5000, 5000));
     sceneFisico->setTipoER(Diagrama::TipoER(7));
     viewFisico = new DiagramaView(sceneFisico);
+    SQLText = new QTextEdit;
+    SQLText->setReadOnly(true);
 
     //    QHBoxLayout *layout = new QHBoxLayout;
     //    layout->addWidget(view);
@@ -72,6 +74,7 @@ void MainWindow::criarScene()
     tabWidget->addTab(viewConceitual, trUtf8("Conceitual"));
     tabWidget->addTab(viewLogico, trUtf8("  Lógico  "));
     tabWidget->addTab(viewFisico, trUtf8("  Físico  "));
+    tabWidget->addTab(SQLText, trUtf8(" SQL "));
     connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(abaAlterada(const int)));
 
     setCentralWidget(tabWidget);
@@ -528,6 +531,13 @@ void MainWindow::salvarArquivo(const QString nomeArquivo)
         }
     }
 
+    //Salvar código SQL
+    QString temp = "|_codigo_SQL_|";
+    out << temp;
+    out << SQLText->toPlainText();
+    temp = "|_fim_codigo_SQL_|";
+    out << temp;
+
     pilhaDeAcoes->setUnchaged();
     setArquivoAtual(nomeArquivo);
     setArquivoAtualTitulo(diminuirNome(nomeArquivo));
@@ -930,6 +940,13 @@ void MainWindow::abrirArquivo(const QString nomeArquivo)
                 acao1->fazerAcao();
             }
         }
+
+        else if ( head == "|_codigo_SQL_|" )
+        {
+            QString txt;
+            in >> txt;
+            SQLText->setPlainText(txt);
+        }
     }
 
     QApplication::restoreOverrideCursor();
@@ -1088,6 +1105,10 @@ void MainWindow::createActions()
     modeloFisico = new QAction(trUtf8("&Modelo Físico"), this);
     modeloFisico->setStatusTip(trUtf8("Gerar Modelo Físico"));
     connect(modeloFisico, SIGNAL(triggered()), this, SLOT(gerarFisico()));
+
+    geracaoSQL = new QAction(trUtf8("&Código SQL"), this);
+    geracaoSQL->setStatusTip(trUtf8("Gerar Código SQL"));
+    connect(geracaoSQL, SIGNAL(triggered()), this, SLOT(gerarSQL()));
 }
 
 void MainWindow::createMenu()
@@ -1113,6 +1134,7 @@ void MainWindow::createMenu()
     gerarMenu = menuBar()->addMenu(trUtf8("&Gerar"));
     gerarMenu->addAction(modeloLogico);
     gerarMenu->addAction(modeloFisico);
+    gerarMenu->addAction(geracaoSQL);
 
     ajudaMenu = menuBar()->addMenu(trUtf8("&Ajuda"));
     ajudaMenu->addAction(ajudaAction);
@@ -1372,6 +1394,8 @@ void MainWindow::abaAlterada(int index)
         {
             formas->setHidden(false);
             formas->setEnabled(true);
+            manipulacoes->setHidden(false);
+            manipulacoes->setEnabled(true);
             mouseLinha->actions().at(1)->setVisible(true);
             mouseLinha->actions().at(2)->setVisible(true);
         }
@@ -1384,6 +1408,8 @@ void MainWindow::abaAlterada(int index)
         {
             formas->setHidden(true);
             formas->setEnabled(false);
+            manipulacoes->setHidden(true);
+            manipulacoes->setEnabled(false);
             mouseLinha->actions().at(1)->setVisible(false);
             mouseLinha->actions().at(2)->setVisible(false);
         }
@@ -1396,6 +1422,22 @@ void MainWindow::abaAlterada(int index)
         {
             formas->setHidden(true);
             formas->setEnabled(false);
+            manipulacoes->setHidden(true);
+            manipulacoes->setEnabled(false);
+            mouseLinha->actions().at(1)->setVisible(false);
+            mouseLinha->actions().at(2)->setVisible(false);
+        }
+    }
+
+    //Aba "SQL"
+    else if ( index == 3 )
+    {
+        if ( sceneFisico != NULL )
+        {
+            formas->setHidden(true);
+            formas->setEnabled(false);
+            manipulacoes->setHidden(true);
+            manipulacoes->setEnabled(false);
             mouseLinha->actions().at(1)->setVisible(false);
             mouseLinha->actions().at(2)->setVisible(false);
         }
@@ -1438,6 +1480,25 @@ QString MainWindow::formataAtributo(QString nome)
         }
 
     return nomeFormatado;
+}
+
+QString MainWindow::retornaTipo(QString texto)
+{
+    bool control=false;
+    QString ret;
+    for ( int i=0; i<texto.size(); i++ )
+    {
+        if ( control )
+            ret += texto[i];
+
+        if ( texto[i] == ':' )
+        {
+            control = true;
+            i++;
+        }
+    }
+
+    return ret;
 }
 
 //Verifica se atributo informado já existe na tabela lógica especificada.
@@ -2173,9 +2234,88 @@ void MainWindow::gerarModeloLogicoOuFisico( bool fisico )
 void MainWindow::gerarLogico()
 {
     gerarModeloLogicoOuFisico(false);
+    tabWidget->setCurrentIndex(1);
 }
 
 void MainWindow::gerarFisico()
 {
     gerarModeloLogicoOuFisico(true);
+    tabWidget->setCurrentIndex(2);
+}
+
+void MainWindow::gerarSQL()
+{
+    QString SQL="";
+    bool control=false;
+    QList< Foreign > fk;
+
+    QList<QGraphicsItem *> tab = sceneFisico->items();
+    for ( int i=0; i<tab.size(); i++ )
+    {
+        if ( tab[i]->type() == Tabela::Type )
+        {
+            if ( control )
+                SQL += "\n\n";
+
+            control=true;
+            castTabela = qgraphicsitem_cast<Tabela *>(tab[i]);
+
+            QList<QString> pk;
+            Foreign aux;
+
+            SQL += "CREATE TABLE "+castTabela->getTitulo()+"\n( ";
+            QList<Texto *> lista = castTabela->getListaAtributo();
+
+            for ( int j=0; j<lista.size(); j++ )
+            {
+                QString nome = formataAtributo(lista[j]->toPlainText());
+                QString tipo = retornaTipo(lista[j]->toPlainText());
+                bool notNull = lista[j]->toPlainText().contains("NOT NULL") ? true : false;
+                if ( lista[j]->toPlainText().contains("[PK]") )
+                    pk.push_back(nome);
+                if ( lista[j]->toPlainText().contains("[FK]") )
+                {
+                    aux.tabela = castTabela->getTitulo();
+                    aux.nomeAtributo = nome;
+                    fk.push_back(aux);
+                }
+
+                SQL += nome+" "+tipo;
+                if ( notNull )
+                    SQL += " NOT NULL";
+                SQL += ", ";
+
+                if ( j == lista.size()-1 )
+                {
+                    SQL += "PRIMARY KEY( ";
+                    for ( int w=0; w<pk.size(); w++ )
+                    {
+                        if ( w )
+                            SQL += ", ";
+                        SQL += pk[w];
+                    }
+                    SQL += " )";
+                }
+
+                //Procura a tabela que a chave estrangeira referencia
+                for ( int w=0; w<fk.size(); w++ )
+                    if ( fk[w].tabela != castTabela->getTitulo() )
+                        if ( fk[w].nomeAtributo == nome )
+                            fk[w].referencia = castTabela->getTitulo();
+            }
+
+            SQL += " );";
+        }
+    }
+
+    for ( int i=0; i<fk.size(); i++ )
+    {
+        SQL += "\n\n";
+
+        SQL += "ALTER TABLE "+fk[i].tabela+"\n"+"ADD FOREIGN KEY ( "+fk[i].nomeAtributo+" ) "+
+                "REFERENCES "+fk[i].referencia+"( "+fk[i].nomeAtributo+ " );";
+    }
+
+    SQLText->setPlainText(SQL);
+    tabWidget->setCurrentIndex(3);
 }

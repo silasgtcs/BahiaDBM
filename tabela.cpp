@@ -101,7 +101,7 @@ void Tabela::inserirTipo()
         QString temp = listaAtributo[i]->toPlainText();
         if ( !temp.contains(":") )
         {
-            temp.insert(temp.size(), " : INTEGER");
+            temp.insert(temp.size(), " : VARCHAR");
             listaAtributo[i]->setPlainText(temp);
         }
     }

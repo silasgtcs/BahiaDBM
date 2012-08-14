@@ -18,6 +18,13 @@
 
 class Diagrama;
 
+struct Foreign
+{
+    QString tabela;
+    QString nomeAtributo;
+    QString referencia;
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -49,6 +56,7 @@ private slots:
     void gerarLogico();
     void gerarFisico();
     void voltaMouse();
+    void gerarSQL();
 protected:
     virtual void closeEvent(QCloseEvent *);
 
@@ -70,6 +78,7 @@ private:
     bool questionarSalvar();
     void resetWindowState();
     QString formataAtributo(QString nome);
+    QString retornaTipo(QString texto);
     bool procuraAtributo(Tabela *tab, QString nome);
     void insereAtributoTabela( Atributo::Tipo tipoAtributo, Poligono *entidade, Tabela *tab, bool pk, bool fk, bool nulo);
     QString buscaNome( Poligono *p );
@@ -89,6 +98,8 @@ private:
     DiagramaView *viewLogico;
     DiagramaView *viewFisico;
 
+    QTextEdit *SQLText;
+
     Poligono *cast_poligono;
 
     QAction *sairAction;
@@ -103,6 +114,7 @@ private:
     QAction *fecharDiagramaAtual;
     QAction *modeloLogico;
     QAction *modeloFisico;
+    QAction *geracaoSQL;
 
     QMenu *arquivoMenu;
     QMenu *editarMenu;
@@ -150,6 +162,7 @@ private:
     Tabela *tab2;
     Tabela *tab3;
     Tabela *tabEsp;
+    Tabela *castTabela;
 
     QList <Tabela *> tabelasLogico;
     QList <Tabela *> tabelasFisico;
